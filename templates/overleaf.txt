@@ -1,0 +1,294 @@
+\documentclass[a4paper,10pt]{article}
+
+% Package imports
+\usepackage{latexsym}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{ragged2e}
+\usepackage[empty]{fullpage}
+\usepackage{wrapfig}
+\usepackage{lipsum}
+\usepackage{tabularx}
+\usepackage{titlesec}
+\usepackage{geometry}
+\usepackage{marvosym}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage[T1]{fontenc}
+
+% Color definitions
+\definecolor{darkblue}{RGB}{0,0,139}
+
+% Page layout
+\setlength{\multicolsep}{0pt} 
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\geometry{left=1.2cm, top=0.6cm, right=1.2cm, bottom=0.8cm}
+\setlength{\footskip}{4pt} % Addressing fancyhdr warning
+
+% Hyperlink setup (moved after fancyhdr to address warning)
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=darkblue,
+    filecolor=darkblue,
+    urlcolor=darkblue,
+}
+
+% Custom box settings
+\usepackage[most]{tcolorbox}
+\tcbset{
+    frame code={},
+    center title,
+    left=0pt,
+    right=0pt,
+    top=0pt,
+    bottom=0pt,
+    colback=gray!20,
+    colframe=white,
+    width=\dimexpr\textwidth\relax,
+    enlarge left by=-2mm,
+    boxsep=4pt,
+    arc=0pt,outer arc=0pt,
+}
+
+% URL style
+\urlstyle{same}
+
+% Text alignment
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Section formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-7pt}]
+
+% Custom commands
+\newcommand{\resumeItem}[2]{
+  \item{
+    \textbf{#1}{\hspace{0.5mm}#2 \vspace{-0.5mm}}
+  }
+}
+
+\newcommand{\resumePOR}[3]{
+\vspace{0.5mm}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+        \textbf{#1}\hspace{0.3mm}#2 & \textit{\small{#3}} 
+    \end{tabular*}
+    \vspace{-2mm}
+}
+
+\newcommand{\resumeProject}[4]{
+\vspace{0.5mm}\item
+    \begin{tabular*}{0.98\textwidth}[t]{l@{\extracolsep{\fill}}r}
+        \textbf{#1} & \textit{\footnotesize{#3}} \\
+        \footnotesize{\textit{#2}} & \footnotesize{#4}
+    \end{tabular*}
+    \vspace{-2.4mm}
+}
+
+\newcommand{\resumeSubItem}[2]{\resumeItem{#1}{#2}\vspace{-4pt}}
+
+\renewcommand{\labelitemi}{\textbullet} % standard bullet
+\renewcommand{\labelitemii}{\textbullet} % force same bullet for second level
+
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}%
+\newcolumntype{R}{>{\raggedleft\arraybackslash}X}%
+\newcolumntype{C}{>{\centering\arraybackslash}X}%
+
+% Font options
+\newcommand{\headerfonti}{\fontfamily{phv}\selectfont} % Helvetica-like (similar to Arial/Calibri)
+\newcommand{\headerfontii}{\fontfamily{ptm}\selectfont} % Times-like (similar to Times New Roman)
+\newcommand{\headerfontiii}{\fontfamily{ppl}\selectfont} % Palatino (elegant serif)
+\newcommand{\headerfontiv}{\fontfamily{pbk}\selectfont} % Bookman (readable serif)
+\newcommand{\headerfontv}{\fontfamily{pag}\selectfont} % Avant Garde-like (similar to Trebuchet MS)
+\newcommand{\headerfontvi}{\fontfamily{cmss}\selectfont} % Computer Modern Sans Serif
+\newcommand{\headerfontvii}{\fontfamily{qhv}\selectfont} % Quasi-Helvetica (another Arial/Calibri alternative)
+\newcommand{\headerfontviii}{\fontfamily{qpl}\selectfont} % Quasi-Palatino (another elegant serif option)
+\newcommand{\headerfontix}{\fontfamily{qtm}\selectfont} % Quasi-Times (another Times New Roman alternative)
+\newcommand{\headerfontx}{\fontfamily{bch}\selectfont} % Charter (clean serif option)
+
+% Define resumeSubheading command (only once)
+\newcommand{\resumeSubheading}[4]{
+  \noindent
+  \textbf{#1} \hfill #2\\
+  \ifx&#3&%
+    \vspace{0.1em}
+  \else
+    #3 \hfill #4\\[-0.2em] % removed \textit
+  \fi
+}
+
+% List environment definitions (using simple groups for Tectonic compatibility)
+\newcommand{\resumeSubHeadingListStart}{}
+\newcommand{\resumeSubHeadingListEnd}{}
+
+\newcommand{\resumeHeadingSkillStart}{\begin{itemize}[leftmargin=*,itemsep=1.5mm, rightmargin=2ex]}
+\newcommand{\resumeHeadingSkillEnd}{\end{itemize}\vspace{-2mm}}
+
+\newcommand{\resumeItemListStart}{
+  \begin{itemize}[leftmargin=2em]
+  \justifying
+}
+\newcommand{\resumeItemListEnd}{
+  \end{itemize}
+}
+
+\newcommand{\cvsection}[1]{%
+\vspace{2mm}
+\begin{tcolorbox}
+    \textbf{\large #1}
+\end{tcolorbox}
+    \vspace{-4mm}
+}
+
+\begin{document}
+\headerfontiii
+
+% Header
+\begin{center}
+    {\Huge\textbf{Sujan Dora}} \\[1mm]
+    \normalsize\text{AI Engineer}
+\end{center}
+\vspace{-4mm}
+
+\begin{center}
+\small
+(940) 843-0811 \textbar\ 
+\href{mailto:sujanworkofficial@gmail.com}{sujanworkofficial@gmail.com} \textbar\ 
+\href{https://www.linkedin.com/in/sujan-dora-6110a4190}{LinkedIn} \textbar\ 
+\href{https://sai-sujan.github.io/My-portfolio/}{Portfolio} \textbar\ 
+Springfield, MO, USA (Open to Relocate)
+\end{center}
+
+\vspace{-3mm}
+
+\section{\textbf{Professional Summary}}
+\vspace{0.5mm}
+\begin{justify}
+\noindent
+AI Software Engineer with ~2 years of experience designing, deploying, and maintaining production-grade Python applications on AWS, integrating AI/ML capabilities into scalable backend systems. Delivered measurable impact by improving document QA accuracy by 20\%, reducing MFA verification load by 25\%, and optimizing identity authentication pipelines. Strong background in software engineering fundamentals, CI/CD, Docker, cloud-native architectures, and system reliability, with applied experience in NLP, computer vision, and model evaluation.
+\end{justify}
+
+\vspace{-5.3mm}
+\section{\textbf{Education}}
+\vspace{1mm}
+
+\resumeSubHeadingListStart
+\resumeSubheading
+  {Missouri State University}
+  {GPA: 3.63}
+  {M.S. Computer Science -- Data Science}
+  {Dec 2025}
+\resumeSubHeadingListEnd
+
+\vspace{-3mm}
+
+\section{\textbf{Technical Skills}}
+\vspace{1mm}
+
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.25}
+
+\begin{tabular}{@{}p{4.9cm} p{13cm}@{}}
+\textbf{Programming Languages} & Python, SQL \\
+\textbf{MLOps \& Deployment} & MLflow, Git, GitHub Actions, CI/CD Pipelines, Model Deployment \\
+\textbf{Web \& DevOps} & FastAPI, Docker Containerization \\
+
+\textbf{Cloud \& Infrastructure} & AWS (Lambda, S3, EC2, ECR, API Gateway) \\
+\textbf{Databases \& AI Infrastructure} & PostgreSQL, MySQL, Milvus, Weaviate, FAISS, MongoDB\\
+
+\textbf{ML Frameworks \& Libraries} & TensorFlow, PyTorch, Scikit-learn, Hugging Face Transformers \\
+
+\textbf{LLM \& NLP Tools} & LangChain, LangGraph, LangSmith, LlamaIndex, Agents, Multi-Agents, LoRA, QLoRA, OpenAI, Ollama, RAG Systems \\
+
+\textbf{ML Specializations} & NLP, Computer Vision, Deep Learning, Anomaly Detection \\
+
+
+\end{tabular}
+
+
+
+
+
+
+\section{\textbf{Work Experience}}
+\vspace{-0.2mm}
+  \resumeSubHeadingListStart
+ \resumeSubheading
+      {AI/ML Engineer}{Chennai, India}
+      {Grootan Technologies } {July 2023 – December 2023}
+     \resumeItemListStart
+\item Designed, deployed, and maintained production-grade Python backend services using FastAPI, Docker, and AWS, supporting scalable applications with integrated AI/ML functionality.
+\item Architected and optimized hybrid information retrieval workflows combining dense embeddings and BM25 search, improving relevance and coverage of production QA pipelines by 20\%.
+\item Built and maintained automated evaluation and regression-testing pipelines (LLM-as-Judge) to continuously monitor system accuracy, faithfulness, and reliability across hundreds of real-world inputs.
+\item Owned end-to-end feature delivery from implementation through deployment, leveraging CI/CD pipelines and participating in rigorous code reviews to ensure maintainable, secure, and high-quality software.
+\item Led technical discussions in design reviews and sprint planning, incorporating feedback to improve system scalability, performance, and long-term maintainability.
+\item Applied predictive modeling and anomaly detection to operational datasets, enabling forecasting, process optimization, and data-driven decision-making in production environments.
+
+
+  
+\resumeItemListEnd
+
+  \resumeSubheading
+      {AI/ML Intern}{Chennai, India}
+      {Grootan Technologies}{September 2022 – July 2023}
+     \resumeItemListStart
+      \item Designed, implemented, and maintained a production-grade Python backend system for national ID authentication, integrating computer vision and ML components into a reliable, scalable service.
+\item Optimized the end-to-end verification workflow by removing redundant processing, reducing per-request latency from 7 minutes to 3 minutes and significantly improving system throughput.
+\item Applied transfer learning to adapt pre-trained models for limited datasets, improving detection accuracy and robustness across diverse hologram designs in production environments.
+\item Containerized and deployed backend services using Docker and AWS, enabling scalable, maintainable, and production-ready pipelines with automated build and deployment workflows.
+
+
+    \resumeItemListEnd
+      
+  \resumeSubheading
+    {Data Science Intern}{Bengaluru, India}
+    {iNeuron.ai}{November 2021 – March 2022}
+    \resumeItemListStart
+      \item Developed an end-to-end credit card default prediction project using Docker, CircleCI, and Heroku, achieving 87\% model accuracy on simulated customer transactions.
+    \item Built a CI/CD pipeline to deploy predictive models to AWS production, enabling real-time predictions.
+    \item Conducted exploratory data analysis on 30,000+ customer records to identify key features that improved model performance.
+    \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+\section{\textbf{Personal Projects}}
+\vspace{0.2mm}
+
+\resumeSubheading
+  {Wine Quality Prediction - End-to-End MLOps Pipeline}{}{}{}
+\vspace{-2mm}
+\resumeItemListStart
+\item Built an end-to-end ML pipeline using ZenML and MLflow, deploying a REST API on AWS Lambda with Docker for automated training and inference.
+\item Implemented CI/CD with GitHub Actions to automate model retraining and deployment to AWS (S3, ECR, API Gateway), ensuring reliable and repeatable releases.
+\resumeItemListEnd 
+
+\resumeSubheading
+  {BioMedical Research Assistant – Multi-Agent LLM System}{}{}{}
+\vspace{-2mm}
+\resumeItemListStart
+\item Fine-tuned Llama-3.1-8B using QLoRA on PubMedQA data with 4-bit quantization, gaining hands-on experience in parameter-efficient LLM training for biomedical QA.
+\item Built a multi-agent research workflow using CrewAI and PubMed retrieval via Model Context Protocol, with a Streamlit interface for interactive querying.
+\resumeItemListEnd
+
+\resumeSubheading
+  {SafeSpace 2.0 – AI Mental Health Therapist}{}{}{}
+\vspace{-2mm}
+\resumeItemListStart
+\item Developed an AI-powered mental health companion with empathetic conversational support, crisis detection, and location-aware therapist recommendations.
+\item Implemented a tool-using LLM agent (LangGraph / REAct) with multi-channel frontends (Streamlit web chat + Twilio WhatsApp) and integrated APIs for real-time actionable outputs.
+\resumeItemListEnd
+
+\section{\textbf{Publications \& Research}}
+\begin{itemize}[left=0pt, label={}]
+    \item Dora, S. et al. (2021). "Detecting Bias in the Relative Grading System Using Machine Learning." \textit{IEEE International Conference on Computing and Communications Technologies.}
+\end{itemize}
+
+\end{document}

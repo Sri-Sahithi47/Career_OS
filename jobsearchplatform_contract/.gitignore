@@ -1,0 +1,124 @@
+# === Python ===
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# === Virtual Environments ===
+venv/
+.venv/
+env/
+ENV/
+.env.local
+
+# === Environment Variables ===
+.env
+.env.docker
+.env.*.local
+
+# === IDE & Editor ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.project
+.pydevproject
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# === OS ===
+.DS_Store
+Thumbs.db
+*.bak
+*~
+
+# === Logs ===
+*.log
+logs/
+*.out
+*.err
+
+# === Testing ===
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+test_*.py  # Don't commit test files
+pytest.ini
+
+# === Browser Sessions & Cache ===
+chrome_session/
+chrome_session_v2/
+Default/
+Cache/
+Cookies
+History
+**/Library/Caches/
+
+# === Node.js (Dashboard) ===
+node_modules/
+dashboard/node_modules/
+dashboard/dist/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# === Runtime Artifacts ===
+*.pid
+*_pid.txt
+~$*.xlsx
+*.tmp
+temp_latex/
+_archive/
+
+# === LaTeX ===
+*.aux
+*.out
+*.synctex.gz
+*.pdf
+*.fdb_latexmk
+*.fls
+
+# === Data Files (user-specific) ===
+data/jobs_master.xlsx
+data/jobs_master_backup*.xlsx
+data/processed_jobs_history.json
+data/job_descriptions/
+data/resumes/
+data/backups/
+data/analysis_results/
+data/*.xlsx
+data/*.json
+
+# === Config Secrets ===
+config/secrets.yaml
+config/secrets.json
+secrets/
+
+# === Build Outputs ===
+dist/
+build/
+*.egg-info/
+
+# === Database ===
+*.db
+*.sqlite
+*.sqlite3
+
+# === Temporary Files ===
+.tmp/
+temp/
+tmp/
+*.swp
+*.swo
+
+# === Keep These ===
+!.gitkeep
+!.env.example
+!.github/

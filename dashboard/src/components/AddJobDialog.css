@@ -1,0 +1,12 @@
+.add-job-dialog { width: min(620px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); box-sizing: border-box; border: 1px solid #d1d5db; border-radius: 8px; padding: 24px; color: #20252c; }
+.add-job-dialog::backdrop { background: rgb(0 0 0 / 40%); }
+.add-job-dialog form, .add-job-dialog label { display: grid; gap: 8px; }
+.add-job-dialog form { gap: 16px; }
+.add-job-dialog h2 { margin: 0; font-size: 22px; }
+.add-job-dialog input, .add-job-dialog textarea { width: 100%; min-width: 0; box-sizing: border-box; padding: 10px; border: 1px solid #9ca3af; border-radius: 4px; font: inherit; }
+.add-job-dialog textarea { resize: vertical; }
+.add-job-dialog footer { display: flex; justify-content: flex-end; gap: 12px; }
+.add-job-dialog button { padding: 10px 16px; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; }
+.add-job-dialog button[type=submit] { background: #16704a; color: white; border-color: #16704a; }
+.add-job-dialog [role=alert] { color: #b42318; }
+.add-job-dialog button:disabled { opacity: .6; cursor: wait; }

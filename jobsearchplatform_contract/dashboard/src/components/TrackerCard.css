@@ -1,0 +1,77 @@
+/* ======== TrackerCard — CareerOS theme ======== */
+.tracker-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.55rem;
+  padding: 1rem;
+  border-radius: 0.65rem;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  cursor: grab;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  transition: transform 140ms ease, box-shadow 140ms ease, opacity 140ms ease;
+}
+
+.tracker-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.08);
+  border-color: #cbd5e1;
+}
+
+.tracker-card.is-dragging {
+  opacity: 0.42;
+  cursor: grabbing;
+}
+
+.tracker-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.tracker-card-copy { min-width: 0; }
+
+.tracker-card-copy h3 {
+  margin: 0;
+  overflow: hidden;
+  color: #0f172a;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: -0.005em;
+}
+
+.tracker-card-copy p {
+  margin: 0.3rem 0 0;
+  color: #6b7280;
+  font-size: 0.78rem;
+}
+
+.tracker-card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.tracker-card-bottom span:first-child {
+  overflow: hidden;
+  color: #9ca3af;
+  font-size: 0.72rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tracker-card-bottom span:last-child {
+  flex: 0 0 auto;
+  padding: 0.18rem 0.45rem;
+  border-radius: 0.35rem;
+  background: #ecfdf5;
+  color: #0f9d58;
+  font-size: 0.72rem;
+  font-weight: 700;
+}

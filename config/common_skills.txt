@@ -1,0 +1,797 @@
+# Common IT/AI/ML Skills Dictionary
+# Expanded — covers tech stacks, ML concepts, cloud, tools, soft-tech
+
+# ── Programming Languages ──
+Python
+Java
+JavaScript
+TypeScript
+C++
+C#
+Go
+Golang
+Rust
+R
+Scala
+Julia
+MATLAB
+Shell
+Bash
+Perl
+PHP
+Swift
+Kotlin
+Dart
+Ruby
+Elixir
+Haskell
+CUDA
+SQL
+PL/SQL
+T-SQL
+HiveQL
+Spark SQL
+
+# ── ML / AI Frameworks ──
+PyTorch
+Torch
+TensorFlow
+TF
+Keras
+scikit-learn
+sklearn
+sci-kit learn
+XGBoost
+LightGBM
+CatBoost
+Hugging Face
+HuggingFace
+Transformers
+spaCy
+NLTK
+Gensim
+OpenCV
+YOLO
+YOLOv8
+Detectron2
+FastAI
+fast.ai
+JAX
+Flax
+Haiku
+PaddlePaddle
+MXNet
+Caffe
+Theano
+Optuna
+Ray Tune
+Hyperopt
+Weights and Biases
+W&B
+Neptune
+ClearML
+Comet ML
+MLflow
+Metaflow
+
+# ── ML / AI Concepts ──
+Machine Learning
+ML
+Deep Learning
+DL
+Natural Language Processing
+NLP
+Computer Vision
+CV
+Large Language Models
+LLM
+Generative AI
+Gen AI
+Reinforcement Learning
+Transfer Learning
+Fine-tuning
+Model Training
+Model Deployment
+Neural Networks
+CNN
+RNN
+LSTM
+GRU
+Transformer
+Attention Mechanism
+Self-Attention
+Multi-Head Attention
+BERT
+GPT
+T5
+ViT
+Vision Transformer
+Diffusion Models
+Stable Diffusion
+GAN
+Variational Autoencoder
+VAE
+RAG
+Retrieval Augmented Generation
+Prompt Engineering
+Few-shot Learning
+Zero-shot Learning
+In-context Learning
+Contrastive Learning
+Self-Supervised Learning
+Semi-Supervised Learning
+Supervised Learning
+Unsupervised Learning
+Federated Learning
+Active Learning
+Online Learning
+Meta-Learning
+Multi-Task Learning
+Multi-Modal Learning
+Multimodal
+Knowledge Distillation
+Model Compression
+Quantization
+Pruning
+Neural Architecture Search
+AutoML
+Hyperparameter Tuning
+Hyperparameter Optimization
+Grid Search
+Random Search
+Bayesian Optimization
+Cross-Validation
+K-Fold Cross-Validation
+Ensemble Methods
+Random Forest
+Gradient Boosting
+AdaBoost
+Bagging
+Stacking
+Anomaly Detection
+Outlier Detection
+Fraud Detection
+Recommendation Systems
+Collaborative Filtering
+Content-Based Filtering
+Matrix Factorization
+Classification
+Binary Classification
+Multi-Class Classification
+Multi-Label Classification
+Regression
+Logistic Regression
+Linear Regression
+Time Series
+Time Series Analysis
+Forecasting
+Sequence Modeling
+Text Classification
+Sentiment Analysis
+Named Entity Recognition
+NER
+Question Answering
+Summarization
+Machine Translation
+Text Generation
+Image Classification
+Object Detection
+Image Segmentation
+Semantic Segmentation
+Instance Segmentation
+Pose Estimation
+Depth Estimation
+OCR
+Optical Character Recognition
+Speech Recognition
+ASR
+Text-to-Speech
+TTS
+Speaker Diarization
+Audio Processing
+Signal Processing
+Graph Neural Networks
+GNN
+Graph Convolutional Networks
+GCN
+Knowledge Graphs
+Bayesian Inference
+Probabilistic Modeling
+Causal Inference
+A/B Testing
+Hypothesis Testing
+Statistical Analysis
+Statistical Modeling
+Explainable AI
+XAI
+Model Interpretability
+SHAP
+LIME
+Model Evaluation
+Model Accuracy
+Precision
+Recall
+F1 Score
+AUC
+ROC
+AUC-ROC
+Mean Squared Error
+MSE
+RMSE
+MAE
+BLEU
+ROUGE
+Perplexity
+Loss Function
+Regularization
+Dropout
+Batch Normalization
+Layer Normalization
+Gradient Descent
+Stochastic Gradient Descent
+SGD
+Adam
+AdamW
+Backpropagation
+Feature Engineering
+Feature Selection
+Feature Extraction
+Dimensionality Reduction
+PCA
+t-SNE
+UMAP
+Embeddings
+Word Embeddings
+Word2Vec
+GloVe
+FastText
+Sentence Embeddings
+Semantic Search
+Similarity Search
+
+# ── LLM / GenAI Ecosystem ──
+Agentic AI
+Agentic Workflows
+Multi-Agent Systems
+AI Agents
+LLM Agents
+MCP
+Model Context Protocol
+GraphRAG
+Advanced RAG
+Agentic RAG
+LoRA
+QLoRA
+PEFT
+SFT
+RLHF
+DPO
+PPO
+GRPO
+LLM Evaluation
+LLM-as-a-Judge
+Token Optimization
+KV Cache
+Context Window
+vLLM
+TGI
+Text Generation Inference
+TensorRT-LLM
+TRT-LLM
+Ollama
+llama.cpp
+GGUF
+Triton Inference Server
+ONNX
+ONNX Runtime
+TensorRT
+OpenAI API
+OpenAI SDK
+Anthropic SDK
+Claude
+GPT-4
+GPT-4o
+Llama 3
+Llama 2
+Mistral
+Mixtral
+Qwen
+Gemini
+Gemma
+Phi
+Command R
+Cohere
+LangChain
+LangGraph
+LlamaIndex
+CrewAI
+AutoGen
+Semantic Kernel
+LiteLLM
+Haystack
+DSPy
+Guidance
+Outlines
+Chainlit
+OpenDevin
+SWE-agent
+Pinecone
+Weaviate
+ChromaDB
+FAISS
+Qdrant
+Milvus
+Chroma
+Vector Database
+Vector Store
+Vector Search
+Embeddings API
+
+# ── MLOps & Serving ──
+MLOps
+Model Registry
+Experiment Tracking
+Model Versioning
+Model Monitoring
+Data Drift
+Concept Drift
+A/B Testing
+Shadow Deployment
+Canary Deployment
+Blue-Green Deployment
+Feature Store
+Feast
+Tecton
+BentoML
+Seldon
+KServe
+TorchServe
+TF Serving
+TensorFlow Serving
+Triton
+Batch Inference
+Online Inference
+Real-Time Inference
+Low Latency Inference
+Throughput
+Model Optimization
+Model Quantization
+Model Pruning
+
+# ── Cloud & Infrastructure ──
+AWS
+Amazon Web Services
+Azure
+Microsoft Azure
+Google Cloud
+GCP
+EC2
+S3
+Lambda
+ECS
+EKS
+ECR
+RDS
+DynamoDB
+Redshift
+Athena
+Glue
+SageMaker
+Amazon SageMaker
+Bedrock
+Amazon Bedrock
+CloudFormation
+CDK
+Vertex AI
+Google Vertex AI
+BigQuery
+Cloud Run
+Cloud Functions
+Pub/Sub
+GKE
+Cloud Storage
+Azure ML
+Azure OpenAI
+Azure Blob Storage
+Azure Functions
+Azure DevOps
+Azure Kubernetes Service
+AKS
+DigitalOcean
+Heroku
+Railway
+Fly.io
+Modal
+Replicate
+Hugging Face Spaces
+Docker
+Containerization
+Kubernetes
+K8s
+Helm
+Docker Compose
+CI/CD
+Jenkins
+GitLab CI
+GitHub Actions
+CircleCI
+Travis CI
+Terraform
+Ansible
+Pulumi
+Infrastructure as Code
+IaC
+
+# ── Databases & Storage ──
+PostgreSQL
+MySQL
+SQLite
+MongoDB
+Redis
+Elasticsearch
+OpenSearch
+Apache Cassandra
+Cassandra
+DynamoDB
+Firestore
+Neo4j
+InfluxDB
+TimescaleDB
+CockroachDB
+Snowflake
+BigQuery
+Redshift
+Databricks
+Delta Lake
+Apache Iceberg
+Apache Hudi
+Parquet
+Avro
+HDF5
+
+# ── Data Engineering ──
+Apache Spark
+PySpark
+Hadoop
+Kafka
+Apache Flink
+Apache Beam
+Airflow
+Apache Airflow
+Prefect
+Dagster
+Luigi
+dbt
+Fivetran
+Airbyte
+Stitch
+Great Expectations
+Data Quality
+Data Validation
+ETL
+ELT
+Data Pipeline
+Data Lakehouse
+Data Lake
+Data Warehouse
+Data Modeling
+Schema Design
+Stream Processing
+Batch Processing
+Real-Time Processing
+Change Data Capture
+CDC
+
+# ── Analytics & BI ──
+Tableau
+Power BI
+Looker
+Metabase
+Grafana
+Data Visualization
+Dashboard
+Plotly
+Bokeh
+Matplotlib
+Seaborn
+Altair
+D3.js
+Pandas
+NumPy
+SciPy
+Statsmodels
+
+# ── Backend & API ──
+FastAPI
+Flask
+Django
+Express
+Node.js
+Spring Boot
+gRPC
+GraphQL
+REST API
+RESTful API
+WebSocket
+API Design
+API Development
+Microservices
+Backend Development
+Server-Side
+Serverless
+Event-Driven Architecture
+Message Queue
+RabbitMQ
+Celery
+Pydantic
+
+# ── Web & Frontend (AI-adjacent) ──
+React
+Next.js
+Streamlit
+Gradio
+Chainlit
+HTML
+CSS
+TypeScript
+
+# ── Observability & DevOps ──
+Prometheus
+Grafana
+DataDog
+New Relic
+OpenTelemetry
+Logging
+Monitoring
+Alerting
+SLO
+SLA
+Git
+GitHub
+GitLab
+Bitbucket
+Linux
+Unix
+Jira
+Confluence
+Agile
+Scrum
+
+# ── Soft-Tech & Architecture ──
+System Design
+Distributed Systems
+Microservices Architecture
+High Availability
+Fault Tolerance
+Load Balancing
+Horizontal Scaling
+Vertical Scaling
+Caching
+Rate Limiting
+API Gateway
+Service Mesh
+Istio
+Software Architecture
+Design Patterns
+SOLID
+Object-Oriented Programming
+OOP
+Functional Programming
+Concurrency
+Parallelism
+Multithreading
+Asynchronous Programming
+async
+Technical Documentation
+Code Review
+
+# ── Research & Academic ──
+Research
+Publications
+Papers
+arXiv
+NeurIPS
+ICML
+CVPR
+ACL
+EMNLP
+ICLR
+ICCV
+ECCV
+Peer Review
+
+# ── Soft Skills ──
+Problem Solving
+Communication
+Collaboration
+Team Player
+Leadership
+Mentoring
+Cross-Functional
+Stakeholder Management
+
+# ── Python Web / ORM / WSGI / ASGI ──
+SQLAlchemy
+Django REST Framework
+DRF
+Django ORM
+Django Forms
+Alembic
+Marshmallow
+Pydantic
+WTForms
+Jinja2
+Gunicorn
+Uvicorn
+Hypercorn
+Waitress
+WSGI
+ASGI
+Starlette
+HTTPX
+aiohttp
+Requests
+Boto3
+Click
+Typer
+
+# ── Frontend & Web ──
+AngularJS
+Angular
+jQuery
+AJAX
+CSS3
+HTML5
+Webpack
+Vite
+Tailwind CSS
+Bootstrap
+SASS
+SCSS
+GraphQL
+gRPC
+WebSocket
+REST
+RESTful
+Axios
+
+# ── Scraping / Data tools ──
+BeautifulSoup
+Beautiful Soup
+lxml
+Scrapy
+Selenium
+Playwright
+Puppeteer
+
+# ── Testing ──
+PyUnit
+unittest
+pytest-asyncio
+Jest
+Mocha
+Cypress
+Locust
+
+# ── AWS Services ──
+SQS
+SNS
+EventBridge
+CloudWatch
+CloudFront
+Route 53
+ECS
+EKS
+ECR
+Fargate
+Elastic Beanstalk
+Kinesis
+Glue
+Athena
+Step Functions
+SageMaker
+Secrets Manager
+IAM
+VPC
+CloudTrail
+ElastiCache
+
+# ── Azure Services ──
+Azure App Service
+Azure SQL Database
+Azure Functions
+Azure Container Registry
+Azure Service Bus
+Azure Kubernetes Service
+AKS
+ACR
+Azure DevOps
+Azure Monitor
+Azure Logic Apps
+Azure Data Factory
+
+# ── GCP Services ──
+Google App Engine
+Google Compute Engine
+BigQuery
+Cloud Run
+Cloud Functions
+GKE
+Pub/Sub
+Dataflow
+Dataproc
+Cloud Spanner
+Vertex AI
+
+# ── DevOps / Infrastructure ──
+Nginx
+HAProxy
+Traefik
+ArgoCD
+FluxCD
+Vault
+Consul
+Consul
+Istio
+Envoy
+Linkerd
+Triton
+
+# ── Data Engineering ──
+dbt
+Apache Beam
+Apache Flink
+Apache Nifi
+Airbyte
+Fivetran
+Great Expectations
+Delta Lake
+Iceberg
+Hudi
+Databricks
+Trino
+Presto
+Hive
+HBase
+Cassandra
+Couchbase
+
+# ── Monitoring / Observability ──
+Datadog
+New Relic
+Splunk
+PagerDuty
+OpenTelemetry
+Jaeger
+Zipkin
+Loki
+Tempo
+
+# ── Security ──
+OAuth
+OAuth2
+JWT
+SAML
+OIDC
+SSO
+LDAP
+Keycloak
+Okta
+Auth0
+mTLS
+TLS
+SSL
+
+# ── Databases (additional) ──
+CockroachDB
+TimescaleDB
+InfluxDB
+Pinecone
+Weaviate
+Qdrant
+Chroma
+Milvus
+Neo4j
+ArangoDB
+Couchbase
+RethinkDB

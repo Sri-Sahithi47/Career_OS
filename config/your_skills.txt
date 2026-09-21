@@ -1,0 +1,158 @@
+# Your Skills - AI/ML Engineer Optimized List
+# Pruned to focus ONLY on AI, ML, Data Engineering, and Backend skills
+# (Removed frontend, generic devops, and analyst fluff to prevent false positives)
+
+# ========================================
+# PROGRAMMING LANGUAGES & CORE TECH
+# ========================================
+Python
+SQL
+Bash
+Shell
+Linux
+
+# ========================================
+# ML/AI FRAMEWORKS & LIBRARIES
+# ========================================
+TensorFlow
+TF
+PyTorch
+Torch
+Scikit-learn
+sklearn
+sci-kit learn
+Hugging Face
+HuggingFace
+Hugging Face Transformers
+Transformers
+OpenCV
+CV
+YOLO
+Keras
+
+# ========================================
+# LLM, RAG & AGENTIC AI
+# ========================================
+LangChain
+LangGraph
+LlamaIndex
+Agents
+AI Agents
+LLM Agents
+Multi-Agent Systems
+MCP
+Model Context Protocol
+RAG
+Retrieval Augmented Generation
+GraphRAG
+Advanced RAG
+Agentic RAG
+LoRA
+QLoRA
+Prompt Engineering
+Prompt Optimization
+Fine-tuning
+PEFT
+SFT
+RLHF
+DPO
+LLM Evaluation
+LLM-as-a-Judge
+LLM
+Large Language Models
+Generative AI
+GenAI
+Gen AI
+
+# ========================================
+# LLM INFERENCE & SERVING
+# ========================================
+KV Cache
+Token Optimization
+Context Window Optimization
+vLLM
+TGI
+Text Generation Inference
+TensorRT-LLM
+Ollama
+Llama 3
+Claude 3
+Mistral
+
+# ========================================
+# ML CONCEPTS & SPECIALIZATIONS
+# ========================================
+NLP
+Natural Language Processing
+Computer Vision
+Deep Learning
+DL
+Machine Learning
+ML
+ML Engineering
+Transfer Learning
+Pre-trained Models
+Object Detection
+Neural Networks
+CNN
+RNN
+Transformer Architecture
+Attention Mechanism
+Feature Engineering
+Data Pipeline
+
+# ========================================
+# MLOPS & CLOUD INFRASTRUCTURE
+# ========================================
+MLOps
+MLflow
+Experiment Tracking
+Model Registry
+Docker
+Containerization
+Kubernetes
+K8s
+AWS
+Amazon Web Services
+EC2
+S3
+CI/CD
+GitHub Actions
+Model Deployment
+
+# ========================================
+# DATABASES & VECTOR STORES
+# ========================================
+PostgreSQL
+MySQL
+MongoDB
+Milvus
+Weaviate
+FAISS
+Qdrant
+ChromaDB
+Vector Database
+Vector Store
+Embeddings
+Semantic Search
+
+# ========================================
+# BACKEND & API DEVELOPMENT
+# ========================================
+FastAPI
+Flask
+Streamlit
+REST API
+API Development
+Backend Development
+
+# ========================================
+# DATA ENGINEERING & SCIENCE
+# ========================================
+Data Engineering
+ETL
+Pandas
+NumPy
+Data Pipelines
+Data Analysis
+Predictive Modeling

@@ -1,0 +1,42 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {
+    "community_labels": {
+      "0": "Community 0",
+      "1": "Community 1",
+      "2": "Community 2"
+    }
+  },
+  "nodes": [
+    {
+      "id": "eslint_config",
+      "label": "eslint.config.js",
+      "file_type": "code",
+      "source_file": "/Users/srisahithiperiketi/.careeros_runtime/project/dashboard/eslint.config.js",
+      "source_location": "L1",
+      "community": 0,
+      "community_name": "Community 0"
+    },
+    {
+      "id": "parse_html_again",
+      "label": "parse_html_again.py",
+      "file_type": "code",
+      "source_file": "/Users/srisahithiperiketi/.careeros_runtime/project/dashboard/parse_html_again.py",
+      "source_location": "L1",
+      "community": 1,
+      "community_name": "Community 1"
+    },
+    {
+      "id": "vite_config",
+      "label": "vite.config.js",
+      "file_type": "code",
+      "source_file": "/Users/srisahithiperiketi/.careeros_runtime/project/dashboard/vite.config.js",
+      "source_location": "L1",
+      "community": 2,
+      "community_name": "Community 2"
+    }
+  ],
+  "links": [],
+  "hyperedges": []
+}

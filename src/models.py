@@ -1,0 +1,401 @@
+"""
+SQLAlchemy ORM Models
+---------------------
+Database schema for jobs, users, resumes, and configurations.
+
+Models:
+  - User: Authentication accounts
+  - UserProfile: Role-aware onboarding profile for each user
+  - ResumeAsset: Stored resume text/assets owned by the user
+  - SearchPreset: Generated search presets derived from onboarding
+  - Job: Legacy/canonical job listings with evaluation and status
+  - MatchedJob: User-facing delivered jobs read model
+  - Resume: Generated tailored resumes for jobs
+  - SearchConfig: Legacy saved search configurations
+  - ScrapeRun: Background scraper execution history
+"""
+
+import uuid
+from datetime import datetime
+from sqlalchemy import Column, Integer, String, Text, DateTime, Boolean, ForeignKey, JSON, Float, UniqueConstraint
+from sqlalchemy.orm import relationship
+from pgvector.sqlalchemy import Vector
+from src.database import Base
+
+
+class User(Base):
+    """User account for authentication."""
+    __tablename__ = 'users'
+
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    username = Column(String(50), unique=True, nullable=False, index=True)
+    hashed_password = Column(String(255), nullable=False)
+    full_name = Column(String(120), nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    is_active = Column(Boolean, default=True)
+
+    # Relationships
+    profile = relationship('UserProfile', back_populates='user', uselist=False, cascade='all, delete-orphan')
+    resume_assets = relationship('ResumeAsset', back_populates='user', cascade='all, delete-orphan')
+    jobs = relationship('Job', back_populates='user', cascade='all, delete-orphan')
+    matched_jobs = relationship('MatchedJob', back_populates='user', cascade='all, delete-orphan')
+    search_configs = relationship('SearchConfig', back_populates='user', cascade='all, delete-orphan')
+    search_presets = relationship('SearchPreset', back_populates='user', cascade='all, delete-orphan')
+    scrape_runs = relationship('ScrapeRun', back_populates='user', cascade='all, delete-orphan')
+    notifications = relationship('EmailNotification', back_populates='user', cascade='all, delete-orphan')
+    email_accounts = relationship('EmailAccount', back_populates='user', cascade='all, delete-orphan')
+    opportunity_threads = relationship('OpportunityThread', back_populates='user', cascade='all, delete-orphan')
+
+
+class UserProfile(Base):
+    """Role-aware onboarding profile and job preferences."""
+    __tablename__ = 'user_profiles'
+
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = Column(String(36), ForeignKey('users.id'), nullable=False, unique=True, index=True)
+    target_roles = Column(JSON, nullable=False, default=list)
+    seniority = Column(String(50), nullable=True)
+    preferred_locations = Column(JSON, nullable=False, default=list)
+    work_modes = Column(JSON, nullable=False, default=list)
+    employment_types = Column(JSON, nullable=False, default=list)
+    industries = Column(JSON, nullable=False, default=list)
+    visa_preferences = Column(JSON, nullable=False, default=dict)
+    quality_filters = Column(JSON, nullable=False, default=dict)
+    salary_expectations = Column(String(120), nullable=True)
+    candidate_summary = Column(Text, nullable=True)
+    parsed_skills = Column(JSON, nullable=False, default=list)
+    onboarding_step = Column(String(50), nullable=False, default='welcome')
+    onboarding_completed = Column(Boolean, nullable=False, default=False)
+    automation_connected = Column(Boolean, nullable=False, default=False)
+    full_profile = Column(JSON, nullable=True)  # Detailed master profile JSON
+    embedding = Column(Vector(384), nullable=True)  # Semantic search vector
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    user = relationship('User', back_populates='profile')
+
+
+class ResumeAsset(Base):
+    """Stored resume text/assets owned by a user."""
+    __tablename__ = 'resume_assets'
+
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = Column(String(36), ForeignKey('users.id'), nullable=False, index=True)
+    filename = Column(String(255), nullable=True)
+    content_type = Column(String(120), nullable=True)
+    original_text = Column(Text, nullable=False)
+    parsed_skills = Column(JSON, nullable=False, default=list)
+    is_active = Column(Boolean, nullable=False, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    user = relationship('User', back_populates='resume_assets')
+
+
+class SearchPreset(Base):
+    """User-facing search presets generated from onboarding preferences."""
+    __tablename__ = 'search_presets'
+
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = Column(String(36), ForeignKey('users.id'), nullable=False, index=True)
+    label = Column(String(120), nullable=False)
+    role = Column(String(120), nullable=False)
+    keywords = Column(JSON, nullable=False, default=list)
+    locations = Column(JSON, nullable=False, default=list)
+    work_modes = Column(JSON, nullable=False, default=list)
+    employment_types = Column(JSON, nullable=False, default=list)
+    industries = Column(JSON, nullable=False, default=list)
+    is_default = Column(Boolean, nullable=False, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    user = relationship('User', back_populates='search_presets')
+
+
+class Job(Base):
+    """Legacy/canonical job listing with evaluation scores and source metadata."""
+    __tablename__ = 'jobs'
+    __table_args__ = (
+        UniqueConstraint('user_id', 'job_link', name='uq_user_job_link'),
+    )
+
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = Column(String(36), ForeignKey('users.id'), nullable=False, index=True)
+
+    # Job metadata
+    source = Column(String(20), nullable=False)  # linkedin, indeed, glassdoor
+    company = Column(String(255), nullable=False)
+    title = Column(String(255), nullable=False)
+    job_link = Column(String(1000), nullable=False, index=True)
+    location = Column(String(255), nullable=True)
+    posting_date = Column(DateTime, nullable=True)
+    date_added = Column(DateTime, default=datetime.utcnow)
+
+    # Job details
+    job_description = Column(Text, nullable=True)
+    role_type = Column(String(50), nullable=True)  # internship, entry-level, mid-level, etc.
+    search_query = Column(String(500), nullable=True)  # The search term that found this job
+
+    # Premium indicators
+    is_premium = Column(Boolean, default=False)
+    premium_indicators = Column(JSON, nullable=True)  # List of premium signals
+
+    # Evaluation scores
+    skill_score = Column(Float, nullable=True)  # 0-100
+    matched_skills = Column(JSON, nullable=True)  # List of matched skills
+    missing_skills = Column(JSON, nullable=True)  # List of missing skills
+    tier = Column(String(20), nullable=True)  # premium, standard, lower, etc.
+    ats_score = Column(Float, nullable=True)  # 0-100 ATS compatibility
+    ai_evaluation = Column(JSON, nullable=True)  # Full AI evaluation result (inlines old sidecar JSON)
+    embedding = Column(Vector(384), nullable=True)  # Semantic search vector
+
+    # Application status
+    status = Column(
+        String(50),
+        nullable=False,
+        default='not_applied',
+        index=True
+    )  # not_applied, applied, interviewing, accepted, rejected, skipped
+
+    # User annotations
+    special_interest = Column(Boolean, default=False)  # User starred/bookmarked this job
+    notes = Column(Text, nullable=True)  # User notes about the job
+    is_new = Column(Boolean, default=True)  # Whether this is a new addition
+
+    # PDF resume path for this job
+    resume_path = Column(String(500), nullable=True)  # Path to tailored resume PDF
+
+    # Dice-specific fields
+    contact_info = Column(JSON, nullable=True)  # Recruiter/contact details scraped from job page
+    employment_type = Column(String(200), nullable=True)  # W2, C2C, 1099, Contract, etc.
+
+    # Relationships
+    user = relationship('User', back_populates='jobs')
+    matched_jobs = relationship('MatchedJob', back_populates='job', cascade='all, delete-orphan')
+    resumes = relationship('Resume', back_populates='job', cascade='all, delete-orphan')
+
+
+class MatchedJob(Base):
+    """User-facing delivered job record used by the web app."""
+    __tablename__ = 'matched_jobs'
+    __table_args__ = (
+        UniqueConstraint('user_id', 'job_id', name='uq_user_matched_job'),
+    )
+
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = Column(String(36), ForeignKey('users.id'), nullable=False, index=True)
+    job_id = Column(String(36), ForeignKey('jobs.id'), nullable=False, index=True)
+    delivery_origin = Column(String(30), nullable=False, default='legacy_sync', index=True)
+    delivery_status = Column(String(30), nullable=False, default='active', index=True)
+    user_status = Column(String(50), nullable=False, default='not_applied', index=True)
+    fit_score = Column(Float, nullable=False, default=0)
+    base_skill_score = Column(Float, nullable=False, default=0)
+    industry_boost = Column(Float, nullable=False, default=0)
+    experience_fit_score = Column(Float, nullable=True)
+    resume_match_score = Column(Float, nullable=True)
+    role_fit_score = Column(Float, nullable=True)
+    location_fit_score = Column(Float, nullable=True)
+    freshness_score = Column(Float, nullable=True)
+    freshness_label = Column(String(120), nullable=True)
+    industry_fit_label = Column(String(120), nullable=True)
+    job_industries = Column(JSON, nullable=False, default=list)
+    matched_industries = Column(JSON, nullable=False, default=list)
+    fit_reasons = Column(JSON, nullable=False, default=list)
+    ai_match_score = Column(Float, nullable=True)
+    ai_match_confidence = Column(String(20), nullable=True)
+    ai_match_summary = Column(Text, nullable=True)
+    ai_match_reasons = Column(JSON, nullable=True)
+    ai_match_cache_key = Column(String(80), nullable=True, index=True)
+    ai_match_updated_at = Column(DateTime, nullable=True)
+    special_interest = Column(Boolean, default=False)
+    notes = Column(Text, nullable=True)
+    workspace_location = Column(String(255), nullable=True)
+    workspace_ats_score = Column(Float, nullable=True)
+    workspace_matched_skills = Column(JSON, nullable=True)
+    workspace_analysis = Column(JSON, nullable=True)
+    workspace_resume_path = Column(String(500), nullable=True)
+    delivered_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    user = relationship('User', back_populates='matched_jobs')
+    job = relationship('Job', back_populates='matched_jobs')
+    application_events = relationship('ApplicationEvent', back_populates='matched_job', cascade='all, delete-orphan')
+
+
+class ApplicationEvent(Base):
+    """Timeline events for a delivered matched job."""
+    __tablename__ = 'application_events'
+
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    matched_job_id = Column(String(36), ForeignKey('matched_jobs.id'), nullable=False, index=True)
+    event_type = Column(String(50), nullable=False, default='status_changed')
+    old_status = Column(String(50), nullable=True)
+    new_status = Column(String(50), nullable=True)
+    actor = Column(String(50), nullable=False, default='user')
+    metadata_json = Column(JSON, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow, index=True)
+
+    matched_job = relationship('MatchedJob', back_populates='application_events')
+
+
+class Resume(Base):
+    """Generated resume for a specific job."""
+    __tablename__ = 'resumes'
+
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    job_id = Column(String(36), ForeignKey('jobs.id'), nullable=False, index=True)
+    pdf_path = Column(String(500), nullable=False)
+    version = Column(Integer, default=1)  # Resume version number
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    # Relationship
+    job = relationship('Job', back_populates='resumes')
+
+
+class SearchConfig(Base):
+    """Saved search configurations for scraping."""
+    __tablename__ = 'search_configs'
+
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = Column(String(36), ForeignKey('users.id'), nullable=False, index=True)
+    name = Column(String(100), nullable=False)
+    keywords = Column(JSON, nullable=False)  # List of search keywords
+    sources = Column(String(100), nullable=False)  # Comma-separated: linkedin,indeed,glassdoor
+    max_jobs = Column(Integer, default=40)
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    # Relationship
+    user = relationship('User', back_populates='search_configs')
+
+
+class ScrapeRun(Base):
+    """Record of a scraping execution."""
+    __tablename__ = 'scrape_runs'
+
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = Column(String(36), ForeignKey('users.id'), nullable=False, index=True)
+    status = Column(String(20), nullable=False)  # pending, running, done, failed
+    source = Column(String(20), nullable=False)  # linkedin, indeed, glassdoor
+    started_at = Column(DateTime, default=datetime.utcnow)
+    finished_at = Column(DateTime, nullable=True)
+    jobs_found = Column(Integer, default=0)
+    error_msg = Column(Text, nullable=True)
+    search_query = Column(String(500), nullable=True)
+
+    # Relationship
+    user = relationship('User', back_populates='scrape_runs')
+
+
+class EmailNotification(Base):
+    """Extracted notifications from job-related emails."""
+    __tablename__ = 'email_notifications'
+
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = Column(String(36), ForeignKey('users.id'), nullable=False, index=True)
+    subject = Column(String(255), nullable=False)
+    sender = Column(String(255), nullable=True)
+    received_at = Column(DateTime, nullable=False)
+    category = Column(String(50), nullable=False)  # Interview, Rejection, Generic
+    summary = Column(Text, nullable=True)
+    is_read = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    user = relationship('User', back_populates='notifications')
+
+
+class EmailAccount(Base):
+    """Read-only email account connection metadata for opportunity sync."""
+    __tablename__ = 'email_accounts'
+    __table_args__ = (
+        UniqueConstraint('user_id', 'provider', 'email_address', name='uq_user_email_account'),
+    )
+
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = Column(String(36), ForeignKey('users.id'), nullable=False, index=True)
+    provider = Column(String(40), nullable=False, default='gmail')
+    email_address = Column(String(255), nullable=True)
+    access_token_encrypted = Column(Text, nullable=True)
+    refresh_token_encrypted = Column(Text, nullable=True)
+    scopes = Column(JSON, nullable=False, default=list)
+    history_id = Column(String(120), nullable=True)
+    connected_at = Column(DateTime, default=datetime.utcnow)
+    last_sync_at = Column(DateTime, nullable=True)
+    is_active = Column(Boolean, default=True, nullable=False)
+
+    user = relationship('User', back_populates='email_accounts')
+
+
+class OpportunityThread(Base):
+    """Deduplicated, action-scored email thread for the Opportunity Inbox."""
+    __tablename__ = 'opportunity_threads'
+    __table_args__ = (
+        UniqueConstraint('user_id', 'provider', 'thread_id', name='uq_user_provider_thread'),
+    )
+
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = Column(String(36), ForeignKey('users.id'), nullable=False, index=True)
+    provider = Column(String(40), nullable=False, default='gmail')
+    thread_id = Column(String(255), nullable=False, index=True)
+    message_id = Column(String(255), nullable=True)
+    gmail_message_id = Column(String(255), nullable=True, index=True)
+    gmail_thread_id = Column(String(255), nullable=True, index=True)
+    gmail_history_id = Column(String(120), nullable=True)
+    sync_status = Column(String(40), nullable=False, default='pending', index=True)
+    ai_verdict = Column(String(40), nullable=True, index=True)
+    ai_status = Column(String(40), nullable=False, default='not_needed', index=True)
+    ai_confidence = Column(Float, nullable=True)
+    last_checked_at = Column(DateTime, nullable=True)
+    resolved_at = Column(DateTime, nullable=True)
+    opened_at = Column(DateTime, nullable=True)
+    gmail_url = Column(String(500), nullable=True)
+    sender = Column(String(255), nullable=True)
+    sender_domain = Column(String(255), nullable=True)
+    subject = Column(String(500), nullable=False)
+    snippet = Column(Text, nullable=True)
+    received_at = Column(DateTime, nullable=False, index=True)
+    labels = Column(JSON, nullable=False, default=list)
+    category = Column(String(80), nullable=False, default='Needs review', index=True)
+    action_bucket = Column(String(80), nullable=False, default='Needs review', index=True)
+    urgency_score = Column(Integer, nullable=False, default=0, index=True)
+    signals = Column(JSON, nullable=False, default=list)
+    deadline_at = Column(DateTime, nullable=True)
+    matched_company = Column(String(255), nullable=True)
+    thread_state = Column(String(40), nullable=False, default='waiting_on_me', index=True)
+    is_unread = Column(Boolean, nullable=False, default=False)
+    is_resolved = Column(Boolean, nullable=False, default=False, index=True)
+    one_line_summary = Column(String(500), nullable=True)
+    draft_reply = Column(Text, nullable=True)
+    raw_body_retained = Column(Boolean, nullable=False, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    user = relationship('User', back_populates='opportunity_threads')
+
+
+class KeywordReview(Base):
+    """Tracks which keywords a user has checked off in a given Keyword Bank trend period."""
+    __tablename__ = 'keyword_reviews'
+    __table_args__ = (
+        UniqueConstraint('user_id', 'period_type', 'period_key', 'keyword', name='uq_keyword_review'),
+    )
+
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = Column(String(36), ForeignKey('users.id'), nullable=False, index=True)
+    period_type = Column(String(10), nullable=False)
+    period_key = Column(String(20), nullable=False)
+    keyword = Column(String(100), nullable=False)
+    reviewed = Column(Boolean, nullable=False, default=True)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class KeywordIgnore(Base):
+    """Keywords the user has dismissed so they stop appearing in the Keyword Bank."""
+    __tablename__ = 'keyword_ignores'
+    __table_args__ = (
+        UniqueConstraint('user_id', 'keyword', name='uq_keyword_ignore'),
+    )
+
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = Column(String(36), ForeignKey('users.id'), nullable=False, index=True)
+    keyword = Column(String(100), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
