@@ -1,0 +1,54 @@
+# macOS and editor/system files
+.DS_Store
+.claude/
+
+# Python runtime/cache files
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+.env
+
+# Local runtime data and generated reports
+data/
+logs/
+reports/
+docker_state/
+**/output/
+**/.dashboard_terms.txt
+job_portal_dashboard_config.json
+job_portal_dashboard_applied.json
+job_portal_dashboard_clicks.json
+job_portal_dashboard_seen.json
+
+# Personal documents and downloaded sheets
+*.docx
+*.xlsx
+~$*.xlsx
+Prime vendor list*.xlsx
+
+# Captured/debug web pages and screenshots
+*.html
+*.png
+
+# Local launch/build artifacts
+*.app/
+*.plist
+
+# Job portal dashboard build/runtime artifacts
+java-dashboard/apache-maven-*/
+java-dashboard/apache-maven-*.tar.gz
+java-dashboard/backend/target/
+java-dashboard/frontend/dist/
+java-dashboard/frontend/.vite/
+java-dashboard/**/node_modules/
+java-dashboard/**/*.log
+
+# Per-run dashboard AI decisions
+**/.dashboard_ai_hidden.json
+
+# Keep the Vite entrypoint even though captured HTML is ignored above
+!java-dashboard/frontend/index.html
