@@ -7,6 +7,7 @@ import AuthPage from './pages/AuthPage'
 import OnboardingPage from './pages/OnboardingPage'
 import ResumeCheck from './pages/ResumeCheck'
 import Settings from './pages/Settings'
+import LegacyScraper from './pages/LegacyScraper'
 import SavedJobs from './pages/SavedJobs'
 import KeywordBank from './pages/KeywordBank'
 import { api, storeToken } from './lib/api'
@@ -297,6 +298,10 @@ function App() {
 
         <div className="sidebar-section-title">TOOLS</div>
         <nav className="topnav" aria-label="Tools">
+          <NavLink to="/job-scraper" title="Job Scraper" className={({ isActive }) => `topnav-link ${isActive ? 'active' : ''}`}>
+            <span className="nav-icon">{NAV_ICONS.today}</span>
+            <span className="nav-label">Job Scraper</span>
+          </NavLink>
           <NavLink to="/keyword-bank" className={({ isActive }) => `topnav-link ${isActive ? 'active' : ''}`}>
             <span className="nav-icon">{NAV_ICONS.keywords}</span>
             <span className="nav-label">Keyword Bank</span>
@@ -348,6 +353,10 @@ function App() {
 
       {/* MOBILE NAV (Section 9) */}
       <nav className="mobile-nav" aria-label="Mobile navigation">
+        <NavLink to="/job-scraper" className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`}>
+          <span className="nav-icon">{NAV_ICONS.today}</span>
+          <span>Scraper</span>
+        </NavLink>
         <NavLink to="/saved" className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`}>
           <span className="nav-icon">{NAV_ICONS.saved}</span>
           <span>Saved</span>
@@ -384,6 +393,7 @@ function App() {
           <Route path="/saved" element={<SavedJobs jobs={jobs} session={session} onStatusChange={handleStatusChange} onDelete={handleDeleteJob} onNotesChange={handleNotesChange} />} />
           <Route path="/keyword-bank" element={<KeywordBank onResumeUpdated={setOnboarding} />} />
           <Route path="/resume-check" element={<ResumeCheck />} />
+          <Route path="/job-scraper" element={<LegacyScraper />} />
           <Route
             path="/settings"
             element={(

@@ -595,7 +595,7 @@ def opener_help(vendor: Vendor) -> str:
         return ""
 
 
-def start_run(kind: str, vendor_slugs: list[str], config: dict[str, Any]) -> str:
+def start_run(kind: str, vendor_slugs: list[str], config: dict[str, Any], on_success=None, on_finished=None) -> str:
     STOP_EVENT.clear()
     run_id = datetime.now().strftime("%Y%m%d%H%M%S")
     RUNS[run_id] = {
@@ -608,12 +608,18 @@ def start_run(kind: str, vendor_slugs: list[str], config: dict[str, Any]) -> str
         "steps": [],
         "log": "",
     }
-    thread = threading.Thread(target=run_scrapers, args=(run_id, vendor_slugs, config), daemon=True)
+    def execute():
+        try:
+            run_scrapers(run_id, vendor_slugs, config, on_success=on_success)
+        finally:
+            if on_finished:
+                on_finished()
+    thread = threading.Thread(target=execute, daemon=True)
     thread.start()
     return run_id
 
 
-def run_scrapers(run_id: str, vendor_slugs: list[str], config: dict[str, Any]) -> None:
+def run_scrapers(run_id: str, vendor_slugs: list[str], config: dict[str, Any], on_success=None) -> None:
     for slug in vendor_slugs:
         if STOP_EVENT.is_set():
             break
@@ -632,6 +638,7 @@ def run_scrapers(run_id: str, vendor_slugs: list[str], config: dict[str, Any]) -
         }
         RUNS[run_id]["steps"].append(step)
         before = latest_jobs_file(vendor)
+        before_stamp = (before, before.stat().st_mtime_ns) if before else None
         previous_keys = baseline_keys_for_vendor(vendor, before)
         cmd = command_for_scrape(vendor, config)
         try:
@@ -654,7 +661,13 @@ def run_scrapers(run_id: str, vendor_slugs: list[str], config: dict[str, Any]) -
             output = ((stdout or "") + "\n" + (stderr or "")).strip()
             stopped = STOP_EVENT.is_set() and proc.returncode and proc.returncode < 0
             ready_at = step_finished.isoformat(timespec="seconds") if proc.returncode == 0 and not stopped else ""
+            if proc.returncode == 0 and not stopped:
+                after_stamp = (after, after.stat().st_mtime_ns) if after else None
+                if after_stamp is None or after_stamp == before_stamp:
+                    raise RuntimeError("No fresh scraper output; previous results were not imported.")
             latest_jobs = load_latest_jobs(vendor) if proc.returncode == 0 and not stopped else []
+            if proc.returncode == 0 and not stopped and on_success:
+                on_success(vendor, latest_jobs)
             new_summary = (
                 update_seen_success(vendor, after, latest_jobs, previous_keys, run_id, ready_at)
                 if proc.returncode == 0 and not stopped
@@ -925,7 +938,7 @@ class Handler(BaseHTTPRequestHandler):
                 if not slugs:
                     self.send_json({"ok": False, "error": "No vendors selected."}, status=400)
                     return
-                run_id = start_run(mode, slugs, config)
+                run_id = start_run(mode, slugs, config, on_success=getattr(self, "on_scrape_success", None), on_finished=getattr(self, "on_scrape_finished", None))
                 self.send_json({"ok": True, "run_id": run_id})
             return
         if self.path == "/api/open":
@@ -1271,7 +1284,7 @@ HTML = r"""<!doctype html>
       <div class="sub">Daily scrape all portals. Actively open two weekday portals from the rotation.</div>
     </div>
     <div class="buttons">
-      <button class="primary" id="scrapeAll">Scrape All 15</button>
+      <button class="primary" id="scrapeAll">Scrape All 33</button>
       <button class="secondary" id="scrapeToday">Scrape Today's 2</button>
       <button class="danger" id="stopAll">Stop</button>
       <button id="refresh">Refresh</button>

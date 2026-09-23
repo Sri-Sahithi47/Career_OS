@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import './Settings.css'
-import PortalSettings from './PortalSettings'
+import LegacyScraper from './LegacyScraper'
 import { api } from '../lib/api'
 import { getApiErrorMessage } from '../lib/errors'
 import {
@@ -328,7 +328,7 @@ function Settings({ onboarding, onUpdated }) {
             <p>{activeMeta?.hint}</p>
           </div>
 
-          {activeTab === 'portals' && <PortalSettings />}
+          {activeTab === 'portals' && <LegacyScraper />}
 
           {activeTab === 'profile' && (
             <ProfileSettingsTab fp={fp} setFp={setFp} />

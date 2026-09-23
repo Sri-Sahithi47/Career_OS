@@ -45,3 +45,11 @@ npm run check --prefix dashboard
 The integration tests use a temporary database and mocked scraping. They cover URL normalization, repeat imports, preserved application state, user isolation, authentication, portal validation, and stale-output rejection.
 
 Known upstream test issue: `test_java_titles_are_excluded` fails in the unchanged Job_scrapper source as well as this merged checkout. Its shared filter currently admits those Java titles. The other 53 scraper tests pass; the resume-dependent test is skipped without a local resume.
+
+## Original dashboard (temporary UI)
+
+**Job Scraper** in the main sidebar now embeds the original Job Portal Control dashboard with its original styling and controls: scrape all/rotation/checked portals, stop, refresh, filters, keywords, open limits, start position, browser keep-open duration, job lists, new-job indicators, click counts, temporary applied marks, and Judge Group applicant settings and queue. The “Scrape All” label now reflects the actual 33 portals.
+
+Requests pass through authenticated Career OS endpoints. Each account has separate saved controls, applied marks, seen/click state, and in-memory run history. Successful fresh scrapes are also imported into that account's All Jobs feed, preserving existing Career OS tracking state. Browser-opening and application helpers execute on the machine running the backend, just as in the original local dashboard. Queue submission still requires clicking the existing submission control; merely loading the dashboard never applies to jobs.
+
+The original dashboard's applied badges retain their original two-hour lifetime and are separate from durable Career OS application tracking. Set durable application status in the Career OS job feed. Legacy dashboard run details are in memory and reset on server restart; the simpler `/api/portals` API retains its persisted run history.

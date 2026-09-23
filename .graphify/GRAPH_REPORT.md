@@ -1,16 +1,16 @@
 # Graph Report - .  (2026-09-23)
 
 ## Corpus Check
-- 458 files · ~0 words
+- 459 files · ~0 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 3607 nodes · 8894 edges · 117 communities detected
-- Extraction: 78% EXTRACTED · 22% INFERRED · 0% AMBIGUOUS · INFERRED: 1997 edges (avg confidence: 0.5)
+- 3617 nodes · 8909 edges · 118 communities detected
+- Extraction: 78% EXTRACTED · 22% INFERRED · 0% AMBIGUOUS · INFERRED: 1998 edges (avg confidence: 0.5)
 - Token cost: 0 input · 0 output
 
 ## God Nodes (most connected - your core abstractions)
-1. `User` - 266 edges
+1. `User` - 267 edges
 2. `MatchedJob` - 203 edges
 3. `Job` - 190 edges
 4. `TailorServiceError` - 154 edges
@@ -37,7 +37,7 @@
 
 ### Community 0 - "Community 0"
 Cohesion: 0.01
-Nodes (560): a(), a0(), a1(), Aa(), ac(), Ad(), add(), addObserver() (+552 more)
+Nodes (564): _1(), a(), a0(), a1(), Aa(), Ab(), ac(), Ad() (+556 more)
 
 ### Community 1 - "Community 1"
 Cohesion: 0.02
@@ -264,28 +264,28 @@ Cohesion: 0.43
 Nodes (1): JobFilterTest
 
 ### Community 57 - "Community 57"
+Cohesion: 0.47
+Nodes (4): dashboard_action(), dashboard_for(), original_ui(), Serve the original portal dashboard through Career OS authentication.
+
+### Community 58 - "Community 58"
 Cohesion: 0.6
 Nodes (5): fillElement(), fillPage(), getFieldSignature(), resolvePath(), setNativeValue()
 
-### Community 58 - "Community 58"
+### Community 59 - "Community 59"
 Cohesion: 0.47
 Nodes (3): fill(), load(), setField()
 
-### Community 59 - "Community 59"
+### Community 60 - "Community 60"
 Cohesion: 0.33
 Nodes (5): get_db(), init_db(), Database Configuration and Setup --------------------------------- SQLAlchemy OR, Dependency for FastAPI to inject DB session., Create all database tables.
 
-### Community 60 - "Community 60"
+### Community 61 - "Community 61"
 Cohesion: 0.47
 Nodes (5): normalize_job(), Run the imported portal scrapers and deliver their results to Career OS., Called in FastAPI's background thread; browser scraping runs in child processes., run_portals(), scrape_vendor()
 
-### Community 61 - "Community 61"
-Cohesion: 0.7
-Nodes (4): cleanLinkedInDescription(), cleanText(), linkedInDescription(), parse()
-
 ### Community 62 - "Community 62"
 Cohesion: 0.7
-Nodes (4): latest_jobs_file(), load_jobs(), main(), parse_args()
+Nodes (4): cleanLinkedInDescription(), cleanText(), linkedInDescription(), parse()
 
 ### Community 63 - "Community 63"
 Cohesion: 0.7
@@ -328,16 +328,16 @@ Cohesion: 0.7
 Nodes (4): latest_jobs_file(), load_jobs(), main(), parse_args()
 
 ### Community 73 - "Community 73"
+Cohesion: 0.7
+Nodes (4): latest_jobs_file(), load_jobs(), main(), parse_args()
+
+### Community 74 - "Community 74"
 Cohesion: 0.83
 Nodes (3): find_jd_file(), main(), normalize_text()
 
-### Community 74 - "Community 74"
+### Community 75 - "Community 75"
 Cohesion: 0.5
 Nodes (0):
-
-### Community 75 - "Community 75"
-Cohesion: 0.83
-Nodes (3): latest_jobs_file(), load_jobs(), main()
 
 ### Community 76 - "Community 76"
 Cohesion: 0.83
@@ -360,44 +360,44 @@ Cohesion: 0.83
 Nodes (3): latest_jobs_file(), load_jobs(), main()
 
 ### Community 81 - "Community 81"
+Cohesion: 0.83
+Nodes (3): latest_jobs_file(), load_jobs(), main()
+
+### Community 82 - "Community 82"
 Cohesion: 0.5
 Nodes (3): export_resume_pdf(), Export the active uploaded resume and reviewed tailoring without a LaTeX runtime, Preserve source facts and append reviewed highlights; never reuse another candid
 
-### Community 82 - "Community 82"
+### Community 83 - "Community 83"
 Cohesion: 1
 Nodes (2): findJobPosting(), parse()
 
-### Community 83 - "Community 83"
+### Community 84 - "Community 84"
 Cohesion: 0.67
 Nodes (1): # IMPORTANT: main.py currently writes to outputs/role_name/job...xlsx
 
-### Community 84 - "Community 84"
+### Community 85 - "Community 85"
 Cohesion: 0.67
 Nodes (0):
-
-### Community 85 - "Community 85"
-Cohesion: 1
-Nodes (2): main(), normalize()
 
 ### Community 86 - "Community 86"
 Cohesion: 1
-Nodes (2): main(), normalize_for_match()
+Nodes (2): main(), normalize()
 
 ### Community 87 - "Community 87"
-Cohesion: 0.67
-Nodes (1): DashboardApplication
+Cohesion: 1
+Nodes (2): main(), normalize_for_match()
 
 ### Community 88 - "Community 88"
 Cohesion: 0.67
-Nodes (1): ResumeTest
+Nodes (1): DashboardApplication
 
 ### Community 89 - "Community 89"
 Cohesion: 0.67
-Nodes (1): Browser regression checks using synthetic responses; no real accounts or AI call
+Nodes (1): ResumeTest
 
 ### Community 90 - "Community 90"
-Cohesion: 1
-Nodes (0):
+Cohesion: 0.67
+Nodes (1): Browser regression checks using synthetic responses; no real accounts or AI call
 
 ### Community 91 - "Community 91"
 Cohesion: 1
@@ -503,75 +503,79 @@ Nodes (0):
 Cohesion: 1
 Nodes (0):
 
+### Community 117 - "Community 117"
+Cohesion: 1
+Nodes (0):
+
 ## Knowledge Gaps
 - **229 isolated node(s):** `Internal delivery API for ingestion and matching services.`, `Upsert delivered jobs for one user from the internal matching pipeline.`, `Explicitly rebuild a user's delivered feed from the legacy jobs source.`, `Upsert delivered jobs for one user from the internal matching pipeline.`, `Explicitly rebuild a user's delivered feed from the legacy jobs source.` (+224 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **Thin community `Community 90`** (2 nodes): `ashby.js`, `parse()`
+- **Thin community `Community 91`** (2 nodes): `ashby.js`, `parse()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 91`** (2 nodes): `greenhouse.js`, `parse()`
+- **Thin community `Community 92`** (2 nodes): `greenhouse.js`, `parse()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 92`** (2 nodes): `indeed.js`, `parse()`
+- **Thin community `Community 93`** (2 nodes): `indeed.js`, `parse()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 93`** (2 nodes): `lever.js`, `parse()`
+- **Thin community `Community 94`** (2 nodes): `lever.js`, `parse()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 94`** (2 nodes): `workday.js`, `parse()`
+- **Thin community `Community 95`** (2 nodes): `workday.js`, `parse()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 95`** (2 nodes): `analyze_resume_rows.py`, `analyze_new_jobs()`
+- **Thin community `Community 96`** (2 nodes): `analyze_resume_rows.py`, `analyze_new_jobs()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 96`** (2 nodes): `update_excel_analysis.py`, `update_excel_smart()`
+- **Thin community `Community 97`** (2 nodes): `update_excel_analysis.py`, `update_excel_smart()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 97`** (2 nodes): `dump_batch1.py`, `normalize()`
+- **Thin community `Community 98`** (2 nodes): `dump_batch1.py`, `normalize()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 98`** (2 nodes): `clean_master_excel.py`, `clean_master_excel()`
+- **Thin community `Community 99`** (2 nodes): `clean_master_excel.py`, `clean_master_excel()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 99`** (2 nodes): `clean_recent_run.py`, `clean_recent_run()`
+- **Thin community `Community 100`** (2 nodes): `clean_recent_run.py`, `clean_recent_run()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 100`** (2 nodes): `retroactive_tailor.py`, `main()`
+- **Thin community `Community 101`** (2 nodes): `retroactive_tailor.py`, `main()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 101`** (2 nodes): `login_helper.py`, `login_and_save()`
+- **Thin community `Community 102`** (2 nodes): `login_helper.py`, `login_and_save()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 102`** (2 nodes): `mass_update_tech_stack.py`, `main()`
+- **Thin community `Community 103`** (2 nodes): `mass_update_tech_stack.py`, `main()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 103`** (2 nodes): `update_excel_with_json_paths.py`, `main()`
+- **Thin community `Community 104`** (2 nodes): `update_excel_with_json_paths.py`, `main()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 104`** (2 nodes): `onboarding.spec.js`, `signedInCtx()`
+- **Thin community `Community 105`** (2 nodes): `onboarding.spec.js`, `signedInCtx()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 105`** (2 nodes): `test_save_job.py`, `test_save_job()`
+- **Thin community `Community 106`** (2 nodes): `test_save_job.py`, `test_save_job()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 106`** (1 nodes): `parse_html_again.py`
+- **Thin community `Community 107`** (1 nodes): `parse_html_again.py`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 107`** (1 nodes): `setup.js`
+- **Thin community `Community 108`** (1 nodes): `setup.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 108`** (1 nodes): `vite.config.js`
+- **Thin community `Community 109`** (1 nodes): `vite.config.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 109`** (1 nodes): `check_columns.py`
+- **Thin community `Community 110`** (1 nodes): `check_columns.py`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 110`** (1 nodes): `celery_app.py`
+- **Thin community `Community 111`** (1 nodes): `celery_app.py`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 111`** (1 nodes): `auth.spec.js`
+- **Thin community `Community 112`** (1 nodes): `auth.spec.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 112`** (1 nodes): `playwright.config.js`
+- **Thin community `Community 113`** (1 nodes): `playwright.config.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 113`** (1 nodes): `scoring.spec.js`
+- **Thin community `Community 114`** (1 nodes): `scoring.spec.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 114`** (1 nodes): `security.spec.js`
+- **Thin community `Community 115`** (1 nodes): `security.spec.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 115`** (1 nodes): `ui.spec.js`
+- **Thin community `Community 116`** (1 nodes): `ui.spec.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 116`** (1 nodes): `setupTests.js`
+- **Thin community `Community 117`** (1 nodes): `setupTests.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
+- **Why does `User` connect `Community 1` to `Community 7`, `Community 37`, `Community 32`, `Community 57`, `Community 13`, `Community 40`?**
+  _High betweenness centrality (0.043) - this node is a cross-community bridge._
 - **Why does `Job` connect `Community 1` to `Community 13`, `Community 40`, `Community 9`, `Community 15`, `Community 42`, `Community 2`?**
   _High betweenness centrality (0.043) - this node is a cross-community bridge._
-- **Why does `User` connect `Community 1` to `Community 7`, `Community 37`, `Community 32`, `Community 13`, `Community 40`?**
-  _High betweenness centrality (0.042) - this node is a cross-community bridge._
 - **Why does `MatchedJob` connect `Community 1` to `Community 13`, `Community 40`, `Community 2`?**
   _High betweenness centrality (0.026) - this node is a cross-community bridge._
-- **Are the 263 inferred relationships involving `User` (e.g. with `CoverLetterRequest` and `AnswerQuestionRequest`) actually correct?**
-  _`User` has 263 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 264 inferred relationships involving `User` (e.g. with `CoverLetterRequest` and `AnswerQuestionRequest`) actually correct?**
+  _`User` has 264 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 200 inferred relationships involving `MatchedJob` (e.g. with `JobUpdate` and `Config`) actually correct?**
   _`MatchedJob` has 200 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 187 inferred relationships involving `Job` (e.g. with `JobUpdate` and `Config`) actually correct?**
