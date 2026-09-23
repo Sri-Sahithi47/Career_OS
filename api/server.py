@@ -22,16 +22,23 @@ from src.database import init_db
 from api.auth import router as auth_router
 from api.deps import get_current_user, get_db, require_csrf
 from sqlalchemy.orm import Session
+from api.portals import router as portals_router
 from api.internal import router as internal_router
 from api.jobs import router as jobs_router
 from api.onboarding import router as onboarding_router
 from api.ai import router as ai_router
 from api.opportunities import router as opportunities_router
-from src.models import ApplicationEvent, MatchedJob, User
+from src.models import ApplicationEvent, MatchedJob, User, ScrapeRun
+from src.database import SessionLocal
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
     init_db()
+    # The local runner uses a single API process; queued work cannot survive restart.
+    with SessionLocal() as db:
+        interrupted = db.query(ScrapeRun).filter(ScrapeRun.source == "portal", ScrapeRun.status.in_(["pending", "running"]))
+        interrupted.update({"status": "failed", "error_msg": "Server restarted. Start this search again.", "finished_at": datetime.utcnow()}, synchronize_session=False)
+        db.commit()
     yield
 
 
@@ -40,6 +47,7 @@ app = FastAPI(lifespan=lifespan)
 # Include routers
 app.include_router(auth_router)
 app.include_router(internal_router)
+app.include_router(portals_router)
 app.include_router(onboarding_router)
 app.include_router(jobs_router)
 app.include_router(ai_router)

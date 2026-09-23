@@ -1,0 +1,15 @@
+.portal-settings { color: var(--text-primary, #263444); }
+.portal-settings > p { line-height: 1.6; }
+.portal-note { padding: 16px; background: #f3f6fa; border-left: 3px solid #8297ad; font-size: 13px; line-height: 1.6; margin-bottom: 24px; }
+.portal-field { display: flex; flex-direction: column; gap: 8px; font-size: 13px; font-weight: 600; margin-bottom: 18px; }
+.portal-field input { padding: 12px; background: white; color: #1b2939; border: 1px solid #d8dfe8; border-radius: 8px; font: inherit; }
+.portal-field input[type=number] { max-width: 140px; }
+.portal-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 20px 0; font-size: 13px; }
+.portal-grid { border: 0; padding: 0; margin: 0 0 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 8px; }
+.portal-grid legend { font-size: 13px; font-weight: 600; margin-bottom: 12px; }
+.portal-option { display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid #e2e7ee; border-radius: 8px; font-size: 13px; cursor: pointer; }
+.portal-option.selected { border-color: #648bae; background: #f0f6fc; }
+.portal-option small, .portal-run small { display: block; color: #637185; margin-top: 4px; font-size: 11px; }
+.portal-settings h3 { margin-top: 32px; }
+.portal-run { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 16px 0; border-bottom: 1px solid #e2e7ee; font-size: 13px; }
+.portal-run p { flex-basis: 100%; color: #a12b2b; overflow-wrap: anywhere; white-space: pre-wrap; }

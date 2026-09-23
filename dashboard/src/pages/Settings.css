@@ -563,3 +563,5 @@ select.sp-input { cursor: pointer; }
   border: 1px dashed #cbd5e1;
   border-radius: 10px;
 }
+
+.settings-actions[hidden] { display: none; }

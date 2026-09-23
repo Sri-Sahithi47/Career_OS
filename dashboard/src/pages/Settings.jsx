@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import './Settings.css'
+import PortalSettings from './PortalSettings'
 import { api } from '../lib/api'
 import { getApiErrorMessage } from '../lib/errors'
 import {
@@ -11,6 +12,7 @@ import {
 } from '../lib/eeo'
 
 const TABS = [
+  { key: 'portals', label: 'Job portals', hint: 'Search staffing portals and import jobs into your feed.' },
   { key: 'profile', label: 'Profile', hint: 'Contact info, address, compensation, and work authorization — used for deterministic autofill.' },
   { key: 'personal_disclosures', label: 'EEO / Disclosures', hint: 'Voluntary EEO responses auto-filled on job applications.' },
   { key: 'notifications', label: 'Notifications', hint: 'Control which alerts and summaries you receive.' },
@@ -326,6 +328,8 @@ function Settings({ onboarding, onUpdated }) {
             <p>{activeMeta?.hint}</p>
           </div>
 
+          {activeTab === 'portals' && <PortalSettings />}
+
           {activeTab === 'profile' && (
             <ProfileSettingsTab fp={fp} setFp={setFp} />
           )}
@@ -443,7 +447,7 @@ function Settings({ onboarding, onUpdated }) {
             </div>
           )}
 
-          <div className="settings-actions">
+          <div className="settings-actions" hidden={activeTab === 'portals'}>
             <button className="primary-action" onClick={saveConfig} disabled={saving}>
               {saving ? 'Saving...' : 'Save changes'}
             </button>
@@ -609,6 +613,25 @@ function SearchConfigTab({ searchProfile, setSearchProfile }) {
         items={searchProfile.industries}
         onChange={(items) => setField('industries', items)}
       />
+
+      <section className="sc-card sc-card-wide">
+        <div className="sc-card-title"><h3>Job feed filters</h3><p>Staffing portals require staffing agencies and recruiter posts to be allowed.</p></div>
+        {[
+          ['hide_staffing_agencies', 'Hide staffing agencies'],
+          ['exclude_recruiter_posts', 'Exclude recruiter posts'],
+          ['hide_suspicious_jobs', 'Hide suspicious jobs'],
+        ].map(([key, label]) => (
+          <label key={key} style={{ display: 'block', margin: '12px 0' }}>
+            <input type="checkbox" checked={!!searchProfile.quality_filters[key]} onChange={event => setField('quality_filters', { ...searchProfile.quality_filters, [key]: event.target.checked })} /> {label}
+          </label>
+        ))}
+        <Field label="Minimum match score">
+          <input className="sp-input" type="number" min="0" max="100" value={searchProfile.quality_filters.minimum_match_score || 0} onChange={event => setField('quality_filters', { ...searchProfile.quality_filters, minimum_match_score: Number(event.target.value) })} />
+        </Field>
+        <label style={{ display: 'block', marginTop: 12 }}>
+          <input type="checkbox" checked={!(searchProfile.quality_filters.preferred_sources || []).length} onChange={event => setField('quality_filters', { ...searchProfile.quality_filters, preferred_sources: event.target.checked ? [] : ['LinkedIn', 'Indeed', 'Company Site'] })} /> Include all sources, including staffing portals
+        </label>
+      </section>
 
       <section className="sc-card sc-card-wide">
         <div className="sc-card-title">

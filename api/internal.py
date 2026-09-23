@@ -26,6 +26,8 @@ class DeliveredJobPayload(BaseModel):
     posting_date: Optional[datetime] = None
     date_added: Optional[datetime] = None
     job_description: str = ""
+    employment_type: Optional[str] = None
+    contact_info: Optional[dict[str, Any]] = None
     role_type: Optional[str] = None
     search_query: Optional[str] = None
     skill_score: Optional[float] = None

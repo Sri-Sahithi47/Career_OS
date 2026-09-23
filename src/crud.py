@@ -839,6 +839,7 @@ def upsert_delivered_job_for_user(
         .filter(Job.user_id == user_id, Job.job_link == job_link)
         .first()
     )
+    is_new_delivery = job is None
     if job is None:
         job = Job(
             user_id=user_id,
@@ -857,6 +858,8 @@ def upsert_delivered_job_for_user(
         "job_description",
         "role_type",
         "search_query",
+        "employment_type",
+        "contact_info",
         "tier",
         "ai_evaluation",
         "resume_path",
@@ -877,6 +880,8 @@ def upsert_delivered_job_for_user(
             setattr(job, field, job_data[field])
 
     for field in ["is_premium", "special_interest", "is_new"]:
+        if field == "special_interest" and preserve_user_state and not is_new_delivery:
+            continue
         if field in job_data and job_data[field] is not None:
             setattr(job, field, bool(job_data[field]))
 
