@@ -12,6 +12,7 @@ import subprocess
 import sys
 import threading
 import time
+import tempfile
 import urllib.parse
 import webbrowser
 from dataclasses import dataclass, asdict
@@ -22,11 +23,11 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parent
+STATE_ROOT = ROOT
 CONFIG_PATH = Path(os.environ.get("JOB_DASHBOARD_CONFIG_PATH", ROOT / "job_portal_dashboard_config.json")).expanduser()
 APPLIED_PATH = Path(os.environ.get("JOB_DASHBOARD_APPLIED_PATH", ROOT / "job_portal_dashboard_applied.json")).expanduser()
 CLICKS_PATH = Path(os.environ.get("JOB_DASHBOARD_CLICKS_PATH", ROOT / "job_portal_dashboard_clicks.json")).expanduser()
 SEEN_PATH = Path(os.environ.get("JOB_DASHBOARD_SEEN_PATH", ROOT / "job_portal_dashboard_seen.json")).expanduser()
-APPLIED_TTL_SECONDS = 2 * 60 * 60
 PYTHON = sys.executable or "python3"
 
 
@@ -166,12 +167,27 @@ def load_config() -> dict[str, Any]:
     return config
 
 
+def atomic_write_json(path: Path, value: dict) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=path.parent, delete=False) as output:
+            temporary = Path(output.name)
+            json.dump(value, output, indent=2, sort_keys=True)
+            output.flush()
+            os.fsync(output.fileno())
+        os.replace(temporary, path)
+    finally:
+        if temporary:
+            temporary.unlink(missing_ok=True)
+
+
 def save_config(config: dict[str, Any]) -> None:
     clean = default_config()
     clean.update(config)
     clean["keywords"] = normalize_keywords(clean.get("keywords"))
     CONFIG_PATH.parent.mkdir(parents=True, exist_ok=True)
-    CONFIG_PATH.write_text(json.dumps(clean, indent=2), encoding="utf-8")
+    atomic_write_json(CONFIG_PATH, clean)
 
 
 def normalize_keywords(value: Any) -> list[str]:
@@ -270,7 +286,7 @@ def rotation_preview(days: int = 10) -> list[dict[str, Any]]:
 
 
 def latest_jobs_file(vendor: Vendor) -> Path | None:
-    out_dir = ROOT / vendor.folder / "output"
+    out_dir = STATE_ROOT / vendor.folder / "output"
     files = sorted(out_dir.glob(f"{vendor.prefix}_jobs_*.json"), key=lambda path: path.stat().st_mtime, reverse=True)
     return files[0] if files else None
 
@@ -322,7 +338,8 @@ def load_job_keys_from_file(vendor: Vendor, path: Path | None) -> list[str]:
         return []
 
 
-def load_seen_state(path: Path = SEEN_PATH) -> dict[str, Any]:
+def load_seen_state(path: Path | None = None) -> dict[str, Any]:
+    path = path or SEEN_PATH
     if not path.exists():
         return {"vendors": {}}
     try:
@@ -337,9 +354,10 @@ def load_seen_state(path: Path = SEEN_PATH) -> dict[str, Any]:
     return data
 
 
-def save_seen_state(state: dict[str, Any], path: Path = SEEN_PATH) -> None:
+def save_seen_state(state: dict[str, Any], path: Path | None = None) -> None:
+    path = path or SEEN_PATH
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(state, indent=2, sort_keys=True), encoding="utf-8")
+    atomic_write_json(path, state)
 
 
 def baseline_keys_for_vendor(vendor: Vendor, fallback_file: Path | None, state: dict[str, Any] | None = None) -> set[str]:
@@ -367,7 +385,7 @@ def update_seen_success(
     previous_keys: set[str],
     run_id: str,
     ready_at: str,
-    path: Path = SEEN_PATH,
+    path: Path | None = None,
 ) -> dict[str, Any]:
     latest_keys = job_keys_for_rows(vendor.slug, jobs)
     new_keys = [key for key in latest_keys if key not in previous_keys]
@@ -380,7 +398,7 @@ def update_seen_success(
             "last_new_count": len(new_keys),
             "last_run_id": run_id,
             "ready_at": ready_at,
-            "latest_file": str(latest_file.relative_to(ROOT)) if latest_file and latest_file.exists() else "",
+            "latest_file": str(latest_file.relative_to(STATE_ROOT)) if latest_file and latest_file.exists() else "",
             "latest_count": len(jobs),
         }
         save_seen_state(state, path)
@@ -393,7 +411,6 @@ def update_seen_success(
 
 
 def load_applied_marks() -> dict[str, dict[str, Any]]:
-    now = time.time()
     if not APPLIED_PATH.exists():
         return {}
     try:
@@ -409,7 +426,7 @@ def load_applied_marks() -> dict[str, dict[str, Any]]:
             changed = True
             continue
         marked_at = float(value.get("marked_at") or 0)
-        if marked_at and now - marked_at < APPLIED_TTL_SECONDS:
+        if marked_at:
             marks[str(key)] = value
         else:
             changed = True
@@ -420,7 +437,7 @@ def load_applied_marks() -> dict[str, dict[str, Any]]:
 
 def save_applied_marks(marks: dict[str, dict[str, Any]]) -> None:
     APPLIED_PATH.parent.mkdir(parents=True, exist_ok=True)
-    APPLIED_PATH.write_text(json.dumps(marks, indent=2, sort_keys=True), encoding="utf-8")
+    atomic_write_json(APPLIED_PATH, marks)
 
 
 def load_click_counts() -> dict[str, dict[str, Any]]:
@@ -438,7 +455,7 @@ def load_click_counts() -> dict[str, dict[str, Any]]:
 
 def save_click_counts(counts: dict[str, dict[str, Any]]) -> None:
     CLICKS_PATH.parent.mkdir(parents=True, exist_ok=True)
-    CLICKS_PATH.write_text(json.dumps(counts, indent=2, sort_keys=True), encoding="utf-8")
+    atomic_write_json(CLICKS_PATH, counts)
 
 
 def increment_click(key: str) -> int:
@@ -458,7 +475,7 @@ def format_job_for_ui(vendor: Vendor, job: dict[str, Any], index: int, marks: di
     key = job_key(vendor.slug, job)
     mark = marks.get(key) or {}
     marked_at = float(mark.get("marked_at") or 0)
-    expires_at = marked_at + APPLIED_TTL_SECONDS if marked_at else 0
+    expires_at = 0  # Application history persists until explicitly cleared.
     click_entry = clicks.get(key) or {}
     return {
         "key": key,
@@ -538,7 +555,7 @@ def vendor_status(vendor: Vendor) -> dict[str, Any]:
     ready_at = str(step.get("ready_at") or seen_state.get("ready_at") or "")
     return {
         **asdict(vendor),
-        "latest_file": str(latest.relative_to(ROOT)) if latest else "",
+        "latest_file": str(latest.relative_to(STATE_ROOT)) if latest else "",
         "latest_count": count,
         "latest_modified": modified,
         "active_today": vendor.slug in active_pair_for(),
@@ -556,8 +573,11 @@ def command_for_scrape(vendor: Vendor, config: dict[str, Any]) -> list[str]:
         "--posted-within-days",
         str(int(config.get("posted_within_days") or 0)),
     ]
+    output = STATE_ROOT / vendor.folder / "output"
+    output.mkdir(parents=True, exist_ok=True)
+    cmd.extend(["--out-dir", str(output)])
     if vendor.terms_mode == "file":
-        terms_path = ROOT / vendor.folder / ".dashboard_terms.txt"
+        terms_path = STATE_ROOT / vendor.folder / ".dashboard_terms.txt"
         terms_path.write_text("\n".join(normalize_keywords(config.get("keywords"))) + "\n", encoding="utf-8")
         cmd.extend(["--terms-file", str(terms_path)])
     elif vendor.terms_mode == "append":
@@ -580,6 +600,7 @@ def command_for_open(vendor: Vendor, config: dict[str, Any], payload: dict[str, 
         "--start-at",
         str(int(payload.get("start_at") or config.get("start_at") or 1)),
     ]
+    cmd.extend(["--out-dir", str(STATE_ROOT / vendor.folder / "output")])
     if "delay" in opener_help(vendor):
         cmd.extend(["--delay", str(float(payload.get("delay") or config.get("delay") or 0.5))])
     if "keep-open-minutes" in opener_help(vendor):
@@ -829,6 +850,8 @@ def start_judge_apply(config: dict[str, Any], payload: dict[str, Any]) -> dict[s
     cmd = [
         PYTHON,
         str(script),
+        "--out-dir",
+        str(STATE_ROOT / vendor.folder / "output"),
         "--start-at",
         str(start_at),
         "--limit",
@@ -1421,7 +1444,7 @@ HTML = r"""<!doctype html>
         <div class="jobs-panel-head">
           <div>
             <div class="jobs-panel-title" id="jobsTitle">Selected Portal Jobs</div>
-            <div class="jobs-panel-sub" id="jobsSub">Applied marks expire after 2 hours.</div>
+            <div class="jobs-panel-sub" id="jobsSub">Applied marks stay saved until you clear them.</div>
           </div>
           <div class="button-row">
             <label style="display:flex;align-items:center;gap:6px;margin:0;font-size:12px;font-weight:800;color:#34404b">
@@ -1627,7 +1650,7 @@ HTML = r"""<!doctype html>
       const newTotal = state.jobsMeta.new_total ?? 0;
       $("jobsSub").textContent = vendor
         ? `Showing ${state.jobsMeta.new_only ? "new jobs only" : "latest jobs"} from #${state.jobsMeta.start_at || $("startAt").value || 1}${state.jobsMeta.limit ? `, limit ${state.jobsMeta.limit}` : ""}. New since previous scrape: ${newTotal}. Total: ${total}.`
-        : "Applied marks expire after 2 hours.";
+        : "Applied marks stay saved until you clear them.";
       if (!state.portalJobs.length) {
         $("jobList").innerHTML = '<div class="empty-state">No latest jobs found for this portal yet. Scrape it first, then refresh.</div>';
         return;
@@ -1776,7 +1799,7 @@ HTML = r"""<!doctype html>
     async function markApplied(key, applied) {
       await api("/api/applied", { method: "POST", body: JSON.stringify({ vendor: state.selectedVendor, key, applied }) });
       await loadSelectedJobs();
-      $("log").textContent = applied ? "Marked applied. This mark will clear automatically after 2 hours." : "Applied mark cleared.";
+      $("log").textContent = applied ? "Marked applied. This stays saved until you clear it." : "Applied mark cleared.";
     }
 
     async function judgeApply() {

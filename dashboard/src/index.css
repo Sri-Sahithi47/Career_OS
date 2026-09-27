@@ -28,13 +28,13 @@
   --text-faint: #9ca3af;
 
   /* CareerOS brand palette */
-  --accent: #4f46e5;
-  --accent-strong: #4338ca;
-  --accent-soft: #eef1ff;
-  --accent-hover: #4338ca;
-  --accent-brand: #4f46e5;
-  --accent-brand-soft: #eef1ff;
-  --accent-brand-hover: #4338ca;
+  --accent: #087f70;
+  --accent-strong: #08675c;
+  --accent-soft: #edf5ef;
+  --accent-hover: #08675c;
+  --accent-brand: #087f70;
+  --accent-brand-soft: #edf5ef;
+  --accent-brand-hover: #08675c;
 
   --success: #16a34a;
   --warning: #f59e0b;

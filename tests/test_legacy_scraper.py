@@ -61,3 +61,37 @@ def test_success_callback_delivers_and_releases_lock(tmp_path, monkeypatch):
     assert imported[0][1][0]['title'] == 'Python Engineer'
     assert imported[0][2] == {'replace_existing': False, 'preserve_user_state': True}
     assert not RUN_LOCK.locked()
+
+
+def test_legacy_outputs_and_commands_are_account_scoped(tmp_path, monkeypatch):
+    monkeypatch.setattr(legacy.settings, 'DATA_DIR', tmp_path)
+    monkeypatch.setattr(legacy, 'DASHBOARDS', {})
+    a = legacy.dashboard_for('owner-a')
+    b = legacy.dashboard_for('owner-b')
+    vendor = a.VENDORS[0]
+    command = a.command_for_scrape(vendor, a.default_config())
+    output = a.STATE_ROOT / vendor.folder / 'output'
+    assert command[command.index('--out-dir') + 1] == str(output)
+    (output / f'{vendor.prefix}_jobs_test.json').write_text('[]')
+    assert a.latest_jobs_file(vendor)
+    assert b.latest_jobs_file(vendor) is None
+    opener = a.command_for_open(vendor, a.default_config(), {})
+    assert opener[opener.index('--out-dir') + 1] == str(output)
+
+
+def test_seen_history_uses_account_path_not_import_time_default(tmp_path, monkeypatch):
+    monkeypatch.setattr(legacy.settings, 'DATA_DIR', tmp_path)
+    monkeypatch.setattr(legacy, 'DASHBOARDS', {})
+    a, b = legacy.dashboard_for('seen-a'), legacy.dashboard_for('seen-b')
+    a.save_seen_state({'vendors': {'teksystems': {'keys': ['job-1']}}})
+    assert 'teksystems' in a.load_seen_state()['vendors']
+    assert b.load_seen_state() == {'vendors': {}}
+
+
+def test_applied_marks_survive_days(tmp_path, monkeypatch):
+    import time
+    monkeypatch.setattr(legacy.settings, 'DATA_DIR', tmp_path)
+    monkeypatch.setattr(legacy, 'DASHBOARDS', {})
+    module = legacy.dashboard_for('persistent-history')
+    module.save_applied_marks({'job-1': {'marked_at': time.time() - 7 * 86400}})
+    assert 'job-1' in module.load_applied_marks()

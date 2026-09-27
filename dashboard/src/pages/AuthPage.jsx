@@ -83,8 +83,8 @@ function AuthPage({ onAuthenticated }) {
             <h1>{isLogin ? 'Welcome Back' : 'Create Account'}</h1>
             <p>
               {isLogin
-                ? 'Please enter your details to access your account.'
-                : 'Start with your resume—we shape the job feed around you.'}
+                ? 'Continue to your contract search workspace.'
+                : 'Set up your profile and start finding contract opportunities.'}
             </p>
           </div>
 
@@ -157,7 +157,7 @@ function AuthPage({ onAuthenticated }) {
                 />
                 <span>Remember me</span>
               </label>
-              <button type="button" className="auth-link">Forgot password?</button>
+
             </div>
 
             {error && <div className="auth-error">{error}</div>}
@@ -167,48 +167,11 @@ function AuthPage({ onAuthenticated }) {
             </button>
           </form>
 
-          <div className="auth-divider"><span>OR CONTINUE WITH</span></div>
 
-          <div className="auth-socials">
-            <button type="button" className="auth-social">
-              <svg viewBox="0 0 24 24" aria-hidden="true" className="auth-social-icon">
-                <path fill="#4285F4" d="M23 12.2c0-.8-.1-1.6-.2-2.3H12v4.4h6.2c-.3 1.5-1.1 2.7-2.4 3.5v2.9h3.8c2.2-2 3.4-5 3.4-8.5z"/>
-                <path fill="#34A853" d="M12 23c3.2 0 5.9-1.1 7.9-2.9l-3.8-2.9c-1.1.7-2.5 1.1-4.1 1.1-3.1 0-5.8-2.1-6.7-5H1.3v3.1C3.3 20.4 7.3 23 12 23z"/>
-                <path fill="#FBBC05" d="M5.3 13.3a6.6 6.6 0 0 1 0-4.3V5.9H1.3a11 11 0 0 0 0 9.9l4-2.5z"/>
-                <path fill="#EA4335" d="M12 5.6c1.8 0 3.3.6 4.5 1.8l3.4-3.4C17.9 2 15.2 1 12 1 7.3 1 3.3 3.6 1.3 7.4l4 3.1c.9-2.9 3.6-4.9 6.7-4.9z"/>
-              </svg>
-              <span>Sign up with Google</span>
-            </button>
-            <button type="button" className="auth-social">
-              <svg viewBox="0 0 24 24" aria-hidden="true" className="auth-social-icon">
-                <path fill="#1877F2" d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.3v7A10 10 0 0 0 22 12z"/>
-              </svg>
-              <span>Sign up with Facebook</span>
-            </button>
-          </div>
         </div>
 
         <aside className="auth-showcase" aria-label="CareerOS preview">
-          <div className="auth-showcase-card">
-            <div className="auth-figure" aria-hidden="true">
-              <span className="auth-figure-head" />
-              <span className="auth-figure-glasses" />
-              <span className="auth-figure-body" />
-              <span className="auth-figure-laptop" />
-              <span className="auth-figure-arm" />
-            </div>
-            <span className="auth-blob auth-blob-a" aria-hidden="true" />
-            <span className="auth-blob auth-blob-b" aria-hidden="true" />
-          </div>
-          <div className="auth-showcase-copy">
-            <h2>Accelerate Your Career</h2>
-            <p>Find relevant jobs, save opportunities, and review your resume.</p>
-            <div className="auth-showcase-dots" aria-hidden="true">
-              <span />
-              <span className="active" />
-              <span />
-            </div>
-          </div>
+          <div className="auth-product-story"><span className="eyebrow">BUILT FOR YOUR NEXT CONTRACT</span><h2>Less searching.<br />More possibilities.</h2><p>Your C2C opportunities, applications, and preparation. One focused workspace.</p><div className="auth-workflow"><span>01 <strong>Discover contract roles</strong></span><span>02 <strong>Confirm the right fit</strong></span><span>03 <strong>Keep every opportunity moving</strong></span></div><span className="auth-story-foot">CareerOS / Your contract search, organized.</span></div>
         </aside>
       </div>
     </section>

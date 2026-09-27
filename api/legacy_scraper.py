@@ -32,6 +32,7 @@ def dashboard_for(user_id):
             spec.loader.exec_module(module)
             directory = settings.DATA_DIR / 'portal_dashboard' / user_id
             directory.mkdir(parents=True, exist_ok=True)
+            module.STATE_ROOT = directory / 'workspace'
             for field in ['CONFIG', 'APPLIED', 'CLICKS', 'SEEN']:
                 setattr(module, field + '_PATH', directory / (field.lower() + '.json'))
             DASHBOARDS[user_id] = module

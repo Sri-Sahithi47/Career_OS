@@ -19,7 +19,7 @@
 }
 
 .settings-hero .eyebrow {
-  color: #3b4ce2;
+  color: #087f70;
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -53,7 +53,7 @@
 }
 
 .settings-hero-note span {
-  color: #3b4ce2;
+  color: #087f70;
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -138,11 +138,11 @@
 }
 
 .settings-tab.active {
-  background: #eef1ff;
-  color: #3b4ce2;
+  background: #edf5ef;
+  color: #087f70;
 }
-.settings-tab.active strong { color: #3b4ce2; }
-.settings-tab.active span { color: #4f46e5; }
+.settings-tab.active strong { color: #087f70; }
+.settings-tab.active span { color: #087f70; }
 
 .settings-panel {
   display: grid;
@@ -183,8 +183,8 @@
 }
 .settings-editor:focus {
   outline: none;
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.14);
+  border-color: #087f70;
+  box-shadow: 0 0 0 3px rgba(8, 127, 112, 0.14);
   background: #ffffff;
 }
 
@@ -286,8 +286,8 @@
 
 .sc-inline-input input:focus {
   outline: none;
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+  border-color: #087f70;
+  box-shadow: 0 0 0 3px rgba(8, 127, 112, 0.12);
 }
 
 .sc-inline-input button {
@@ -316,8 +316,8 @@
 }
 
 .sc-choice.active {
-  border-color: #4f46e5;
-  background: #eef1ff;
+  border-color: #087f70;
+  background: #edf5ef;
   color: #3441c5;
 }
 
@@ -392,7 +392,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  color: #4f46e5;
+  color: #087f70;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid #f1f5f9;
 }
@@ -435,7 +435,7 @@
   transition: border-color 0.15s;
 }
 
-.sp-input:focus { border-color: #4f46e5; }
+.sp-input:focus { border-color: #087f70; }
 .sp-input::placeholder { color: #94a3b8; }
 select.sp-input { cursor: pointer; }
 
@@ -465,9 +465,9 @@ select.sp-input { cursor: pointer; }
 }
 
 .sp-toggle-btn.active {
-  background: #4f46e5;
+  background: #087f70;
   color: #fff;
-  border-color: #4f46e5;
+  border-color: #087f70;
 }
 
 @media (max-width: 1080px) {
@@ -539,7 +539,7 @@ select.sp-input { cursor: pointer; }
   display: inline-flex;
   align-items: center;
   padding: 7px 16px;
-  background: #4f46e5;
+  background: #087f70;
   color: #fff;
   font-size: 13px;
   font-weight: 500;
@@ -551,7 +551,7 @@ select.sp-input { cursor: pointer; }
 }
 
 .resume-upload-btn:hover {
-  background: #4338ca;
+  background: #08675c;
 }
 
 .resume-empty-state {

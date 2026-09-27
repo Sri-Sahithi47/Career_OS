@@ -34,6 +34,7 @@ class DashboardServiceTest {
   void setUp() throws Exception {
     service = new DashboardService();
     setField("root", tempDir);
+    setField("stateRoot", tempDir);
     setField("configPath", tempDir.resolve("job_portal_dashboard_config.json"));
   }
 
@@ -270,6 +271,43 @@ class DashboardServiceTest {
     } finally {
       running.set(false);
     }
+  }
+
+  @Test
+  void accountStateDoesNotReadSharedOrOtherAccountOutputs() throws Exception {
+    Path shared = tempDir.resolve("cbts_applying_script/output");
+    Files.createDirectories(shared);
+    Files.writeString(shared.resolve("cbts_jobs_shared.json"), "[{\"title\":\"Shared job\"}]");
+    Path account = tempDir.resolve("account-a");
+    setField("stateRoot", account);
+    assertThat((List<?>) service.getJobs("cbts").get("jobs")).isEmpty();
+    Path output = account.resolve("cbts_applying_script/output");
+    Files.createDirectories(output);
+    Files.writeString(output.resolve("cbts_jobs_private.json"), "[{\"title\":\"Java developer\"}]");
+    assertThat((List<?>) service.getJobs("cbts").get("jobs")).hasSize(1);
+    setField("stateRoot", tempDir.resolve("account-b"));
+    assertThat((List<?>) service.getJobs("cbts").get("jobs")).isEmpty();
+  }
+
+  @Test
+  void corruptConfigDoesNotResetPreferencesOrLeaveRunningFlagSet() throws Exception {
+    Files.writeString(tempDir.resolve("job_portal_dashboard_config.json"), "{incomplete");
+    org.assertj.core.api.Assertions.assertThatThrownBy(() -> service.scrape(Map.of("vendors", List.of("cbts"))))
+        .isInstanceOf(IllegalStateException.class);
+    AtomicBoolean running = getField("running");
+    assertThat(running.get()).isFalse();
+    assertThat(Files.readString(tempDir.resolve("job_portal_dashboard_config.json"))).isEqualTo("{incomplete");
+  }
+
+  @Test
+  void corruptResultsAreReportedInsteadOfSilentlyPretendingNoJobsExist() throws Exception {
+    Path output = tempDir.resolve("cbts_applying_script/output");
+    Files.createDirectories(output);
+    Files.writeString(output.resolve("cbts_jobs_test.json"), "[{incomplete");
+    List<Map<String, Object>> vendors = (List<Map<String, Object>>) service.getConfigPayload().get("vendors");
+    Map<String, Object> vendor = vendors.stream().filter(v -> "cbts".equals(v.get("slug"))).findFirst().orElseThrow();
+    assertThat(vendor.get("error")).asString().contains("could not be read");
+    assertThat(service.getJobs("cbts").get("ok")).isEqualTo(false);
   }
 
   @Test

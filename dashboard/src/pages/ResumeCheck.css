@@ -53,10 +53,10 @@
 .rc-check-btn {
   padding: 12px 22px;
   border-radius: 999px;
-  background: linear-gradient(135deg, var(--primary), #7c3aed);
+  background: linear-gradient(135deg, var(--primary), #087f70);
   color: #fff;
   font-size: 13px;
-  box-shadow: 0 14px 30px rgba(99, 102, 241, 0.25);
+  box-shadow: 0 14px 30px rgba(8, 127, 112, 0.25);
 }
 
 .rc-check-btn:hover:not(:disabled),
@@ -118,7 +118,7 @@
 .rc-upload-btn {
   padding: 8px 12px;
   border-radius: 999px;
-  background: #eef2ff;
+  background: #edf5ef;
   color: var(--primary);
   font-size: 12px;
   border: 1px solid #c7d2fe;
@@ -280,7 +280,7 @@
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, #6366f1, #22c55e);
+  background: linear-gradient(90deg, #198c77, #22c55e);
 }
 
 .rc-breakdown-card p {
@@ -393,8 +393,8 @@
 }
 
 .rc-priority-dot--soft {
-  background: rgba(99, 102, 241, 0.12);
-  color: #4f46e5;
+  background: rgba(8, 127, 112, 0.12);
+  color: #087f70;
 }
 
 .rc-keyword-count {

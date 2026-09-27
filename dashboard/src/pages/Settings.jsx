@@ -13,7 +13,7 @@ import {
 
 const TABS = [
   { key: 'portals', label: 'Job portals', hint: 'Search staffing portals and import jobs into your feed.' },
-  { key: 'profile', label: 'Profile', hint: 'Contact info, address, compensation, and work authorization — used for deterministic autofill.' },
+  { key: 'profile', label: 'Profile', hint: 'Your contact details, compensation preferences, and work authorization.' },
   { key: 'personal_disclosures', label: 'EEO / Disclosures', hint: 'Voluntary EEO responses auto-filled on job applications.' },
   { key: 'notifications', label: 'Notifications', hint: 'Control which alerts and summaries you receive.' },
   { key: 'job_config', label: 'Search config', hint: 'Roles, locations, skills, compensation, and matching filters.' },
@@ -295,8 +295,8 @@ function Settings({ onboarding, onUpdated }) {
       <header className="settings-hero">
         <div>
           <span className="eyebrow">Workspace setup</span>
-          <h1>Configure the search engine, candidate profile, and runtime safely.</h1>
-          <p>These values still live on local disk today, so treat this as operator-facing settings rather than end-user account management.</p>
+          <h1>Profile & preferences</h1>
+          <p>Manage the profile used for your search and browser autofill.</p>
         </div>
         <div className="settings-hero-note">
           <span>Current panel</span>

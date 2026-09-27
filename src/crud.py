@@ -710,16 +710,6 @@ def sync_user_matched_jobs(db: Session, user_id: str) -> List[MatchedJob]:
         skip=0,
         limit=100000,
     )
-    if not all_jobs:
-        bootstrap_data_domain_jobs_from_legacy_pool(db, user_id)
-        all_jobs = get_user_jobs(
-            db,
-            user_id,
-            quality_filters=None,
-            skip=0,
-            limit=100000,
-        )
-
     existing = {
         matched.job_id: matched
         for matched in db.query(MatchedJob).filter(MatchedJob.user_id == user_id).all()
@@ -866,6 +856,9 @@ def upsert_delivered_job_for_user(
     ]
     for field in simple_fields:
         if field in job_data and job_data[field] is not None:
+            # A later portal summary must not erase the full posting saved earlier.
+            if field == "job_description" and len(str(job_data[field]).strip()) <= len((job.job_description or "").strip()):
+                continue
             setattr(job, field, job_data[field])
 
     if job_data.get("source") is not None:

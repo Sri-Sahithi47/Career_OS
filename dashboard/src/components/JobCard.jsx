@@ -1,3 +1,4 @@
+import { getContractSignal } from '../lib/contracts'
 import { formatCompactDate, getDisplayMatchScore, getJobId, getSourceLabel } from '../lib/jobs'
 import './JobCard.css'
 
@@ -17,7 +18,7 @@ function getMatchLabel(score) {
   if (!score) return { label: 'Not scored', cls: 'score-warm' }
   if (score >= 90) return { label: 'Top match', cls: 'score-great' }
   if (score >= 75) return { label: 'Strong fit', cls: 'score-good' }
-  return { label: 'Good fit', cls: 'score-warm' }
+  return { label: 'Review fit', cls: 'score-warm' }
 }
 
 function truncatePreview(text = '', length = 140) {
@@ -38,7 +39,7 @@ function JobCard({ job, onClick, compact = false, selected = false }) {
 
   const preview = truncatePreview(job.Description || job.description || job['Job Description'] || '')
 
-  const timeSignal = posted ? `Posted ${posted}` : ''
+  const timeSignal = posted ? `Found ${posted}` : ''
 
   return (
     <article
@@ -91,7 +92,7 @@ function JobCard({ job, onClick, compact = false, selected = false }) {
                 <div className="jc-metadata">
                   {timeSignal && <span className="jc-time-point">{timeSignal}</span>}
                   <span className="jc-sep">·</span>
-                  <span>{jobType}</span>
+                  <span>{jobType}</span><span className={`contract-tag ${getContractSignal(job).key}`}>{getContractSignal(job).label}</span>
                 </div>
                 {source && <span className="jc-source-tag">{source}</span>}
               </div>

@@ -116,6 +116,7 @@ function installFetchMock({ scrapeOk = true, openOk = true, jobsOk = true, stopO
 async function renderLoaded(options) {
   const mocks = installFetchMock(options);
   render(<App />);
+  await userEvent.click(screen.getByRole("button", { name: /^Portals / }));
   await screen.findAllByRole("button", { name: "Jobs" });
   const table = screen.getByRole("table");
   return { table, ...mocks };
@@ -135,12 +136,12 @@ describe("App", () => {
     const user = userEvent.setup();
     const stop = screen.getByRole("button", { name: "Stop Scrape" });
     await waitFor(() => expect(stop).toBeEnabled());
-    expect(screen.getByRole("button", { name: "Scrape All 15" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /Scrape All/ })).toBeDisabled();
     await user.click(stop);
     const call = fetchMock.mock.calls.find(([url]) => url.endsWith("/api/scrape/stop"));
     expect(JSON.parse(call[1].body)).toEqual({ run_id: "active-123" });
     await waitFor(() => expect(stop).toBeDisabled());
-    expect(screen.getByRole("button", { name: "Scrape All 15" })).toBeEnabled();
+    expect(screen.getByRole("button", { name: /Scrape All/ })).toBeEnabled();
   });
 
   it("disables Stop Scrape when idle", async () => {
@@ -151,12 +152,12 @@ describe("App", () => {
   it("shows a disabled Stopping button while cancellation is pending", async () => {
     await renderLoaded({ runs: [{ id: "pending", status: "stopping", steps: [] }] });
     expect(await screen.findByRole("button", { name: "Stopping…" })).toBeDisabled();
-    expect(screen.getByRole("button", { name: "Scrape All 15" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /Scrape All/ })).toBeDisabled();
   });
 
   it("renders the header and loads vendor data from the API", async () => {
     const { table } = await renderLoaded();
-    expect(screen.getByText("Job Portal Control")).toBeInTheDocument();
+    expect(screen.getByText("Job scraper")).toBeInTheDocument();
     expect(within(table).getByText("TEKsystems")).toBeInTheDocument();
     expect(within(table).getByText("Judge Group")).toBeInTheDocument();
     expect(within(table).getByText("Beacon Hill")).toBeInTheDocument();
@@ -174,7 +175,7 @@ describe("App", () => {
 
   it("keeps the scrape-all and scrape-checked buttons but removes the two-only scrape shortcut", async () => {
     await renderLoaded();
-    expect(screen.getByRole("button", { name: "Scrape All 15" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Scrape All/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Scrape Checked" })).toBeInTheDocument();
   });
 
@@ -228,7 +229,7 @@ describe("App", () => {
     const { fetchMock } = await renderLoaded();
     const user = userEvent.setup();
 
-    await user.click(screen.getByRole("button", { name: "Scrape All 15" }));
+    await user.click(screen.getByRole("button", { name: /Scrape All/ }));
 
     await waitFor(() => {
       const scrapeCall = fetchMock.mock.calls.find(([url]) => url.endsWith("/api/scrape"));
@@ -256,14 +257,15 @@ describe("App", () => {
   it("shows an error message in the log panel when the API call fails", async () => {
     global.fetch = vi.fn(() => Promise.reject(new Error("Failed to fetch")));
     render(<App />);
-    expect(await screen.findByText(/Error: Failed to fetch/i)).toBeInTheDocument();
+  await userEvent.click(screen.getByRole("button", { name: /^Portals / }));
+    expect(await screen.findByRole("alert")).toHaveTextContent("Failed to fetch");
   });
 
   it("surfaces a scrape conflict error without crashing", async () => {
     await renderLoaded({ scrapeOk: false });
     const user = userEvent.setup();
 
-    await user.click(screen.getByRole("button", { name: "Scrape All 15" }));
+    await user.click(screen.getByRole("button", { name: /Scrape All/ }));
 
     expect(await screen.findByText(/A scrape is already running\./i)).toBeInTheDocument();
   });
@@ -490,6 +492,7 @@ it("checks every portal with AI and continues after a portal fails", async () =>
     return original(url, options);
   });
   render(<App />);
+  await userEvent.click(screen.getByRole("button", { name: /^Portals / }));
   const button = await screen.findByRole('button', { name: 'Check All Portals with AI' });
   await waitFor(() => expect(button).toBeEnabled());
   await userEvent.click(button);
@@ -502,6 +505,7 @@ it("checks every portal with AI and continues after a portal fails", async () =>
 it("offers All Days only for TEKsystems and submits its dedicated scrape mode", async () => {
   const { calls } = installFetchMock();
   render(<App />);
+  await userEvent.click(screen.getByRole("button", { name: /^Portals / }));
   const button = await screen.findByRole('button', { name: 'All Days' });
   expect(screen.getAllByRole('button', { name: 'All Days' })).toHaveLength(1);
   expect(button.closest('tr')).toHaveTextContent('TEKsystems');
@@ -509,4 +513,26 @@ it("offers All Days only for TEKsystems and submits its dedicated scrape mode", 
   await waitFor(() => expect(calls.some(c => c.url.endsWith('/api/scrape'))).toBe(true));
   const request = calls.find(c => c.url.endsWith('/api/scrape'));
   expect(JSON.parse(request.options.body).mode).toBe('teksystems_all_days');
+});
+
+it('filters the directory without losing selected portals in other views', async () => {
+  const { table } = await renderLoaded();
+  const user = userEvent.setup();
+  await user.type(screen.getByRole('searchbox', { name: 'Search portals' }), 'Judge');
+  expect(within(table).queryByText('TEKsystems')).not.toBeInTheDocument();
+  await user.click(screen.getByRole('checkbox', { name: 'Select all visible portals' }));
+  await user.clear(screen.getByRole('searchbox', { name: 'Search portals' }));
+  expect(within(rowFor(table, 'Judge Group')).getByRole('checkbox')).not.toBeChecked();
+  expect(within(rowFor(table, 'Beacon Hill')).getByRole('checkbox')).toBeChecked();
+});
+
+it('closes the jobs drawer with Escape and returns focus to its trigger', async () => {
+  const { table } = await renderLoaded();
+  const user = userEvent.setup();
+  const trigger = within(rowFor(table, 'Judge Group')).getByRole('button', { name: 'Jobs' });
+  await user.click(trigger);
+  expect(await screen.findByRole('dialog', { name: 'Judge Group jobs' })).toBeInTheDocument();
+  await user.keyboard('{Escape}');
+  expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  expect(trigger).toHaveFocus();
 });

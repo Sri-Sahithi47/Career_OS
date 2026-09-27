@@ -54,7 +54,7 @@
   function canonicalJobUrl(url) {
     try {
       const parsed = new URL(url);
-      if (parsed.hostname.includes("linkedin.com")) {
+      if (parsed.hostname === "linkedin.com" || parsed.hostname.endsWith(".linkedin.com")) {
         const jobId = parsed.searchParams.get("currentJobId");
         if (jobId) return `https://www.linkedin.com/jobs/view/${jobId}/`;
         const viewMatch = parsed.pathname.match(/\/jobs\/view\/(\d+)/);
@@ -213,7 +213,7 @@
           title: cleanText(posting.title),
           company,
           location,
-          description: stripHtml(posting.description).slice(0, 8000),
+          description: stripHtml(posting.description),
           url: canonicalJobUrl(window.location.href),
           source: sourceFromUrl(),
         };
@@ -248,51 +248,47 @@
   }
 
   function getDiceChipText() {
-    // Dice uses CSS-module hashed class names — target by structure/content instead
-    const container =
-      document.querySelector('[data-testid="jobDetailsContainer"]') ||
-      document.querySelector('[data-cy="jobDetails"]') ||
-      document.querySelector('article') ||
-      document.querySelector('main') ||
-      document.body;
+    const container = document.querySelector('[data-testid="jobDetailsContainer"]') ||
+      document.querySelector('[data-cy="jobDetails"]') || document.querySelector('article') ||
+      document.querySelector('main') || document.body;
     return cleanText(container?.innerText || "").slice(0, 3000);
   }
 
   async function detectJob() {
     const host = window.location.hostname;
-    let parsed = parseJsonLdJob();
-
-    if (host.includes("dice.com")) {
-      const chipText = getDiceChipText();
-      if (parsed?.title) {
-        if (chipText) parsed.description = [parsed.description, chipText].filter(Boolean).join(" ").slice(0, 8000);
-        return parsed;
+    const structured = parseJsonLdJob();
+    let parsed;
+    if (host.includes("dice.com")) parsed = parseDice();
+    else if (host.includes("linkedin.com")) parsed = parseLinkedIn();
+    else if (host.includes("indeed.com")) parsed = parseIndeed();
+    else if (host.includes("greenhouse.io")) parsed = parseGreenhouse();
+    else if (host.includes("lever.co")) parsed = parseLever();
+    else if (host.includes("myworkdayjobs.com")) parsed = parseWorkday();
+    else if (host.includes("ashbyhq.com")) parsed = parseAshby();
+    else if (host.includes("ziprecruiter.com")) parsed = parseZipRecruiter();
+    // Site detail panels take precedence over stale JSON-LD on SPA search pages.
+    if (parsed?.title) {
+      if (structured?.title === parsed.title && structured?.company === parsed.company &&
+          canonicalJobUrl(structured.url) === canonicalJobUrl(parsed.url) &&
+          (structured.description || "").length > (parsed.description || "").length) {
+        parsed.description = structured.description;
       }
-      parsed = parseDice();
-      if (parsed?.title) return parsed;
+      return parsed;
     }
+    return structured?.title ? structured : parseGeneric();
+  }
 
-    if (parsed?.title) return parsed;
-
-    if (host.includes("linkedin.com")) {
-      parsed = parseLinkedIn();
-    } else if (host.includes("indeed.com")) {
-      parsed = parseIndeed();
-    } else if (host.includes("greenhouse.io")) {
-      parsed = parseGreenhouse();
-    } else if (host.includes("lever.co")) {
-      parsed = parseLever();
-    } else if (host.includes("myworkdayjobs.com")) {
-      parsed = parseWorkday();
-    } else if (host.includes("ashbyhq.com")) {
-      parsed = parseAshby();
-    } else if (host.includes("ziprecruiter.com")) {
-      parsed = parseZipRecruiter();
-    } else {
-      parsed = parseGeneric();
+  async function saveCurrentJob(displayedJob) {
+    try {
+      const current = await detectJob();
+      if (!current?.title || canonicalJobUrl(current.url) !== canonicalJobUrl(displayedJob.url) ||
+          cleanText(current.title) !== cleanText(displayedJob.title)) {
+        return { ok: false, error: "The selected posting changed or is still loading. Reopen CareerOS on this job and try again." };
+      }
+      return await chrome.runtime.sendMessage({ type: "SAVE_JOB", job: jobForSave(current) });
+    } catch (_) {
+      return { ok: false, error: "The extension could not finish saving. Reload this page, sign in if needed, and retry." };
     }
-
-    return parsed?.title ? parsed : parseGeneric();
   }
 
   function injectPill(job) {
@@ -398,13 +394,13 @@
       status.className = "careeros-sidecar-status info";
       status.textContent = "Sending this job to CareerOS…";
 
-      const response = await chrome.runtime.sendMessage({ type: "SAVE_JOB", job: jobForSave(job) });
+      const response = await saveCurrentJob(job);
 
       if (response?.ok) {
-        const alreadyHad = !response.created;
+        const alreadyHad = !response.created && !response.updated;
         status.className = "careeros-sidecar-status success";
-        status.textContent = alreadyHad ? "Already saved in your dashboard." : "Saved to CareerOS.";
-        button.textContent = alreadyHad ? "Already saved" : "Saved";
+        status.textContent = alreadyHad ? "Already saved in your dashboard." : response.updated ? "Saved job updated with new details." : "Saved to CareerOS.";
+        button.textContent = alreadyHad ? "Already saved" : response.updated ? "Updated" : "Saved";
       } else if (response?.error === "Not authenticated" || response?.status === 401) {
         status.className = "careeros-sidecar-status warn";
         status.textContent = "Sign in from the extension popup, then save again.";
@@ -508,10 +504,10 @@
     saveBtn.addEventListener("click", async () => {
       saveBtn.querySelector(".careeros-launcher-bar-label").textContent = "Saving…";
       saveBtn.disabled = true;
-      const response = await chrome.runtime.sendMessage({ type: "SAVE_JOB", job: jobForSave(job) });
+      const response = await saveCurrentJob(job);
       if (response?.ok) {
-        const alreadyHad = !response.created;
-        saveBtn.querySelector(".careeros-launcher-bar-label").textContent = alreadyHad ? "Already saved" : "Saved!";
+        const alreadyHad = !response.created && !response.updated;
+        saveBtn.querySelector(".careeros-launcher-bar-label").textContent = alreadyHad ? "Already saved" : response.updated ? "Updated" : "Saved!";
         launcher.classList.add("careeros-launcher-bar--saved");
       } else if (response?.error === "Not authenticated" || response?.status === 401) {
         saveBtn.querySelector(".careeros-launcher-bar-label").textContent = "Sign in first";
@@ -844,9 +840,9 @@
         return;
       }
 
-      const response = await chrome.runtime.sendMessage({ type: "SAVE_JOB", job: jobForSave(job) });
+      const response = await saveCurrentJob(job);
       if (response?.ok) {
-        saveBtn.textContent = response.created ? "Saved!" : "Already saved";
+        saveBtn.textContent = response.created ? "Saved!" : response.updated ? "Updated" : "Already saved";
         bar.classList.add("careeros-launcher-bar--saved");
       } else if (response?.error === "Not authenticated" || response?.status === 401) {
         saveBtn.textContent = "Sign in first";
@@ -1019,7 +1015,7 @@
       title,
       company,
       location,
-      description: [description, chipText].filter(Boolean).join(" ").slice(0, 8000),
+      description: [description, chipText].filter(Boolean).join(" "),
       url: window.location.href,
       source: "dice",
       employment_type: employmentType || undefined,
@@ -1086,7 +1082,7 @@
     const description = linkedInDescription(detailsRoot) || linkedInDescription(document);
 
     if (!title) return null;
-    return { title, company, location, description: description.slice(0, 8000), url: canonicalJobUrl(window.location.href), source: "linkedin" };
+    return { title, company, location, description: description, url: canonicalJobUrl(window.location.href), source: "linkedin" };
   }
 
   function parseIndeed() {
@@ -1102,7 +1098,7 @@
     const description =
       document.querySelector("#jobDescriptionText")?.innerText?.trim() || "";
     if (!title || !company) return null;
-    return { title, company, location, description: description.slice(0, 8000), url: window.location.href, source: "indeed" };
+    return { title, company, location, description: description, url: window.location.href, source: "indeed" };
   }
 
   function parseZipRecruiter() {
@@ -1151,7 +1147,7 @@
       title,
       company: company || "Unknown company",
       location,
-      description: description.slice(0, 8000),
+      description: description,
       url: selectedLink,
       source: "ziprecruiter",
     };
@@ -1170,7 +1166,7 @@
       document.querySelector(".office-location")?.innerText?.trim() || "";
     const description = document.querySelector("#content")?.innerText?.trim() || "";
     if (!title) return null;
-    return { title, company, location, description: description.slice(0, 8000), url: window.location.href, source: "greenhouse" };
+    return { title, company, location, description: description, url: window.location.href, source: "greenhouse" };
   }
 
   function parseLever() {
@@ -1185,7 +1181,7 @@
       document.querySelector(".location")?.innerText?.trim() || "";
     const description = document.querySelector(".posting-description")?.innerText?.trim() || "";
     if (!title) return null;
-    return { title, company, location, description: description.slice(0, 8000), url: window.location.href, source: "lever" };
+    return { title, company, location, description: description, url: window.location.href, source: "lever" };
   }
 
   function parseWorkday() {
@@ -1200,7 +1196,7 @@
     const description =
       document.querySelector('[data-automation-id="jobPostingDescription"]')?.innerText?.trim() || "";
     if (!title) return null;
-    return { title, company, location, description: description.slice(0, 8000), url: window.location.href, source: "workday" };
+    return { title, company, location, description: description, url: window.location.href, source: "workday" };
   }
 
   function parseAshby() {
@@ -1216,7 +1212,7 @@
       document.querySelector("[class*='_descriptionText_']")?.innerText?.trim() ||
       document.querySelector(".ashby-job-posting-description")?.innerText?.trim() || "";
     if (!title) return null;
-    return { title, company, location, description: description.slice(0, 8000), url: window.location.href, source: "ashby" };
+    return { title, company, location, description: description, url: window.location.href, source: "ashby" };
   }
 
   // Hosts that are never job postings, no matter what the page title looks like
@@ -1252,7 +1248,7 @@
         '[class*="posting" i]', '[class*="job-body" i]', '[class*="jobbody" i]',
         "article", "main",
       ]) ||
-      visiblePageText(8000);
+      visiblePageText(Infinity);
 
     // Require a real job-shaped URL and a description with actual content — otherwise this is
     // very likely a listing/search page, dashboard, or unrelated page whose title happened to
@@ -1262,7 +1258,7 @@
       title,
       company,
       location,
-      description: description.slice(0, 8000),
+      description: description,
       url: window.location.href,
       source: "web",
     };

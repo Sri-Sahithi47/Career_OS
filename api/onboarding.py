@@ -77,6 +77,8 @@ async def extract_text_from_file(file: UploadFile) -> str:
     # Legacy DOC file. macOS textutil can read many binary .doc files; if it cannot,
     # give the user a clear fallback instead of silently returning garbage text.
     if filename.endswith(".doc"):
+        if not (content.startswith(bytes.fromhex("D0CF11E0A1B11AE1")) or content.lstrip().startswith(b"{\\rtf")):
+            raise HTTPException(status_code=400, detail="This is not a readable DOC file. Save it as DOCX or PDF, or paste the resume text.")
         import os
         import subprocess
         import tempfile

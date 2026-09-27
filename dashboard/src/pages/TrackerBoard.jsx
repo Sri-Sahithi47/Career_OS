@@ -51,8 +51,8 @@ function TrackerBoard({ jobs, onStatusChange, onDelete }) {
   return (
     <section className="tracker-page">
       <header className="tracker-page-header">
-        <h1>Tracker Board</h1>
-        <p>Drag and drop jobs between stages</p>
+        <span className="eyebrow">MANAGE</span><h1>Application pipeline</h1>
+        <p>Track each opportunity from shortlist to offer. Drag a role to update its stage.</p>
       </header>
 
       <div className="tracker-board-scroll">

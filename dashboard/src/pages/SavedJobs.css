@@ -112,7 +112,7 @@
 .saved-logo {
   width: 2.2rem; height: 2.2rem;
   display: inline-flex; align-items: center; justify-content: center;
-  background: #eef1ff; color: #4f46e5;
+  background: #edf5ef; color: #087f70;
   border-radius: 0.45rem;
   font-size: 0.82rem; font-weight: 700;
 }
@@ -132,7 +132,7 @@
 }
 
 .saved-action {
-  color: #3b4ce2;
+  color: #087f70;
   font-size: 0.82rem;
   font-weight: 600;
   background: none;
@@ -142,7 +142,7 @@
   border-radius: 0.3rem;
   transition: background 120ms;
 }
-.saved-action:hover { background: #eef1ff; }
+.saved-action:hover { background: #edf5ef; }
 
 .saved-delete-btn {
   display: flex;

@@ -111,7 +111,7 @@ document.getElementById("btn-save-job").addEventListener("click", async () => {
 
     const res = await chrome.runtime.sendMessage({ type: "SAVE_JOB", job });
     if (res?.ok) {
-      const msg = res.created ? "✓ Saved!" : "✓ Already in your list";
+      const msg = res.created ? "✓ Saved!" : res.updated ? "✓ Saved job updated" : "✓ Already in your list";
       showFeedback("success", msg);
       loadRecentJobs();
     } else {
@@ -126,7 +126,7 @@ document.getElementById("btn-save-job").addEventListener("click", async () => {
 
 function resetSaveBtn(btn) {
   btn.disabled = false;
-  btn.innerHTML = "<span>⭐</span> Save this job";
+  btn.innerHTML = "<span>＋</span> Save this job";
 }
 
 function showFeedback(type, msg) {
@@ -205,7 +205,7 @@ function detectJobOnPage() {
           title: cleanText(posting.title),
           company: cleanText(typeof org === "object" ? org?.name : org),
           location,
-          description: stripHtml(posting.description).slice(0, 4000),
+          description: stripHtml(posting.description),
           url: window.location.href,
           source: "json-ld",
         };
@@ -349,7 +349,7 @@ function detectJobOnPage() {
         '[class*="posting" i]', '[class*="job-body" i]', '[class*="jobbody" i]',
         "article", "main",
       ]) ||
-      cleanText(document.body.innerText || "").slice(0, 8000);
+      cleanText(document.body.innerText || "");
     // Require a real job-shaped URL and a description with actual content — otherwise this is
     // very likely a listing/search page, dashboard, or unrelated page whose title happened to
     // contain a job-sounding word (this is what let Gmail subject lines slip through before).
@@ -357,7 +357,7 @@ function detectJobOnPage() {
   }
 
   if (!title) return null;
-  return { title, company, location, description: description.slice(0, 4000), url: window.location.href, source: "extension" };
+  return { title, company, location, description: description, url: window.location.href, source: "extension" };
 }
 
 // ── Cover Letter ──────────────────────────────────────────────────────────────
@@ -394,7 +394,7 @@ document.getElementById("btn-cover-letter").addEventListener("click", async () =
   });
 
   btn.disabled = false;
-  btn.innerHTML = "<span>📝</span> Generate cover letter";
+  btn.innerHTML = "<span>≡</span> Generate cover letter";
 
   if (res?.ok && res.data?.cover_letter) {
     // Show cover letter in a new tab or copy to clipboard
@@ -417,7 +417,7 @@ document.getElementById("btn-autofill").addEventListener("click", async () => {
 
   const opened = await openAutofillPanelOnTab(tab.id);
   btn.disabled = false;
-  btn.innerHTML = "<span>⚡</span> Autofill application";
+  btn.innerHTML = "<span>↗</span> Autofill application";
 
   if (!opened?.ok) {
     showFeedback("error", opened?.error || "Could not open autofill panel on this page");

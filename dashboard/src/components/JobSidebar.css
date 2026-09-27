@@ -492,7 +492,7 @@
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, #4f46e5 0%, #38bdf8 100%);
+  background: linear-gradient(90deg, #087f70 0%, #38bdf8 100%);
 }
 
 .signal-caption {
@@ -615,7 +615,7 @@
   padding: 8px 16px;
   background: var(--primary-soft);
   border-radius: var(--radius-md);
-  border: 1px solid rgba(79, 70, 229, 0.1);
+  border: 1px solid rgba(8, 127, 112, 0.1);
 }
 
 /* Improve Chances Section */
@@ -796,14 +796,14 @@
 /* Phase 7: Precision Interactions */
 .priority-pulse {
   border-color: var(--primary) !important;
-  box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4);
+  box-shadow: 0 0 0 0 rgba(8, 127, 112, 0.4);
   animation: priorityPulse 2s infinite cubic-bezier(0.66, 0, 0, 1);
 }
 
 @keyframes priorityPulse {
-  0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4); }
-  70% { box-shadow: 0 0 0 10px rgba(79, 70, 229, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(8, 127, 112, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(8, 127, 112, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(8, 127, 112, 0); }
 }
 
 .animate-reveal {
@@ -1062,8 +1062,8 @@
 }
 
 .mini-action.primary {
-  border-color: #4f46e5;
-  background: #4f46e5;
+  border-color: #087f70;
+  background: #087f70;
   color: #ffffff;
 }
 
@@ -1146,7 +1146,7 @@
 }
 
 .status-applied {
-  background: #4f46e5;
+  background: #087f70;
 }
 
 .status-interviewing {
@@ -1253,7 +1253,7 @@
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, #4f46e5 0%, #6366f1 100%);
+  background: linear-gradient(90deg, #087f70 0%, #198c77 100%);
 }
 
 .status-fit-meta {
@@ -1334,7 +1334,7 @@
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, #4f46e5 0%, #6366f1 100%);
+  background: linear-gradient(90deg, #087f70 0%, #198c77 100%);
 }
 
 .status-picker-option:hover,
@@ -1498,8 +1498,8 @@
 .rail-select:focus,
 .rail-notes:focus {
   outline: none;
-  border-color: #818cf8;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.11);
+  border-color: #6ab99f;
+  box-shadow: 0 0 0 3px rgba(8, 127, 112, 0.11);
 }
 
 
@@ -1510,20 +1510,20 @@
 
 .timeline-step.current {
   border-width: 1.5px;
-  border-color: #4f46e5;
-  background: #eef2ff;
-  box-shadow: 0 8px 18px rgba(79, 70, 229, 0.11), inset 0 0 0 1px rgba(79, 70, 229, 0.08);
+  border-color: #087f70;
+  background: #edf5ef;
+  box-shadow: 0 8px 18px rgba(8, 127, 112, 0.11), inset 0 0 0 1px rgba(8, 127, 112, 0.08);
 }
 
 .timeline-step.complete .timeline-dot {
-  border-color: #4f46e5;
-  background: #4f46e5;
+  border-color: #087f70;
+  background: #087f70;
 }
 
 .timeline-step.current .timeline-dot {
-  border-color: #4f46e5;
+  border-color: #087f70;
   background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.16);
+  box-shadow: 0 0 0 4px rgba(8, 127, 112, 0.16);
 }
 
 .timeline-step.status-chip-not_applied.current {
@@ -1538,8 +1538,8 @@
 }
 
 .timeline-step.status-chip-applied.current {
-  border-color: #4f46e5;
-  background: #eef2ff;
+  border-color: #087f70;
+  background: #edf5ef;
 }
 
 .timeline-step.status-chip-interviewing.current {

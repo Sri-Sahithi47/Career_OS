@@ -14,6 +14,7 @@ if [[ ! -d dashboard/node_modules ]]; then
   echo 'Run npm ci --prefix dashboard first.'
   exit 1
 fi
+bash scripts/build-scraper.sh
 BACKEND_PID=''
 FRONTEND_PID=''
 cleanup() {

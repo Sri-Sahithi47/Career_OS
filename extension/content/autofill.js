@@ -118,7 +118,7 @@
           title: cleanText(posting.title),
           company: cleanText(typeof org === "object" ? org?.name : org),
           location,
-          description: stripHtml(posting.description).slice(0, 8000),
+          description: stripHtml(posting.description),
           url: window.location.href,
           source: "json-ld",
         };
@@ -187,7 +187,7 @@
       title: cleanText(document.querySelector("h1")?.innerText || document.title.replace(/\s+\|.*$/, "")),
       company: companyFromHost(),
       location: "",
-      description: cleanText(document.querySelector("main")?.innerText || document.body?.innerText || "").slice(0, 8000),
+      description: cleanText(document.querySelector("main")?.innerText || document.body?.innerText || ""),
       url: window.location.href,
       source: "fallback",
     };
@@ -208,7 +208,7 @@
       const refMatch = bodyText.match(/\bReference Code:\s*([A-Z0-9-]+)/i);
       title = cleanText(titleMatch?.[1] || "");
       company = "Kforce";
-      description = cleanText([title ? `Job Title: ${title}` : "", refMatch?.[1] ? `Reference Code: ${refMatch[1]}` : "", bodyText].filter(Boolean).join(" ")).slice(0, 8000);
+      description = cleanText([title ? `Job Title: ${title}` : "", refMatch?.[1] ? `Reference Code: ${refMatch[1]}` : "", bodyText].filter(Boolean).join(" "));
     } else if (h.includes("linkedin.com")) {
       const detailsRoot =
         document.querySelector(".jobs-search__job-details--container") ||
@@ -293,9 +293,9 @@
           '[class*="posting" i]', '[class*="job-body" i]', '[class*="jobbody" i]',
           "article", "main",
         ]) ||
-        cleanText(document.body?.innerText || "").slice(0, 8000);
+        cleanText(document.body?.innerText || "");
     }
-      return { title, company, location, description: description.slice(0, 8000), url: window.location.href, source: "page" };
+      return { title, company, location, description: description, url: window.location.href, source: "page" };
     } catch (_) {
       return fallbackPageJob();
     }

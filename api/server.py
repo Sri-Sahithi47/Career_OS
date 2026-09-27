@@ -23,6 +23,7 @@ from api.auth import router as auth_router
 from api.deps import get_current_user, get_db, require_csrf
 from sqlalchemy.orm import Session
 from api.legacy_scraper import router as legacy_scraper_router
+from api.scraper_workspace import router as scraper_workspace_router
 from api.portals import router as portals_router
 from api.internal import router as internal_router
 from api.jobs import router as jobs_router
@@ -50,6 +51,7 @@ app.include_router(auth_router)
 app.include_router(internal_router)
 app.include_router(portals_router)
 app.include_router(legacy_scraper_router)
+app.include_router(scraper_workspace_router)
 app.include_router(onboarding_router)
 app.include_router(jobs_router)
 app.include_router(ai_router)

@@ -92,3 +92,31 @@ def test_portal_api_requires_auth_and_rejects_unknown_portal(db):
         response = client.post('/api/portals/scrape', json={'vendors': ['../../bad'], 'keywords': ['python']})
         assert response.status_code == 422
         assert len(client.get('/api/portals').json()['vendors']) == 33
+
+
+def test_later_scrape_summary_does_not_erase_saved_full_description(db):
+    user = User(username='description-owner', hashed_password='unused')
+    db.add(user)
+    db.commit()
+    payload = normalize_job({'title': 'Python Developer', 'job_url': 'https://example.com/role',
+                             'raw_text': 'Full responsibilities\nC2C accepted\nEnd of description'}, portals.VENDORS[0])
+    first = sync_delivered_jobs_for_user(db, user.id, [payload])[0]
+    payload['job_description'] = 'Python role'
+    sync_delivered_jobs_for_user(db, user.id, [payload])
+    db.refresh(first.job)
+    assert first.job.job_description == 'Full responsibilities\nC2C accepted\nEnd of description'
+
+
+def test_fresh_account_never_bootstraps_another_accounts_jobs(db):
+    from src.crud import get_or_create_profile, sync_user_matched_jobs
+    owner = User(username='private-owner', hashed_password='unused')
+    newcomer = User(username='new-user', hashed_password='unused')
+    db.add_all([owner, newcomer])
+    db.commit()
+    sync_delivered_jobs_for_user(db, owner.id, [normalize_job(
+        {'title': 'Data Engineer', 'job_url': 'https://example.com/private', 'raw_text': 'Private data engineering client role'}, portals.VENDORS[0])])
+    profile = get_or_create_profile(db, newcomer.id)
+    profile.target_roles = ['Data Engineer']
+    db.commit()
+    assert sync_user_matched_jobs(db, newcomer.id) == []
+    assert db.query(Job).filter_by(user_id=newcomer.id).count() == 0

@@ -1,8 +1,44 @@
+import Results from "./Results";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 const API = "http://127.0.0.1:8766";
 
+function formatPostedDate(value) {
+  const text = String(value);
+  if (!/^\d{4}-\d{2}-\d{2}/.test(text)) return text;
+  const date = new Date(text.slice(0, 10) + 'T12:00:00');
+  return Number.isNaN(date.getTime()) ? text : date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function Icon({ name, size = 16 }) {
+  const paths = {
+    search: <><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 4 4" /></>,
+    refresh: <><path d="M20 7v5h-5M4 17v-5h5" /><path d="M6.1 7a7 7 0 0 1 11.6-1L20 9M4 15l2.3 3A7 7 0 0 0 18 17" /></>,
+    play: <path d="m9 5 10 7-10 7z" />,
+    filter: <><path d="M4 7h16M4 17h16" /><circle cx="9" cy="7" r="2" fill="currentColor" /><circle cx="15" cy="17" r="2" fill="currentColor" /></>,
+    arrow: <path d="M5 12h14m-5-5 5 5-5 5" />,
+    check: <path d="m5 12 4 4L19 6" />,
+    stop: <rect x="6" y="6" width="12" height="12" rx="1" />,
+    chevron: <path d="m9 5 7 7-7 7" />,
+  };
+  return <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">{paths[name]}</svg>;
+}
+
+function portalInitials(label) {
+  const words = label.replace(/[^a-zA-Z0-9 ]/g, "").split(/\s+/).filter(Boolean);
+  return words.length > 1 ? words.slice(0, 2).map(word => word[0]).join("") : label.slice(0, 2).toUpperCase();
+}
+
 export default function App() {
+  const [resultsVersion, setResultsVersion] = useState(0);
+  const [view, setView] = useState("results");
+  const [portalQuery, setPortalQuery] = useState("");
+  const [portalFilter, setPortalFilter] = useState("all");
+  const [sortOrder, setSortOrder] = useState("jobs");
+  const [loaded, setLoaded] = useState(false);
+  const [criteriaOpen, setCriteriaOpen] = useState(false);
+  const drawer = useRef(null);
+  const pointerOpening = useRef(false);
   const [config, setConfig] = useState({});
   const [vendors, setVendors] = useState([]);
   const [selected, setSelected] = useState([]);
@@ -32,7 +68,32 @@ export default function App() {
 
   const latestRun = useMemo(() => runs[runs.length - 1], [runs]);
   const activeScrape = runs.find((run) => ["running", "stopping"].includes(run.status));
-  const allChecked = vendors.length > 0 && vendors.every((v) => selected.includes(v.slug));
+  const visibleVendors = useMemo(() => {
+    const rows = vendors.filter(v => v.label.toLowerCase().includes(portalQuery.toLowerCase())
+      && (portalFilter !== "results" || v.latest_count > 0)
+      && (portalFilter !== "rotation" || v.active_today));
+    if (sortOrder === "jobs") rows.sort((a, b) => b.latest_count - a.latest_count);
+    if (sortOrder === "name") rows.sort((a, b) => a.label.localeCompare(b.label));
+    return rows;
+  }, [vendors, portalQuery, portalFilter, sortOrder]);
+  const allChecked = visibleVendors.length > 0 && visibleVendors.every((v) => selected.includes(v.slug));
+  const jobsCount = vendors.reduce((total, v) => total + (v.latest_count || 0), 0);
+
+  useEffect(() => {
+    if (!jobsPanel.open) return;
+    const previous = document.activeElement;
+    drawer.current?.querySelector('button')?.focus({ preventScroll: true });
+    function onKey(event) {
+      if (event.key === "Escape") setJobsPanel(prev => ({ ...prev, open: false }));
+      if (event.key !== "Tab") return;
+      const nodes = [...drawer.current.querySelectorAll('button:not(:disabled), input:not(:disabled), a[href]')];
+      const first = nodes[0], last = nodes[nodes.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+      if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    }
+    document.addEventListener("keydown", onKey);
+    return () => { document.removeEventListener("keydown", onKey); previous?.focus({ preventScroll: true }); };
+  }, [jobsPanel.open]);
 
   function stripQuotes(s) {
     while (s.length >= 2 && ((s[0] === '"' && s[s.length - 1] === '"') || (s[0] === "'" && s[s.length - 1] === "'"))) {
@@ -56,6 +117,7 @@ export default function App() {
     try {
       const c = await api("/api/config");
       setConfig(c.config || {});
+      setLoaded(true);
       setVendors(c.vendors || []);
       setError("");
     } catch (e) {
@@ -70,7 +132,7 @@ export default function App() {
       setScrapeStopSupported(s.scrape_stop_supported === true);
       setAllDaysSupported(s.teksystems_all_days_supported === true);
       setVendors(s.vendors || []);
-      setError("");
+      setError(s.last_error || "");
     } catch (e) {
       setError(e.message);
     }
@@ -85,6 +147,7 @@ export default function App() {
     setIgnoreTitlesText((saved.ignore_titles || []).join("\n"));
     setDirty(false);
     await refreshStatus();
+    setResultsVersion(version => version + 1);
     if (jobsPanel.open && jobsPanel.slug) await openJobsPanel(jobsPanel.slug, jobsPanel.vendor);
   }
 
@@ -132,15 +195,16 @@ export default function App() {
     }
   }
 
-  async function openJobsPanel(slug, label) {
+  async function openJobsPanel(slug, label, event) {
+    if (event) pointerOpening.current = event.detail > 0;
     setExpandedJobId(null);
     setSelectedJobIds([]);
     setJobsPanel({ open: true, vendor: label, slug, jobs: [], loading: true, error: "" });
     try {
       const r = await api(`/api/jobs?vendor=${encodeURIComponent(slug)}`);
-      setJobsPanel({ open: true, vendor: label, slug, jobs: r.jobs || [], loading: false, error: "", hiddenCount: r.hidden_count || 0 });
+      setJobsPanel(prev => prev.slug === slug ? { ...prev, jobs: r.jobs || [], loading: false, error: "", hiddenCount: r.hidden_count || 0 } : prev);
     } catch (e) {
-      setJobsPanel({ open: true, vendor: label, slug, jobs: [], loading: false, error: e.message });
+      setJobsPanel(prev => prev.slug === slug ? { ...prev, jobs: [], loading: false, error: e.message } : prev);
     }
   }
 
@@ -316,7 +380,6 @@ export default function App() {
   }
 
   function renderRunLog() {
-    if (error) return `Error: ${error}`;
     if (!latestRun) return message;
     const lines = [`Run ${latestRun.id} - ${latestRun.kind} - ${latestRun.status}`, "Fresh scrape run"];
     for (const step of latestRun.steps || []) {
@@ -329,103 +392,108 @@ export default function App() {
 
   return (
     <div className="page">
-      <header>
-        <div>
-          <h1>Job Portal Control</h1>
-          <div className="sub">Daily scrape all portals. Actively open two weekday portals from the rotation.</div>
+      <div aria-hidden={jobsPanel.open || undefined} inert={jobsPanel.open ? "" : undefined}>
+      <header className="page-header">
+        <div className="page-title">
+          <h1>Job scraper</h1>
+          <p>Search staffing portals. Review relevant roles.</p>
         </div>
-        <div className="buttons">
-          <button className="primary" disabled={busy || Boolean(activeScrape)} onClick={() => scrape("all")}>Scrape All 15</button>
-          <button className="warn" disabled={busy || !scrapeStopSupported || !activeScrape || activeScrape.status === "stopping"} onClick={stopScrape}>
-            {activeScrape?.status === "stopping" ? "Stopping…" : "Stop Scrape"}
+        <div className="buttons header-actions">
+          <button onClick={() => setView("activity")}>Run history</button>
+          <button className="refresh-action" disabled={busy} onClick={() => { refreshStatus(); setResultsVersion(version => version + 1); }}><Icon name="refresh" />Refresh</button>
+          <button className="stop-action" disabled={busy || !scrapeStopSupported || !activeScrape || activeScrape.status === "stopping"} onClick={stopScrape}>
+            <Icon name="stop" />{activeScrape?.status === "stopping" ? "Stopping…" : "Stop Scrape"}
           </button>
-          <button disabled={busy || aiCleaning || Boolean(activeScrape) || !vendors.length} onClick={aiCleanAllPortals}>Check All Portals with AI</button>
-          <button disabled={busy} onClick={refreshStatus}>Refresh</button>
+          <button className="scrape-all" disabled={!loaded || busy || Boolean(activeScrape)} onClick={() => scrape("all")}><Icon name="play" />Scrape All {vendors.length || 33}</button>
         </div>
       </header>
+      {error && <div className="notice error-notice" role="alert">{error}</div>}
       {aiAllStatus && <div className="notice ai-status" role="status">
         <span>{aiAllStatus}</span>
-        {!aiCleaning && <button aria-label="Dismiss AI check notification" onClick={() => setAiAllStatus("")}>×</button>}
+        {!aiCleaning && <button aria-label="Dismiss AI check notification" onClick={() => setAiAllStatus("")}>Dismiss</button>}
       </div>}
-      <main>
-        <aside>
-          <div className="block">
-            <h2>Filters</h2>
-            <div className="sub">These values are passed into each scraper that supports them.</div>
-            <div className="form-grid">
-              <label>Posted within days<input type="number" min="0" step="1" value={config.posted_within_days ?? 4} onChange={(e) => setConfigValue("posted_within_days", Number(e.target.value || 0))} /></label>
-              <label>Open limit<input type="number" min="0" step="1" value={config.open_limit ?? 8} onChange={(e) => setConfigValue("open_limit", Number(e.target.value || 0))} /></label>
-              <label>Start at<input type="number" min="1" step="1" value={config.start_at ?? 1} onChange={(e) => setConfigValue("start_at", Number(e.target.value || 1))} /></label>
-              <label>Keep open minutes<input type="number" min="1" step="1" value={config.keep_open_minutes ?? 60} onChange={(e) => setConfigValue("keep_open_minutes", Number(e.target.value || 60))} /></label>
-            </div>
+      <nav className="workspace-tabs" aria-label="Scraper views">
+        <button aria-pressed={view === "results"} onClick={() => setView("results")}>Results <span>{jobsCount}</span></button>
+        <button aria-pressed={view === "portals"} onClick={() => setView("portals")}>Portals <span>{vendors.length}</span></button>
+        <button aria-pressed={view === "activity"} onClick={() => setView("activity")}>Activity</button>
+      </nav>
+      <main className="sourcing-layout">
+        {view === "results" && <Results vendors={vendors} loaded={loaded} api={api} refreshKey={resultsVersion + JSON.stringify(vendors.map(v => [v.slug, v.latest_modified, v.latest_count]))} onReview={openJobsPanel} />}
+        {view === "activity" && <section className="activity-view"><h2>Run activity</h2><p>Latest scraper output</p><pre className="log">{renderRunLog()}</pre>{runs.length > 0 && <div className="run-history">{[...runs].reverse().map(run => <details key={run.id}><summary>{run.kind} · {run.status}</summary><pre className="log">{JSON.stringify(run.steps, null, 2)}</pre></details>)}</div>}</section>}
+        <section hidden={view !== "portals"} className="directory" aria-label="Staffing portal directory">
+          <div className="directory-heading"><div><h2>Staffing portals</h2><p>Choose where to search, then review the results.</p></div><span className="source-total">{vendors.length} sources</span></div>
+          <div className="directory-tabs" aria-label="Portal views">
+            <button className={portalFilter === "all" ? "selected" : ""} aria-pressed={portalFilter === "all"} onClick={() => setPortalFilter("all")}>All portals <span>{vendors.length}</span></button>
+            <button className={portalFilter === "results" ? "selected" : ""} aria-pressed={portalFilter === "results"} onClick={() => setPortalFilter("results")}>With jobs <span>{vendors.filter(v => v.latest_count > 0).length}</span></button>
+            <button className={portalFilter === "rotation" ? "selected" : ""} aria-pressed={portalFilter === "rotation"} onClick={() => setPortalFilter("rotation")}>Today’s rotation <span>{vendors.filter(v => v.active_today).length}</span></button>
           </div>
-
-          <div className="block">
-            <label>Keywords<textarea
-              spellCheck="false"
-              value={keywordsText}
-              onChange={(e) => { setKeywordsText(e.target.value); setDirty(true); }}
-            /></label>
+          <div className="directory-tools">
+            <label className="portal-search"><span className="sr-only">Search portals</span><Icon name="search" /><input type="search" placeholder="Search portals…" value={portalQuery} onChange={e => setPortalQuery(e.target.value)} /></label>
+            <label className="sort-control"><span className="sr-only">Sort portals</span><select aria-label="Sort portals" value={sortOrder} onChange={e => setSortOrder(e.target.value)}><option value="directory">Directory order</option><option value="jobs">Most jobs first</option><option value="name">Name A–Z</option></select></label>
           </div>
-
-          <div className="block">
-            <label>Ignore Titles<textarea
-              spellCheck="false"
-              placeholder="One phrase per line, e.g. junior, project manager"
-              value={ignoreTitlesText}
-              onChange={(e) => { setIgnoreTitlesText(e.target.value); setDirty(true); }}
-            /></label>
-            <div className="sub">Job titles containing any of these phrases are skipped.</div>
-            <div className="buttons">
-              <button className="primary" disabled={!dirty || busy} onClick={() => saveConfig()}>Save Controls</button>
-            </div>
-          </div>
-        </aside>
-
-        <section>
-          <div className="toolbar">
-            <h2>Portals</h2>
-            <div className="buttons"><button disabled={busy || Boolean(activeScrape) || !selected.length} onClick={() => scrape("selected", selected)}>Scrape Checked</button></div>
+          <div className={`selection-bar ${selected.length ? "has-selection" : ""}`}>
+            <span>{selected.length ? `${selected.length} selected` : `${jobsCount.toLocaleString()} matching jobs across ${vendors.length} portals`}</span>
+            <button className="text-action" disabled={!selected.length || busy || Boolean(activeScrape)} onClick={() => scrape("selected", selected)}>Scrape Checked<Icon name="arrow" size={14} /></button>
           </div>
           <div className="table-wrap">
             <table>
-              <colgroup>
-                <col className="pick-col" />
-                <col className="portal-col" />
-                <col className="today-col" />
-                <col className="count-col" />
-                <col className="open-col" />
-              </colgroup>
-              <thead><tr><th><input type="checkbox" checked={allChecked} onChange={(e) => setSelected(e.target.checked ? vendors.map((v) => v.slug) : [])} /></th><th>Portal</th><th title="Matching jobs with a posting date of today">Posted Today</th><th>Latest Jobs</th><th>Controls</th></tr></thead>
-              <tbody>{vendors.map((v) => (
-                <tr key={v.slug} className={v.active_today ? "active" : ""}>
-                  <td><input className="pick" type="checkbox" checked={selected.includes(v.slug)} onChange={(e) => toggleSelected(v.slug, e.target.checked)} /></td>
-                  <td><strong>{v.label}</strong></td>
-                  <td title="Matching jobs posted today; unknown posting dates are not counted">{v.today_count ?? "—"}{v.active_today && <> <span className="pill active-pill">active</span></>}</td>
-                  <td className={v.latest_count ? "" : "zero"}>{v.latest_count}</td>
+              <thead><tr>
+                <th className="pick-cell"><input type="checkbox" aria-label="Select all visible portals" checked={allChecked} onChange={e => setSelected(e.target.checked ? [...new Set([...selected, ...visibleVendors.map(v => v.slug)])] : selected.filter(slug => !visibleVendors.some(v => v.slug === slug)))} /></th>
+                <th scope="col">Portal</th><th scope="col" className="numeric">Latest Jobs</th><th scope="col" className="numeric today-column" title="Matching jobs with a known posting date of today">Posted Today</th><th scope="col" className="updated-column">Last scrape <span className="utc-label">UTC</span></th><th scope="col" className="controls-heading"><span className="sr-only">Controls</span></th>
+              </tr></thead>
+              <tbody>{visibleVendors.map(v => (
+                <tr key={v.slug} className={selected.includes(v.slug) ? "row-selected" : ""}>
+                  <td className="pick-cell"><input type="checkbox" aria-label={`Select ${v.label}`} checked={selected.includes(v.slug)} onChange={e => toggleSelected(v.slug, e.target.checked)} /></td>
+                  <td className="portal-cell"><div className="portal-identity"><span className={`portal-mark tone-${v.slug.length % 4}`} aria-hidden="true">{portalInitials(v.label)}</span><div><strong>{v.label}</strong><span className={`portal-caption ${v.active_today ? "rotation-label" : ""}`}>{v.active_today ? "In today’s rotation" : "Staffing portal"}</span></div></div></td>
+                  <td className={`numeric count-cell ${v.latest_count ? "has-jobs" : "zero"}`}><span>{v.latest_count ?? "—"}</span></td>
+                  <td className="numeric today-column">{v.today_count ?? "—"}</td>
+                  <td className="updated-column"><span>{v.latest_modified ? formatPostedDate(v.latest_modified.split(" ")[0]) : "Not run yet"}</span>{v.latest_modified && <small>{v.latest_modified.split(" ")[1]}</small>}</td>
                   <td className="controls-cell">
-                    {v.open_running && (
-                      <button className="warn" disabled={busy} onClick={() => stopOpenVendor(v.slug)}>Stop</button>
-                    )}
-                    <button disabled={!v.latest_count} onClick={() => openJobsPanel(v.slug, v.label)}>Jobs</button>
-                    {v.slug === "teksystems" && <button
-                      disabled={busy || aiCleaning || Boolean(activeScrape) || !allDaysSupported}
-                      title="Scrape TEKsystems across all posting dates, keeping your keywords and ignored titles"
-                      onClick={() => scrape("teksystems_all_days")}>All Days</button>}
+                    {v.open_running && <button className="warn" disabled={busy} onClick={() => stopOpenVendor(v.slug)}>Stop</button>}
+                    {v.slug === "teksystems" && <button className="text-action all-days" disabled={busy || aiCleaning || Boolean(activeScrape) || !allDaysSupported} title="Scrape TEKsystems across all posting dates, keeping your keywords and ignored titles" onClick={() => scrape("teksystems_all_days")}>All Days</button>}
+                    <button className="jobs-action" disabled={!v.latest_count} onClick={event => openJobsPanel(v.slug, v.label, event)}>Jobs<Icon name="chevron" size={13} /></button>
                   </td>
                 </tr>
               ))}</tbody>
             </table>
+            {!loaded && !error && <div className="directory-empty" role="status">Loading your portals…</div>}
+            {loaded && !visibleVendors.length && <div className="directory-empty"><h3>No portals in this view</h3><p>Try a different name or return to all portals.</p><button onClick={() => { setPortalQuery(""); setPortalFilter("all"); }}>Clear filters</button></div>}
           </div>
-          <div className="log">{renderRunLog()}</div>
+          <div className="directory-footer"><span>Matching results still need C2C confirmation.</span><button className="text-action" disabled={busy || aiCleaning || Boolean(activeScrape) || !vendors.length} onClick={aiCleanAllPortals}>Check All Portals with AI</button></div>
+          <details className="run-activity" open={Boolean(activeScrape) || undefined}>
+            <summary><span className={`status-dot ${activeScrape ? "running" : ""}`} />{activeScrape ? "Scrape in progress" : latestRun ? `Last run: ${latestRun.status}` : "Run activity"}<span className="activity-hint">{activeScrape ? "Live output" : "View log"}</span></summary>
+            <pre className="log">{renderRunLog()}</pre>
+          </details>
         </section>
+        <aside className={`criteria ${criteriaOpen ? "expanded" : ""}`} aria-label="Search criteria">
+          <button className="criteria-toggle" aria-expanded={criteriaOpen} onClick={() => setCriteriaOpen(!criteriaOpen)}>Search criteria{dirty ? " · Unsaved" : ""} <span>{criteriaOpen ? "Hide" : "Edit"}</span></button>
+          <div className="criteria-content">
+            <div className="criteria-heading"><h2>Search setup</h2><span className={dirty ? "unsaved" : ""}>{!dirty && <Icon name="check" size={12} />}{dirty ? "Unsaved" : "Saved"}</span></div>
+
+
+            <label>Keywords<textarea aria-label="Keywords" spellCheck="false" value={keywordsText} onChange={e => { setKeywordsText(e.target.value); setDirty(true); }} /><small>One search phrase per line.</small></label>
+            <label>Ignore Titles<textarea aria-label="Ignore Titles" spellCheck="false" placeholder="e.g. junior, project manager" value={ignoreTitlesText} onChange={e => { setIgnoreTitlesText(e.target.value); setDirty(true); }} /><small>Titles containing these phrases are skipped.</small></label>
+            <label>Posted within days<input aria-label="Posted within days" type="number" min="0" step="1" value={config.posted_within_days ?? 4} onChange={e => setConfigValue("posted_within_days", Number(e.target.value || 0))} /><small>Use 0 for any date.</small></label>
+            <section className="selected-portals"><div><h2>Portals</h2><button className="text-action" onClick={() => setView("portals")}>Manage</button></div><p>{selected.length} of {vendors.length} selected</p>{vendors.filter(v => selected.includes(v.slug)).map(v => <label key={v.slug}><input type="checkbox" checked onChange={() => toggleSelected(v.slug, false)} />{v.label}</label>)}{!selected.length && <p>Select portals in the Portals tab.</p>}</section>
+            <details className="opening-settings">
+              <summary>Advanced options · Browser opening settings</summary>
+              <div className="form-grid">
+                <label>Open limit<input type="number" min="0" step="1" value={config.open_limit ?? 8} onChange={e => setConfigValue("open_limit", Number(e.target.value || 0))} /></label>
+                <label>Start at<input type="number" min="1" step="1" value={config.start_at ?? 1} onChange={e => setConfigValue("start_at", Number(e.target.value || 1))} /></label>
+                <label className="full-field">Keep open minutes<input type="number" min="1" step="1" value={config.keep_open_minutes ?? 60} onChange={e => setConfigValue("keep_open_minutes", Number(e.target.value || 60))} /></label>
+              </div>
+            </details>
+            <button className="save-controls" disabled={!dirty || busy} onClick={() => saveConfig().catch(e => setError(e.message))}>Save Controls<Icon name="check" size={15} /></button><button className="primary run-search" disabled={!loaded || !selected.length || busy || Boolean(activeScrape)} onClick={() => scrape("selected", selected)}><Icon name="search" />Run search</button><p className="criteria-footnote">Filters apply to portals that support them. C2C eligibility needs confirmation in each posting.</p>
+          </div>
+        </aside>
       </main>
 
+      </div>
       {jobsPanel.open && <div className="jobs-backdrop" onClick={closeJobsPanel} />}
-      <aside className={`jobs-panel ${jobsPanel.open ? "open" : ""}`}>
+      <aside ref={drawer} role="dialog" aria-modal="true" aria-label={`${jobsPanel.vendor || "Portal"} jobs`} aria-hidden={!jobsPanel.open} className={`jobs-panel ${jobsPanel.open ? "open" : ""} ${pointerOpening.current ? "" : "no-motion"}`}>
         <div className="jobs-panel-header">
           <h2>{jobsPanel.vendor || "Jobs"}</h2>
-          <button className="jobs-panel-close" onClick={closeJobsPanel} aria-label="Close jobs panel">×</button>
+          <button className="jobs-panel-close" onClick={closeJobsPanel} aria-label="Close jobs panel">Close</button>
         </div>
         <div className="jobs-panel-sub">{jobsPanel.loading ? "Loading..." : jobsPanel.error ? `Error: ${jobsPanel.error}` : `${jobsPanel.jobs.length} job${jobsPanel.jobs.length === 1 ? "" : "s"}`}</div>
         {!jobsPanel.loading && !jobsPanel.error && jobsPanel.jobs.length > 0 && (
@@ -469,9 +537,9 @@ export default function App() {
                     onChange={(e) => toggleJobSelected(jobId, e.target.checked)}
                     aria-label={`Select ${job.title || "job"}`}
                   />
-                  <button className="job-title-btn" onClick={() => toggleExpandedJob(jobId)}>
+                  <button className="job-title-btn" aria-expanded={isExpanded} onClick={() => toggleExpandedJob(jobId)}>
                     <span className="job-title">{job.title || "(untitled)"}</span>
-                    <span className="job-chevron">{isExpanded ? "−" : "+"}</span>
+                    <span className="job-chevron">{isExpanded ? "Hide" : "Details"}</span>
                   </button>
                 </div>
                 {isExpanded && (
@@ -480,7 +548,7 @@ export default function App() {
                       {job.location && <span>{job.location}</span>}
                       {job.employment_type && <span>{job.employment_type}</span>}
                       {job.salary && <span>{job.salary}</span>}
-                      {job.posted_date && <span>{job.posted_date}</span>}
+                      {job.posted_date && <span>{formatPostedDate(job.posted_date)}</span>}
                     </div>
                     <p className="job-description">{job.description_snippet || "No description available."}</p>
                     {job.job_url && (

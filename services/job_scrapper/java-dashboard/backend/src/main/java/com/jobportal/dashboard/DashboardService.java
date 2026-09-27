@@ -31,7 +31,8 @@ public class DashboardService {
   private final ObjectMapper mapper = new ObjectMapper();
   private final Path root = Path.of("").toAbsolutePath().resolve("..").resolve("..").normalize();
   private final String pythonBin = resolvePython();
-  private final Path configPath = root.resolve("job_portal_dashboard_config.json");
+  private final Path stateRoot = Path.of(System.getProperty("dashboard.state", root.toString()));
+  private final Path configPath = stateRoot.resolve("job_portal_dashboard_config.json");
   private final ExecutorService runner = Executors.newSingleThreadExecutor();
   private final AtomicBoolean running = new AtomicBoolean(false);
   private String activeRunId = "";
@@ -52,20 +53,49 @@ public class DashboardService {
       new Vendor("experis", "Experis", "experis_applying_script", "experis_scraper.py", "experis_open_jobs.py", "experis", "append", "max-pages", 3),
       new Vendor("brooksource", "Brooksource", "brooksource_applying_script", "brooksource_scraper.py", "brooksource_open_jobs.py", "brooksource", "none", "", 0),
       new Vendor("kellymitchell", "KellyMitchell", "kellymitchell_applying_script", "kellymitchell_scraper.py", "kellymitchell_open_jobs.py", "kellymitchell", "append", "jobs-per-page", 50),
-      new Vendor("mitchellmartin", "Mitchell Martin", "mitchellmartin_applying_script", "mitchellmartin_scraper.py", "mitchellmartin_open_jobs.py", "mitchellmartin", "append", "max-jobs", 40),
+      new Vendor("mitchellmartin", "Mitchell Martin", "mitchellmartin_applying_script", "mitchellmartin_scraper.py", "mitchellmartin_open_jobs.py", "mitchellmartin", "none", "max-jobs", 40),
       new Vendor("cbts", "CBTS", "cbts_applying_script", "cbts_scraper.py", "cbts_open_jobs.py", "cbts", "file", "", 0),
-      new Vendor("roberthalf", "Robert Half", "roberthalf_applying_script", "roberthalf_scraper.py", "roberthalf_open_jobs.py", "roberthalf", "file", "", 0),
+      new Vendor("roberthalf", "Robert Half", "roberthalf_applying_script", "roberthalf_scraper.py", "roberthalf_open_jobs.py", "roberthalf", "file", "max-pages", 3),
       new Vendor("kforce", "Kforce", "kforce_applying_script", "kforce_scraper.py", "kforce_open_jobs.py", "kforce", "file", "", 0),
-      new Vendor("insightglobal", "Insight Global", "insightglobal_applying_script", "insightglobal_scraper.py", "insightglobal_open_jobs.py", "insightglobal", "append", "", 0)
+      new Vendor("insightglobal", "Insight Global", "insightglobal_applying_script", "insightglobal_scraper.py", "insightglobal_open_jobs.py", "insightglobal", "append", "", 0),
+      new Vendor("artech", "Artech", "artech_applying_script", "artech_scraper.py", "artech_open_jobs.py", "artech", "append", "max-pages", 3),
+      new Vendor("ccsglobaltech", "CCS Global Tech", "ccsglobaltech_applying_script", "ccsglobaltech_scraper.py", "ccsglobaltech_open_jobs.py", "ccsglobaltech", "append", "", 0),
+      new Vendor("diverselynx", "Diverse Lynx", "diverselynx_applying_script", "diverselynx_scraper.py", "diverselynx_open_jobs.py", "diverselynx", "append", "", 0),
+      new Vendor("ettaingroup", "Ettain Group", "ettaingroup_applying_script", "ettaingroup_scraper.py", "ettaingroup_open_jobs.py", "ettaingroup", "append", "", 0),
+      new Vendor("harveynash", "Harvey Nash", "harveynash_applying_script", "harveynash_scraper.py", "harveynash_open_jobs.py", "harveynash", "append", "", 0),
+      new Vendor("hays", "Hays", "hays_applying_script", "hays_scraper.py", "hays_open_jobs.py", "hays", "append", "", 0),
+      new Vendor("inspyr", "INSPYR Solutions", "inspyr_applying_script", "inspyr_scraper.py", "inspyr_open_jobs.py", "inspyr", "append", "", 0),
+      new Vendor("matlensilver", "Matlen Silver", "matlensilver_applying_script", "matlensilver_scraper.py", "matlensilver_open_jobs.py", "matlensilver", "append", "", 0),
+      new Vendor("motionrecruitment", "Motion Recruitment", "motionrecruitment_applying_script", "motionrecruitment_scraper.py", "motionrecruitment_open_jobs.py", "motionrecruitment", "append", "", 0),
+      new Vendor("nttdata", "NTT DATA", "nttdata_applying_script", "nttdata_scraper.py", "nttdata_open_jobs.py", "nttdata", "append", "", 0),
+      new Vendor("oliverjames", "Oliver James", "oliverjames_applying_script", "oliverjames_scraper.py", "oliverjames_open_jobs.py", "oliverjames", "append", "", 0),
+      new Vendor("optomi", "Optomi", "optomi_applying_script", "optomi_scraper.py", "optomi_open_jobs.py", "optomi", "append", "", 0),
+      new Vendor("opensystemstechnologies", "Open Systems Technologies", "opensystemstechnologies_applying_script", "opensystemstechnologies_scraper.py", "opensystemstechnologies_open_jobs.py", "opensystemstechnologies", "append", "", 0),
+      new Vendor("ptrglobal", "PTR Global", "ptrglobal_applying_script", "ptrglobal_scraper.py", "ptrglobal_open_jobs.py", "ptrglobal", "append", "", 0),
+      new Vendor("pyramidconsulting", "Pyramid Consulting", "pyramidconsulting_applying_script", "pyramidconsulting_scraper.py", "pyramidconsulting_open_jobs.py", "pyramidconsulting", "append", "", 0),
+      new Vendor("strategicstaffing", "Strategic Staffing Solutions", "strategicstaffing_applying_script", "strategicstaffing_scraper.py", "strategicstaffing_open_jobs.py", "strategicstaffing", "append", "", 0),
+      new Vendor("vaco", "Vaco", "vaco_applying_script", "vaco_scraper.py", "vaco_open_jobs.py", "vaco", "append", "", 0),
+      new Vendor("venturigroup", "Venturi Group", "venturigroup_applying_script", "venturigroup_scraper.py", "venturigroup_open_jobs.py", "venturigroup", "append", "", 0)
   );
-
   private final List<List<String>> pairs = List.of(
-      List.of("teksystems", "apexsystems"), List.of("judgegroup", "beaconhill"),
-      List.of("akkodis", "randstad"), List.of("eliassen", "experis"),
-      List.of("brooksource", "kellymitchell"), List.of("mitchellmartin", "cbts"),
-      List.of("roberthalf", "kforce"), List.of("insightglobal", "teksystems")
+      List.of("teksystems", "apexsystems"),
+      List.of("judgegroup", "beaconhill"),
+      List.of("akkodis", "randstad"),
+      List.of("eliassen", "experis"),
+      List.of("brooksource", "kellymitchell"),
+      List.of("mitchellmartin", "cbts"),
+      List.of("roberthalf", "kforce"),
+      List.of("insightglobal", "artech"),
+      List.of("ccsglobaltech", "diverselynx"),
+      List.of("ettaingroup", "harveynash"),
+      List.of("hays", "inspyr"),
+      List.of("matlensilver", "motionrecruitment"),
+      List.of("nttdata", "oliverjames"),
+      List.of("optomi", "opensystemstechnologies"),
+      List.of("ptrglobal", "pyramidconsulting"),
+      List.of("strategicstaffing", "vaco"),
+      List.of("venturigroup", "teksystems")
   );
-
   public Map<String, Object> getConfigPayload() {
     return Map.of("config", loadConfig(), "vendors", vendorStatus(), "rotation", rotationPreview());
   }
@@ -84,8 +114,8 @@ public class DashboardService {
   }
 
   public synchronized Map<String, Object> scrape(Map<String, Object> payload) {
-    if (!running.compareAndSet(false, true)) return Map.of("ok", false, "error", "A scrape is already running.");
     Map<String, Object> config = loadConfig();
+    if (!running.compareAndSet(false, true)) return Map.of("ok", false, "error", "A scrape is already running.");
     String mode = String.valueOf(payload.getOrDefault("mode", "selected"));
     List<String> slugs;
     if ("teksystems_all_days".equals(mode)) {
@@ -108,6 +138,10 @@ public class DashboardService {
     run.put("finished_at", "");
     run.put("vendors", slugs);
     run.put("steps", new java.util.concurrent.CopyOnWriteArrayList<Map<String, Object>>());
+    // Retain recent history without accumulating every run for the process lifetime.
+    runs.values().stream().filter(r -> !"running".equals(r.get("status")) && !"stopping".equals(r.get("status")))
+        .sorted(Comparator.comparing(r -> String.valueOf(r.get("started_at")), Comparator.reverseOrder()))
+        .skip(49).map(r -> String.valueOf(r.get("id"))).toList().forEach(runs::remove);
     runs.put(runId, run);
     activeRunId = runId;
     stopRequested = false;
@@ -147,7 +181,7 @@ public class DashboardService {
   }
 
   private Path aiHiddenPath(Vendor v) {
-    return root.resolve(v.folder()).resolve(".dashboard_ai_hidden.json");
+    return stateRoot.resolve(v.slug() + "_ai_hidden.json");
   }
 
   private java.util.Set<String> loadAiHidden(Vendor v) {
@@ -162,7 +196,7 @@ public class DashboardService {
   }
 
   private void saveAiHidden(Vendor v, java.util.Set<String> ids) throws IOException {
-    Files.writeString(aiHiddenPath(v), mapper.writeValueAsString(new ArrayList<>(ids)), StandardCharsets.UTF_8);
+    atomicWrite(aiHiddenPath(v), mapper.writeValueAsString(new ArrayList<>(ids)));
   }
 
   private String jobKey(Map<String, Object> job) {
@@ -217,7 +251,7 @@ public class DashboardService {
   }
 
   private List<Map<String, Object>> loadLatestJobs(Vendor v) throws IOException {
-    Path out = root.resolve(v.folder()).resolve("output");
+    Path out = stateRoot.resolve(v.folder()).resolve("output");
     Path latest = null;
     if (Files.exists(out)) {
       try (Stream<Path> stream = Files.list(out)) {
@@ -544,21 +578,14 @@ public class DashboardService {
             p = pb.start();
             activeScrapers.put(slug, p);
           }
-          String output;
-          int code;
-          try (InputStream in = p.getInputStream()) {
-            output = new String(in.readAllBytes(), StandardCharsets.UTF_8).trim();
-          }
-          try {
-            code = p.waitFor();
-          } finally {
-            p.destroy();
-          }
+          ProcessRunner.Result result = ProcessRunner.collect(p, 900);
+          String output = result.output();
+          int code = result.exitCode();
           if (code == 0 && "teksystems_all_days".equals(runs.get(runId).get("kind"))) {
             Map<String, Object> latest = vendorStatus(v);
             String file = String.valueOf(latest.get("latest_file"));
             if (!file.isBlank()) {
-              Path path = root.resolve(file);
+              Path path = stateRoot.resolve(file);
               List<Map<String, Object>> jobs = mapper.readValue(Files.readString(path), new TypeReference<>() {});
               jobs.forEach(job -> job.put("dashboard_all_days", true));
               Files.writeString(path, mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jobs));
@@ -592,11 +619,28 @@ public class DashboardService {
       try {
         Map<String, Object> in = mapper.readValue(Files.readString(configPath), new TypeReference<>() {});
         defaults.putAll(in);
-      } catch (Exception ignored) {}
+      } catch (Exception e) {
+        throw new IllegalStateException("Saved search settings could not be read. Restore the configuration file from backup.", e);
+      }
     }
     defaults.put("keywords", normalizeKeywords(defaults.get("keywords")));
     defaults.put("ignore_titles", normalizeKeywords(defaults.get("ignore_titles")));
     return defaults;
+  }
+
+  private static void atomicWrite(Path target, String contents) throws IOException {
+    Files.createDirectories(target.toAbsolutePath().getParent());
+    Path temporary = Files.createTempFile(target.toAbsolutePath().getParent(), ".dashboard-", ".tmp");
+    try {
+      Files.writeString(temporary, contents, StandardCharsets.UTF_8);
+      try {
+        Files.move(temporary, target, java.nio.file.StandardCopyOption.ATOMIC_MOVE, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+      } catch (java.nio.file.AtomicMoveNotSupportedException e) {
+        Files.move(temporary, target, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+      }
+    } finally {
+      Files.deleteIfExists(temporary);
+    }
   }
 
   private void writeConfig(Map<String, Object> config) {
@@ -605,7 +649,7 @@ public class DashboardService {
       clean.putAll(config);
       clean.put("keywords", normalizeKeywords(clean.get("keywords")));
       clean.put("ignore_titles", normalizeKeywords(clean.get("ignore_titles")));
-      Files.writeString(configPath, mapper.writerWithDefaultPrettyPrinter().writeValueAsString(clean), StandardCharsets.UTF_8);
+      atomicWrite(configPath, mapper.writerWithDefaultPrettyPrinter().writeValueAsString(clean));
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
@@ -664,11 +708,12 @@ public class DashboardService {
   }
 
   private Map<String, Object> vendorStatus(Vendor v) {
-    Path out = root.resolve(v.folder()).resolve("output");
+    Path out = stateRoot.resolve(v.folder()).resolve("output");
     Path latest = null;
     int count = 0;
     int todayCount = 0;
     String modified = "";
+    String readError = "";
     try {
       if (Files.exists(out)) {
         try (Stream<Path> stream = Files.list(out)) {
@@ -686,11 +731,14 @@ public class DashboardService {
           modified = TS.format(LocalDateTime.ofEpochSecond(latest.toFile().lastModified() / 1000, 0, java.time.ZoneOffset.UTC));
         }
       }
-    } catch (Exception ignored) {}
+    } catch (Exception e) {
+      readError = "Saved portal results could not be read. Run this portal again.";
+    }
     Map<String, Object> m = new HashMap<>();
+    m.put("error", readError);
     m.put("slug", v.slug());
     m.put("label", v.label());
-    m.put("latest_file", latest == null ? "" : root.relativize(latest).toString());
+    m.put("latest_file", latest == null ? "" : stateRoot.relativize(latest).toString());
     m.put("latest_count", count);
     m.put("today_count", todayCount);
     m.put("latest_modified", modified);
@@ -733,9 +781,12 @@ public class DashboardService {
 
   private List<String> scrapeCommand(Vendor v, Map<String, Object> config) throws IOException {
     List<String> cmd = new ArrayList<>(List.of(pythonBin, root.resolve(v.folder()).resolve(v.scraper()).toString(), "--posted-within-days", String.valueOf(config.getOrDefault("posted_within_days", 4))));
+    Files.createDirectories(stateRoot.resolve(v.folder()).resolve("output"));
+    cmd.add("--out-dir");
+    cmd.add(stateRoot.resolve(v.folder()).resolve("output").toString());
     List<String> keywords = normalizeKeywords(config.get("keywords"));
     if ("file".equals(v.termsMode())) {
-      Path terms = root.resolve(v.folder()).resolve(".dashboard_terms.txt");
+      Path terms = stateRoot.resolve(v.folder()).resolve(".dashboard_terms.txt");
       Files.writeString(terms, String.join("\n", keywords) + "\n", StandardCharsets.UTF_8);
       cmd.add("--terms-file");
       cmd.add(terms.toString());
@@ -754,7 +805,7 @@ public class DashboardService {
     }
     List<String> ignoreTitles = normalizeKeywords(config.get("ignore_titles"));
     if (!ignoreTitles.isEmpty()) {
-      Path ignoreFile = root.resolve(v.folder()).resolve(".dashboard_ignore_titles.txt");
+      Path ignoreFile = stateRoot.resolve(v.folder()).resolve(".dashboard_ignore_titles.txt");
       Files.writeString(ignoreFile, String.join("\n", ignoreTitles) + "\n", StandardCharsets.UTF_8);
       cmd.add("--ignore-titles-file");
       cmd.add(ignoreFile.toString());
@@ -768,6 +819,8 @@ public class DashboardService {
         "--limit", String.valueOf(payload.getOrDefault("limit", config.getOrDefault("open_limit", 8))),
         "--start-at", String.valueOf(payload.getOrDefault("start_at", config.getOrDefault("start_at", 1)))
     ));
+    cmd.add("--out-dir");
+    cmd.add(stateRoot.resolve(v.folder()).resolve("output").toString());
     String openerSource = readOpenerSource(v);
     if (openerSource.contains("keep-open-minutes")) {
       cmd.add("--keep-open-minutes");
@@ -798,6 +851,7 @@ public class DashboardService {
   }
 
   private String resolvePython() {
+    if (System.getProperty("dashboard.python") != null) return System.getProperty("dashboard.python");
     Path venvPython = root.resolve(".venv").resolve("bin").resolve("python3");
     if (Files.exists(venvPython)) return venvPython.toString();
     return "python3";

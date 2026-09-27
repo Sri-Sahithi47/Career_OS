@@ -53,3 +53,29 @@ Known upstream test issue: `test_java_titles_are_excluded` fails in the unchange
 Requests pass through authenticated Career OS endpoints. Each account has separate saved controls, applied marks, seen/click state, and in-memory run history. Successful fresh scrapes are also imported into that account's All Jobs feed, preserving existing Career OS tracking state. Browser-opening and application helpers execute on the machine running the backend, just as in the original local dashboard. Queue submission still requires clicking the existing submission control; merely loading the dashboard never applies to jobs.
 
 The original dashboard's applied badges retain their original two-hour lifetime and are separate from durable Career OS application tracking. Set durable application status in the Career OS job feed. Legacy dashboard run details are in memory and reset on server restart; the simpler `/api/portals` API retains its persisted run history.
+
+## Redesigned scraper workspace (b143a3f)
+
+The default **Job Scraper** screen now embeds the React UI from
+`services/job_scrapper/java-dashboard/frontend`, rather than the older Python HTML.
+Its upstream Java service provides job drawers, ignored-title filters, AI cleanup
+and undo, selected URL opening, scrape cancellation, and TEKsystems All Days.
+The integrated Java registry and rotation include all 33 Python portals; the button
+count comes from the returned registry. **Legacy application controls** retains the
+older Judge/application actions in a separate view.
+
+Install Java 17+ and Maven alongside the existing Python/Node dependencies, then run
+`bash scripts/build-scraper.sh` (also run automatically by `dev.sh`). The API lazily
+starts a loopback-only Java process per signed-in account. Its random internal token
+is kept in the server process; the sandboxed iframe sends requests through the
+CareerOS authenticated API. Config and AI-hidden decisions live under ignored
+`data/portal_dashboard/<account>/workspace/`. Initial settings copy the account's old
+scraper settings; subsequent settings in the two views are independent.
+
+The shared scrape lock covers both dashboards. When a Java run finishes, successful
+vendors with fresh output are delivered to its initiating account without replacing
+existing notes or application stages. AI cleanup affects the scraper view; it does
+not delete already imported CareerOS jobs. AI cleanup needs the upstream Claude Code
+CLI and its login, and can incur usage charges. Browser opening acts on this local
+machine. These are local integration behaviors; hosted worker provisioning and
+browser-side opening still need production design before SaaS deployment.
