@@ -377,6 +377,11 @@ def search_jobs(session: requests.Session, term: str, timeout: int) -> List[Dict
     return [job for job in jobs if isinstance(job, dict)]
 
 
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from detail_cache import cached_detail
+
+@cached_detail("akkodis", "job_id")
 def fetch_detail(session: requests.Session, job_id: str, timeout: int) -> Optional[Dict[str, Any]]:
     if not job_id:
         return None
@@ -463,7 +468,7 @@ def scrape_akkodis(
         should_fetch_detail = exclude_disallowed_work or index < max_detail_pages
         if should_fetch_detail:
             try:
-                detail = fetch_detail(session, str(row.get("jobId") or ""), timeout)
+                detail = fetch_detail(session, str(row.get("jobId") or ""), timeout, _cache_hint=row)
             except requests.RequestException as exc:
                 print(f"Detail failed for {row.get('jobId')}: {exc}")
             time.sleep(sleep_seconds)

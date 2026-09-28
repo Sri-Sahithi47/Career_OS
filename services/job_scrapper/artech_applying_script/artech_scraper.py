@@ -13,7 +13,7 @@ from typing import Any, Iterable
 import requests
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from shared_vendor_filters import VendorJob, clean_text, extract_contact_info, filter_and_sort_jobs, parse_posted_date, score_title, write_outputs
+from shared_vendor_filters import VendorJob, clean_text, extract_contact_info, filter_and_sort_jobs, load_phrases, parse_posted_date, score_title, write_outputs
 
 
 PORTAL_A = "kvjdnwtsxgckrpsoozx5qc0oueybw1005779v7x6soig8eyqqmzaubfdl9tcx21s"
@@ -84,6 +84,9 @@ def fetch_term(session: requests.Session, headers: dict[str, str], term: str, ti
     return rows
 
 
+from detail_cache import cached_detail
+
+@cached_detail("artech", "job_id")
 def fetch_detail(session: requests.Session, headers: dict[str, str], job_id: str, timeout: int) -> dict[str, Any] | None:
     response = session.get(BASE_URL + f"job/getdetailbyjobid/{job_id}?compid=0", headers=headers, timeout=timeout)
     if response.status_code == 404:
@@ -148,7 +151,7 @@ def normalize(row: dict[str, Any], search_term: str, detail: dict[str, Any] | No
     )
 
 
-def scrape(terms: Iterable[str], posted_within_days: int, exclude_disallowed_work: bool, timeout: int, page_size: int, max_pages: int, max_detail_pages: int, sleep: float) -> list[VendorJob]:
+def scrape(terms: Iterable[str], posted_within_days: int, exclude_disallowed_work: bool, timeout: int, page_size: int, max_pages: int, max_detail_pages: int, sleep: float, ignore_titles: Iterable[str] = ()) -> list[VendorJob]:
     session = requests.Session()
     session.headers.update({"User-Agent": "Mozilla/5.0", "Accept": "application/json", "Referer": PORTAL_URL})
     headers = auth_headers(get_token(session, timeout))
@@ -164,12 +167,12 @@ def scrape(terms: Iterable[str], posted_within_days: int, exclude_disallowed_wor
             seen.add(key)
             detail = None
             if details_fetched < max_detail_pages and job_id:
-                detail = fetch_detail(session, headers, job_id, timeout)
+                detail = fetch_detail(session, headers, job_id, timeout, _cache_hint=row)
                 details_fetched += 1
                 time.sleep(sleep)
             jobs.append(normalize(row, term, detail))
     print(f"Extracted {len(jobs)} unique Artech jobs before filtering")
-    return filter_and_sort_jobs(jobs, posted_within_days, exclude_disallowed_work)
+    return filter_and_sort_jobs(jobs, posted_within_days, exclude_disallowed_work, ignore_titles)
 
 
 def parse_args() -> argparse.Namespace:
@@ -184,6 +187,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--sleep", type=float, default=0.2)
     parser.add_argument("--out-dir", type=Path, default=Path(__file__).resolve().parent / "output")
     parser.add_argument("--no-excel", action="store_true")
+    parser.add_argument("--ignore-titles-file", type=Path, default=None)
     return parser.parse_args()
 
 
@@ -198,6 +202,7 @@ def main() -> int:
         args.max_pages,
         args.max_detail_pages,
         args.sleep,
+        load_phrases(args.ignore_titles_file),
     )
     write_outputs("artech", jobs, args.out_dir, args.posted_within_days, args.no_excel)
     return 0

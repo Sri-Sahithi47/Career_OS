@@ -76,6 +76,18 @@ def normalize(row: dict[str, Any], search_term: str) -> VendorJob:
         url, url, extract_contact_info(raw_text), raw_text[:900], raw_text)
 
 
+from detail_cache import cached_detail
+
+@cached_detail("insightglobal", "key")
+def fetch_detail(session, key, timeout):
+    response = session.get(f"{API_URL}/{key}/details", timeout=timeout)
+    response.raise_for_status()
+    detail = response.json()
+    if not isinstance(detail, dict) or not isinstance(detail.get("description"), str):
+        raise ValueError(f"Insight Global: missing description for {key}")
+    return detail
+
+
 def scrape(terms: Iterable[str], posted_within_days: int, exclude_disallowed_work: bool, timeout: int, ignore_titles: Iterable[str] = ()) -> list[VendorJob]:
     seen: set[str] = set()
     jobs: list[VendorJob] = []
@@ -90,11 +102,7 @@ def scrape(terms: Iterable[str], posted_within_days: int, exclude_disallowed_wor
                 # the requested date window before applying content-based filters.
                 if not is_within_posted_days(row.get("postedDate"), posted_within_days):
                     continue
-                response = session.get(f"{API_URL}/{key}/details", timeout=timeout)
-                response.raise_for_status()
-                detail = response.json()
-                if not isinstance(detail, dict) or not isinstance(detail.get("description"), str):
-                    raise ValueError(f"Insight Global: missing description for {key}")
+                detail = fetch_detail(session, key, timeout, _cache_hint=row)
                 jobs.append(normalize({**row, "description": detail["description"]}, term))
     print(f"Extracted {len(jobs)} unique Insight Global jobs before filtering")
     return filter_and_sort_jobs(jobs, posted_within_days, exclude_disallowed_work, ignore_titles)

@@ -351,6 +351,11 @@ def parse_search_rows(soup: BeautifulSoup) -> list[dict[str, str]]:
     return rows
 
 
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from detail_cache import cached_detail
+
+@cached_detail("cbts", "job_id")
 def fetch_job_detail(session: requests.Session, job_id: str, timeout: int) -> dict[str, str]:
     url = f"{JOBBOARD_SEARCH}?JobId={job_id}"
     response = session.get(url, timeout=timeout)
@@ -514,7 +519,7 @@ def scrape_cbts(
 
     for term, row in all_rows:
         try:
-            detail = fetch_job_detail(session, row["job_id"], timeout)
+            detail = fetch_job_detail(session, row["job_id"], timeout, _cache_hint=row)
         except requests.RequestException as exc:
             print(f"Detail failed for {row['job_id']}: {exc}")
             detail = {}

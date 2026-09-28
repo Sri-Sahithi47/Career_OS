@@ -53,7 +53,7 @@ public class DashboardService {
       new Vendor("experis", "Experis", "experis_applying_script", "experis_scraper.py", "experis_open_jobs.py", "experis", "append", "max-pages", 3),
       new Vendor("brooksource", "Brooksource", "brooksource_applying_script", "brooksource_scraper.py", "brooksource_open_jobs.py", "brooksource", "none", "", 0),
       new Vendor("kellymitchell", "KellyMitchell", "kellymitchell_applying_script", "kellymitchell_scraper.py", "kellymitchell_open_jobs.py", "kellymitchell", "append", "jobs-per-page", 50),
-      new Vendor("mitchellmartin", "Mitchell Martin", "mitchellmartin_applying_script", "mitchellmartin_scraper.py", "mitchellmartin_open_jobs.py", "mitchellmartin", "none", "max-jobs", 40),
+      new Vendor("mitchellmartin", "Mitchell Martin", "mitchellmartin_applying_script", "mitchellmartin_scraper.py", "mitchellmartin_open_jobs.py", "mitchellmartin", "append", "max-jobs", 40),
       new Vendor("cbts", "CBTS", "cbts_applying_script", "cbts_scraper.py", "cbts_open_jobs.py", "cbts", "file", "", 0),
       new Vendor("roberthalf", "Robert Half", "roberthalf_applying_script", "roberthalf_scraper.py", "roberthalf_open_jobs.py", "roberthalf", "file", "max-pages", 3),
       new Vendor("kforce", "Kforce", "kforce_applying_script", "kforce_scraper.py", "kforce_open_jobs.py", "kforce", "file", "", 0),
@@ -115,20 +115,29 @@ public class DashboardService {
 
   public synchronized Map<String, Object> scrape(Map<String, Object> payload) {
     Map<String, Object> config = loadConfig();
-    if (!running.compareAndSet(false, true)) return Map.of("ok", false, "error", "A scrape is already running.");
+    config.put("force_refresh", Boolean.TRUE.equals(payload.get("force_refresh")));
+    if (running.get()) return Map.of("ok", false, "error", "A scrape is already running.");
+    if (payload.containsKey("vendors") && !(payload.get("vendors") instanceof List<?>))
+      return Map.of("ok", false, "error", "Vendors must be a list.");
     String mode = String.valueOf(payload.getOrDefault("mode", "selected"));
     List<String> slugs;
     if ("teksystems_all_days".equals(mode)) {
       slugs = List.of("teksystems");
       config.put("posted_within_days", 0);
+      config.put("portal_days", Map.of());
     }
     else if ("all".equals(mode)) slugs = vendors.stream().map(Vendor::slug).toList();
     else if ("today".equals(mode)) slugs = activePair(LocalDate.now());
     else slugs = ((List<?>) payload.getOrDefault("vendors", List.of())).stream().map(String::valueOf).filter(this::isKnownVendor).toList();
+    if (Boolean.TRUE.equals(payload.get("refresh_today"))) {
+      config.put("posted_within_days", 1);
+      config.put("portal_days", Map.of());
+    }
     if (slugs.isEmpty()) {
       running.set(false);
       return Map.of("ok", false, "error", "No vendors selected.");
     }
+    running.set(true);
     String runId = UUID.randomUUID().toString().replace("-", "").substring(0, 14);
     Map<String, Object> run = new ConcurrentHashMap<>();
     run.put("id", runId);
@@ -239,11 +248,13 @@ public class DashboardService {
     return Map.of("ok", true, "opened", urls.size());
   }
 
-  public Map<String, Object> resetAiHidden(String slug) {
+  public synchronized Map<String, Object> resetAiHidden(String slug) {
     Vendor v = findVendor(slug);
     if (v == null) return Map.of("ok", false, "error", "Unknown vendor.");
     try {
       Files.deleteIfExists(aiHiddenPath(v));
+      Files.deleteIfExists(stateRoot.resolve(v.slug() + "_ai_decisions.json"));
+      Files.deleteIfExists(stateRoot.resolve(v.slug() + "_ai_reviewed.json"));
     } catch (IOException e) {
       return Map.of("ok", false, "error", "Failed to clear AI filter: " + e.getMessage());
     }
@@ -305,7 +316,6 @@ public class DashboardService {
       return Map.of("ok", false, "error", "Failed to read jobs: " + e.getMessage());
     }
     jobs = filterConfiguredJobs(jobs, v);
-    jobs = filterAiHidden(jobs, loadAiHidden(v));
     if (jobs.isEmpty()) {
       return Map.of("ok", true, "vendor", v.label(), "jobs", jobs, "removed_count", 0, "reviewed_count", 0);
     }
@@ -315,11 +325,27 @@ public class DashboardService {
     java.util.Set<String> hidden = new java.util.HashSet<>(loadAiHidden(v));
     List<Map<String, Object>> kept = new ArrayList<>();
     List<Map<String, Object>> forModel = new ArrayList<>();
+    Map<String, Boolean> decisions = new HashMap<>();
+    Path decisionPath = stateRoot.resolve(v.slug() + "_ai_decisions.json");
+    try {
+      if (Files.exists(decisionPath)) decisions = mapper.readValue(Files.readString(decisionPath), new TypeReference<Map<String, Boolean>>() {});
+    } catch (IOException ignored) { /* Corrupt optional cache: classify again. */ }
+    final Map<String, Boolean> cache = decisions;
+    Map<String, Object> criteria = loadConfig();
+    String context = mapperSafeJson(List.of("title-review-v1", normalizeKeywords(criteria.get("keywords")), normalizeKeywords(criteria.get("ignore_titles"))));
+    int cachedCount = 0;
     int ruleRemoved = 0;
     for (Map<String, Object> job : jobs) {
-      if (hardBlocked(String.valueOf(job.getOrDefault("title", "")))) {
+      String cacheKey = aiDecisionKey(context, job);
+      hidden.remove(jobKey(job));
+      if (cache.get(cacheKey) != null) {
+        cachedCount++;
+        if (Boolean.TRUE.equals(cache.get(cacheKey))) { hidden.add(jobKey(job)); ruleRemoved++; }
+        else kept.add(job);
+      } else if (hardBlocked(String.valueOf(job.getOrDefault("title", "")))) {
         hidden.add(jobKey(job));
         ruleRemoved++;
+        cache.put(cacheKey, true);
       } else {
         forModel.add(job);
       }
@@ -344,6 +370,7 @@ public class DashboardService {
           return Map.of("ok", false, "error", "AI cleanup failed: " + e.getMessage());
         }
         for (int i = 0; i < batch.size(); i++) {
+          cache.put(aiDecisionKey(context, batch.get(i)), drop.contains(i));
           if (drop.contains(i)) {
             hidden.add(jobKey(batch.get(i)));
             aiRemoved++;
@@ -355,7 +382,9 @@ public class DashboardService {
     }
 
     try {
+      atomicWrite(decisionPath, mapper.writeValueAsString(cache));
       saveAiHidden(v, hidden);
+      writeAiReviewManifest(v, jobs);
     } catch (IOException e) {
       return Map.of("ok", false, "error", "Failed to save AI filter: " + e.getMessage());
     }
@@ -364,7 +393,59 @@ public class DashboardService {
         + " (" + ruleRemoved + " by rules, " + aiRemoved + " by AI) in " + (System.currentTimeMillis() - startedAt)
         + "ms, cost $" + String.format("%.3f", costAcc[0]));
     return Map.of("ok", true, "vendor", v.label(), "jobs", kept, "removed_count", removed,
-        "reviewed_count", reviewed, "hidden_count", hidden.size(), "cost_usd", costAcc[0]);
+        "reviewed_count", reviewed, "hidden_count", hidden.size(), "cost_usd", costAcc[0], "cached_count", cachedCount);
+  }
+
+
+
+  private synchronized void writeAiReviewManifest(Vendor v, List<Map<String, Object>> jobs) throws IOException {
+    Path target = stateRoot.resolve(v.slug() + "_ai_reviewed.json");
+    Path decisionsPath = stateRoot.resolve(v.slug() + "_ai_decisions.json");
+    Map<String, Boolean> decisions = new HashMap<>();
+    if (Files.exists(decisionsPath)) decisions = mapper.readValue(Files.readString(decisionsPath), new TypeReference<Map<String, Boolean>>() {});
+    Map<String, Object> config = loadConfig();
+    String context = mapperSafeJson(List.of("title-review-v1", normalizeKeywords(config.get("keywords")), normalizeKeywords(config.get("ignore_titles"))));
+    Map<String, Object> receipts = new HashMap<>();
+    if (Files.exists(target)) {
+      Map<String, Object> previous = mapper.readValue(Files.readString(target), new TypeReference<Map<String, Object>>() {});
+      if (context.equals(previous.get("context")) && previous.get("jobs") instanceof Map<?, ?> saved)
+        saved.forEach((key, value) -> receipts.put(String.valueOf(key), value));
+    }
+    // Older successful reviews stored rejected IDs only. Use them solely when the
+    // review is newer than both the search settings and the exact output file.
+    Path output = stateRoot.resolve(v.folder()).resolve("output");
+    long newestOutput = 0;
+    if (Files.exists(output)) try (Stream<Path> files = Files.list(output)) {
+      newestOutput = files.filter(p -> p.getFileName().toString().startsWith(v.prefix() + "_jobs_") && p.toString().endsWith(".json"))
+          .mapToLong(p -> p.toFile().lastModified()).max().orElse(0);
+    }
+    boolean legacyReviewed = !Files.exists(decisionsPath) && Files.exists(aiHiddenPath(v))
+        && aiHiddenPath(v).toFile().lastModified() >= newestOutput
+        && aiHiddenPath(v).toFile().lastModified() >= configPath.toFile().lastModified();
+    java.util.Set<String> hidden = legacyReviewed
+        ? new java.util.HashSet<>(mapper.readValue(Files.readString(aiHiddenPath(v)), new TypeReference<List<String>>() {}))
+        : loadAiHidden(v);
+    for (Map<String, Object> job : jobs) {
+      String key = aiDecisionKey(context, job);
+      if (decisions.get(key) != null || legacyReviewed) {
+        boolean rejected = decisions.containsKey(key) ? Boolean.TRUE.equals(decisions.get(key)) : hidden.contains(jobKey(job));
+        receipts.put(jobKey(job), Map.of("job", job, "approved", !rejected));
+      }
+    }
+    String content = mapperSafeJson(Map.of("context", context, "jobs", receipts));
+    if (!Files.exists(target) || !Files.readString(target).equals(content)) atomicWrite(target, content);
+  }
+
+  private String mapperSafeJson(Object value) {
+    try { return mapper.writeValueAsString(value); }
+    catch (IOException e) { throw new IllegalStateException(e); }
+  }
+
+  private String aiDecisionKey(String context, Map<String, Object> job) {
+    try {
+      String input = context + mapperSafeJson(new java.util.TreeMap<>(job));
+      return java.util.HexFormat.of().formatHex(java.security.MessageDigest.getInstance("SHA-256").digest(input.getBytes(StandardCharsets.UTF_8)));
+    } catch (java.security.NoSuchAlgorithmException e) { throw new IllegalStateException(e); }
   }
 
   private java.util.Set<Integer> classifyBatch(Path cli, List<String> keywords, List<Map<String, Object>> batch,
@@ -569,6 +650,8 @@ public class DashboardService {
         try {
           List<String> cmd = scrapeCommand(v, config);
           ProcessBuilder pb = new ProcessBuilder(cmd).directory(root.toFile()).redirectErrorStream(true);
+          pb.environment().put("CAREEROS_DETAIL_CACHE", stateRoot.resolve("detail-cache").toString());
+          pb.environment().put("CAREEROS_FORCE_REFRESH", Boolean.TRUE.equals(config.get("force_refresh")) ? "1" : "0");
           Process p;
           synchronized (this) {
             if (stopRequested) {
@@ -702,7 +785,7 @@ public class DashboardService {
     Map<String, Object> config = loadConfig();
     List<String> keywords = normalizeKeywords(config.get("keywords"));
     List<String> ignored = normalizeKeywords(config.get("ignore_titles"));
-    int days = Integer.parseInt(String.valueOf(config.getOrDefault("posted_within_days", 4)));
+    int days = portalDays(vendor, config);
     return jobs.stream().filter(job -> JobFilter.matches(job, keywords, ignored,
         "teksystems".equals(vendor.slug()) && Boolean.TRUE.equals(job.get("dashboard_all_days")) ? 0 : days)).toList();
   }
@@ -724,7 +807,9 @@ public class DashboardService {
         }
         if (latest != null) {
           List<Map<String, Object>> items = mapper.readValue(Files.readString(latest), new TypeReference<>() {});
-          List<Map<String, Object>> visible = filterAiHidden(filterConfiguredJobs(items, v), loadAiHidden(v));
+          List<Map<String, Object>> configured = filterConfiguredJobs(items, v);
+          writeAiReviewManifest(v, configured);
+          List<Map<String, Object>> visible = filterAiHidden(configured, loadAiHidden(v));
           count = visible.size();
           todayCount = (int) visible.stream()
               .filter(job -> LocalDate.now().equals(JobFilter.date(job.get("posted_date")))).count();
@@ -739,6 +824,7 @@ public class DashboardService {
     m.put("slug", v.slug());
     m.put("label", v.label());
     m.put("latest_file", latest == null ? "" : stateRoot.relativize(latest).toString());
+    m.put("results_version", latest == null ? "" : latest.getFileName() + ":" + latest.toFile().lastModified());
     m.put("latest_count", count);
     m.put("today_count", todayCount);
     m.put("latest_modified", modified);
@@ -779,8 +865,16 @@ public class DashboardService {
     return rows;
   }
 
+  private int portalDays(Vendor vendor, Map<String, Object> config) {
+    Object value = config.getOrDefault("posted_within_days", 4);
+    if (config.get("portal_days") instanceof Map<?, ?> overrides && overrides.containsKey(vendor.slug()))
+      value = overrides.get(vendor.slug());
+    try { return Math.max(0, Integer.parseInt(String.valueOf(value))); }
+    catch (NumberFormatException ignored) { return 4; }
+  }
+
   private List<String> scrapeCommand(Vendor v, Map<String, Object> config) throws IOException {
-    List<String> cmd = new ArrayList<>(List.of(pythonBin, root.resolve(v.folder()).resolve(v.scraper()).toString(), "--posted-within-days", String.valueOf(config.getOrDefault("posted_within_days", 4))));
+    List<String> cmd = new ArrayList<>(List.of(pythonBin, root.resolve(v.folder()).resolve(v.scraper()).toString(), "--posted-within-days", String.valueOf(portalDays(v, config))));
     Files.createDirectories(stateRoot.resolve(v.folder()).resolve("output"));
     cmd.add("--out-dir");
     cmd.add(stateRoot.resolve(v.folder()).resolve("output").toString());

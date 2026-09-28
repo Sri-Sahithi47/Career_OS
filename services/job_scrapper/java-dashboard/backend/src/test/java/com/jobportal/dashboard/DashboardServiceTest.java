@@ -47,6 +47,91 @@ class DashboardServiceTest {
     runner.awaitTermination(5, java.util.concurrent.TimeUnit.SECONDS);
   }
 
+
+
+  @Test
+  void refreshTodayOverridesRunDaysWithoutChangingSavedSettings() throws Exception {
+    service.saveConfig(Map.of("posted_within_days", 30, "portal_days", Map.of("teksystems", 14)));
+    Path script = tempDir.resolve("teksystems_applying_script/teksystems_scraper.py");
+    Files.createDirectories(script.getParent());
+    Files.writeString(script, "import sys\nprint('ARGS=' + ' '.join(sys.argv[1:]))\n");
+    var response = service.scrape(Map.of("mode", "selected", "vendors", List.of("teksystems"), "refresh_today", true));
+    Map<String, Map<String, Object>> runs = getField("runs");
+    Map<String, Object> run = runs.get(response.get("run_id"));
+    await().atMost(Duration.ofSeconds(10)).until(() -> !"running".equals(run.get("status")));
+    assertThat(run.get("steps").toString()).contains("--posted-within-days 1 ");
+    Map<?, ?> config = (Map<?, ?>) service.getConfigPayload().get("config");
+    assertThat(config.get("posted_within_days")).isEqualTo(30);
+    assertThat(((Map<?, ?>) config.get("portal_days")).get("teksystems")).isEqualTo(14);
+  }
+
+  @Test
+  void legacyReviewOnlyApprovesTheExactAlreadyReviewedOutput() throws Exception {
+    service.saveConfig(Map.of("keywords", List.of("java"), "ignore_titles", List.of(), "posted_within_days", 0));
+    Path output = tempDir.resolve("teksystems_applying_script/output");
+    Files.createDirectories(output);
+    Path result = output.resolve("teksystems_jobs_test.json");
+    Files.writeString(result, "[{\"job_id\":\"keep\",\"title\":\"Java Developer\"},{\"job_id\":\"drop\",\"title\":\"Java Engineer\"}]");
+    service.getStatusPayload();
+    var mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+    Path manifest = tempDir.resolve("teksystems_ai_reviewed.json");
+    assertThat(mapper.readTree(Files.readString(manifest)).get("jobs").size()).isZero();
+    Path hidden = tempDir.resolve("teksystems_ai_hidden.json");
+    Files.writeString(hidden, "[\"job_id:drop\"]");
+    Files.setLastModifiedTime(hidden, java.nio.file.attribute.FileTime.fromMillis(System.currentTimeMillis() + 10000));
+    service.getStatusPayload();
+    var receipts = mapper.readTree(Files.readString(manifest)).get("jobs");
+    assertThat(receipts.get("job_id:keep").get("approved").asBoolean()).isTrue();
+    assertThat(receipts.get("job_id:drop").get("approved").asBoolean()).isFalse();
+    Files.writeString(result, "[{\"job_id\":\"new\",\"title\":\"Java Developer\"}]");
+    Files.setLastModifiedTime(result, java.nio.file.attribute.FileTime.fromMillis(System.currentTimeMillis() + 20000));
+    service.getStatusPayload();
+    assertThat(mapper.readTree(Files.readString(manifest)).get("jobs").has("job_id:new")).isFalse();
+  }
+
+  @Test
+  void aiReviewReusesUnchangedDecisionsAndUndoClearsCache() throws Exception {
+    service.saveConfig(Map.of("keywords", List.of("java"), "ignore_titles", List.of(), "posted_within_days", 0));
+    Path output = tempDir.resolve("teksystems_applying_script/output");
+    Files.createDirectories(output);
+    Map<String, Object> job = Map.of("job_id", "123", "title", "Java Developer", "job_url", "https://example.com/123");
+    var mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+    Files.writeString(output.resolve("teksystems_jobs_test.json"), mapper.writeValueAsString(List.of(job)));
+    var method = DashboardService.class.getDeclaredMethod("aiDecisionKey", String.class, Map.class);
+    method.setAccessible(true);
+    String context = mapper.writeValueAsString(List.of("title-review-v1", List.of("java"), List.of()));
+    String key = (String) method.invoke(service, context, job);
+    Path cache = tempDir.resolve("teksystems_ai_decisions.json");
+    Files.writeString(cache, mapper.writeValueAsString(Map.of(key, false)));
+    var result = service.aiCleanJobs("teksystems");
+    assertThat(result.get("ok")).isEqualTo(true);
+    assertThat(result.get("cached_count")).isEqualTo(1);
+    assertThat(result.get("cost_usd")).isEqualTo(0.0);
+    assertThat((List<?>) result.get("jobs")).hasSize(1);
+    assertThat(method.invoke(service, context, Map.of("job_id", "123", "title", "Changed title"))).isNotEqualTo(key);
+    assertThat(method.invoke(service, context + "new criteria", job)).isNotEqualTo(key);
+    service.resetAiHidden("teksystems");
+    assertThat(Files.exists(cache)).isFalse();
+    assertThat(Files.exists(tempDir.resolve("teksystems_ai_reviewed.json"))).isFalse();
+  }
+
+  @Test
+  void portalDaysOverrideAppliesToCommandAndResultFiltering() throws Exception {
+    List<DashboardService.Vendor> vendors = getField("vendors");
+    var vendor = vendors.stream().filter(v -> v.slug().equals("mitchellmartin")).findFirst().orElseThrow();
+    var config = Map.<String, Object>of("posted_within_days", 4, "portal_days", Map.of("mitchellmartin", 14), "keywords", List.of());
+    var commandMethod = DashboardService.class.getDeclaredMethod("scrapeCommand", DashboardService.Vendor.class, Map.class);
+    commandMethod.setAccessible(true);
+    assertThat((List<String>) commandMethod.invoke(service, vendor, config)).containsSubsequence("--posted-within-days", "14");
+    service.saveConfig(config);
+    var filterMethod = DashboardService.class.getDeclaredMethod("filterConfiguredJobs", List.class, DashboardService.Vendor.class);
+    filterMethod.setAccessible(true);
+    var jobs = List.of(Map.<String, Object>of("title", "Developer", "posted_date", java.time.LocalDate.now().minusDays(10).toString()));
+    assertThat((List<?>) filterMethod.invoke(service, jobs, vendor)).hasSize(1);
+    service.saveConfig(Map.of("portal_days", Map.of()));
+    assertThat((List<?>) filterMethod.invoke(service, jobs, vendor)).isEmpty();
+  }
+
   @Test
   void stopTerminatesProcessTreeSkipsRemainingVendorsAndAllowsAnotherRun() throws Exception {
     Path folder = tempDir.resolve("mitchellmartin_applying_script");
@@ -89,6 +174,43 @@ class DashboardServiceTest {
   }
 
   @Test
+  void mitchellMartinReceivesUserSearchTerms() throws Exception {
+    List<DashboardService.Vendor> vendors = getField("vendors");
+    var vendor = vendors.stream().filter(v -> v.slug().equals("mitchellmartin")).findFirst().orElseThrow();
+    var method = DashboardService.class.getDeclaredMethod("scrapeCommand", DashboardService.Vendor.class, Map.class);
+    method.setAccessible(true);
+    @SuppressWarnings("unchecked")
+    List<String> command = (List<String>) method.invoke(service, vendor, Map.of("keywords", List.of("java developer", "spring boot")));
+    assertThat(command).containsSubsequence("--term", "java developer", "--term", "spring boot");
+  }
+
+  @Test
+  void malformedSelectionDoesNotLeaveScraperPermanentlyBusy() {
+    assertThat(service.scrape(Map.of("vendors", "mitchellmartin")).get("ok")).isEqualTo(false);
+    assertThat(service.scrape(Map.of("vendors", List.of())).get("error")).isEqualTo("No vendors selected.");
+  }
+
+  @Test
+  void resultVersionChangesWithinSameMinuteWithSameCount() throws Exception {
+    service.saveConfig(Map.of("keywords", List.of(), "posted_within_days", 0));
+    Path out = tempDir.resolve("mitchellmartin_applying_script/output");
+    Files.createDirectories(out);
+    Path file = out.resolve("mitchellmartin_jobs_test.json");
+    Files.writeString(file, "[{\"title\":\"First role\"}]");
+    Files.setLastModifiedTime(file, java.nio.file.attribute.FileTime.fromMillis(1800000000000L));
+    List<DashboardService.Vendor> vendors = getField("vendors");
+    var vendor = vendors.stream().filter(v -> v.slug().equals("mitchellmartin")).findFirst().orElseThrow();
+    var method = DashboardService.class.getDeclaredMethod("vendorStatus", DashboardService.Vendor.class);
+    method.setAccessible(true);
+    Map<?, ?> first = (Map<?, ?>) method.invoke(service, vendor);
+    Files.writeString(file, "[{\"title\":\"Other role\"}]");
+    Files.setLastModifiedTime(file, java.nio.file.attribute.FileTime.fromMillis(1800000001000L));
+    Map<?, ?> second = (Map<?, ?>) method.invoke(service, vendor);
+    assertThat(first.get("latest_modified")).isEqualTo(second.get("latest_modified"));
+    assertThat(first.get("results_version")).isNotNull().isNotEqualTo(second.get("results_version"));
+  }
+
+  @Test
   void stopWhenIdleDoesNotAffectOtherProcesses() {
     assertThat(service.stopScrape("old-run").get("ok")).isEqualTo(false);
   }
@@ -119,6 +241,16 @@ class DashboardServiceTest {
     @SuppressWarnings("unchecked")
     List<String> keywords = (List<String>) config.get("keywords");
     assertThat(keywords).contains("java developer");
+  }
+
+  @Test
+  void categoryChangesPersistWithoutReplacingSearchSettings() {
+    service.saveConfig(Map.of("keywords", List.of("custom role"), "posted_within_days", 30));
+    service.saveConfig(Map.of("portal_categories", Map.of("teksystems", "optional", "vaco", "important")));
+    Map<?, ?> config = (Map<?, ?>) service.getConfigPayload().get("config");
+    assertThat(config.get("portal_categories")).isEqualTo(Map.of("teksystems", "optional", "vaco", "important"));
+    assertThat(config.get("keywords")).isEqualTo(List.of("custom role"));
+    assertThat(config.get("posted_within_days")).isEqualTo(30);
   }
 
   @Test

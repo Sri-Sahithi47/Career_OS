@@ -60,6 +60,19 @@ def fetch(session: requests.Session, url: str, timeout: int) -> str:
     return response.text
 
 
+from detail_cache import cached_detail
+
+def valid_detail_page(value):
+    if not isinstance(value, str):
+        return False
+    soup = BeautifulSoup(value, "html.parser")
+    return any(len(job.raw_text or "") >= 100 for job in parse_json_ld_jobs(soup, "", "", ""))
+
+@cached_detail("structured-pages", "url", validator=valid_detail_page)
+def fetch_detail_page(session, url, timeout):
+    return fetch(session, url, timeout)
+
+
 def parse_json_ld_jobs(soup: BeautifulSoup, page_url: str, company_name: str, search_term: str) -> list[VendorJob]:
     jobs: list[VendorJob] = []
     for script in soup.find_all("script", type=lambda value: value and "ld+json" in value):
@@ -220,7 +233,7 @@ def scrape_search_pages(
                 detail_text = ""
                 if details_fetched < max_detail_pages:
                     try:
-                        detail_html = fetch(session, candidate_url, timeout)
+                        detail_html = fetch_detail_page(session, candidate_url, timeout)
                         detail_soup = BeautifulSoup(detail_html, "html.parser")
                         for tag in detail_soup(["script", "style", "noscript"]):
                             tag.decompose()

@@ -34,10 +34,19 @@ export default function LegacyScraper({ original = false }) {
   useEffect(() => {
     let active = true
     api.get(base + '/ui').then(response => {
-      if (active) setHtml(response.data.html.replace('</head>', bridge + '</head>'))
+      let panel = {}
+      try { panel = JSON.parse(localStorage.getItem('careeros.scraper.panel') || '{}') } catch { /* Optional preference. */ }
+      const preference = { width: Math.max(260, Math.min(460, Number(panel?.width) || 300)), open: panel?.open !== false }
+      if (active) setHtml(response.data.html.replace('</head>', `<script>window.__scraperPanel=${JSON.stringify(preference)}</script>` + bridge + '</head>'))
     }).catch(err => { if (active) setError(getApiErrorMessage(err, 'Unable to load the scraper dashboard.')) })
     const receive = async (event) => {
-      if (event.source !== frame.current?.contentWindow || event.data?.type !== 'scraper-request') return
+      if (event.source !== frame.current?.contentWindow) return
+      if (event.data?.type === 'scraper-panel') {
+        const preference = { width: Math.max(260, Math.min(460, Number(event.data.width) || 300)), open: event.data.open !== false }
+        try { localStorage.setItem('careeros.scraper.panel', JSON.stringify(preference)) } catch { /* Optional preference. */ }
+        return
+      }
+      if (event.data?.type !== 'scraper-request') return
       const { id, method, body } = event.data
       const path = typeof event.data.path === 'string' ? event.data.path.replace('http://127.0.0.1:8766', '') : ''
       if (path === '/api/workspace-save' && method === 'POST' && !original) {
@@ -49,7 +58,7 @@ export default function LegacyScraper({ original = false }) {
         }
         return
       }
-      if (typeof path !== 'string' || !/^\/api\/(config|status|jobs(?:\/ai-clean|\/ai-reset|\/open-urls)?|scrape(?:\/stop)?|open(?:\/stop)?|stop|open-job|open-new-jobs|applied|judge-apply)(\?|$)/.test(path) || !['GET', 'POST'].includes(method)) return
+      if (typeof path !== 'string' || !/^\/api\/(config|status|collected(?:\/review)?|jobs(?:\/ai-clean|\/ai-reset|\/open-urls)?|scrape(?:\/stop)?|open(?:\/stop)?|stop|open-job|open-new-jobs|applied|judge-apply)(\?|$)/.test(path) || !['GET', 'POST'].includes(method)) return
       let status, result
       try {
         const response = await api.request({ url: base + path, timeout: 1800000, method, data: body ? JSON.parse(body) : undefined })

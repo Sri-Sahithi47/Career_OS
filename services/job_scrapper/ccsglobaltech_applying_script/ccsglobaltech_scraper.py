@@ -12,7 +12,7 @@ import requests
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from shared_search_page_scraper import DEFAULT_SEARCH_TERMS
-from shared_vendor_filters import VendorJob, clean_text, extract_contact_info, filter_and_sort_jobs, parse_posted_date, score_title, write_outputs
+from shared_vendor_filters import VendorJob, clean_text, extract_contact_info, filter_and_sort_jobs, load_phrases, parse_posted_date, score_title, write_outputs
 
 
 API_KEYS = [
@@ -33,6 +33,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--sleep", type=float, default=0.2)
     parser.add_argument("--out-dir", type=Path)
     parser.add_argument("--no-excel", action="store_true")
+    parser.add_argument("--ignore-titles-file", type=Path, default=None)
     return parser
 
 
@@ -115,7 +116,7 @@ def scrape_jobs(terms: list[str], timeout: int) -> list[VendorJob]:
 def main() -> int:
     args = build_parser().parse_args()
     jobs = scrape_jobs(args.terms or DEFAULT_SEARCH_TERMS, args.timeout)
-    filtered = filter_and_sort_jobs(jobs, args.posted_within_days, not args.keep_w2_f2f_onsite_interview)
+    filtered = filter_and_sort_jobs(jobs, args.posted_within_days, not args.keep_w2_f2f_onsite_interview, load_phrases(args.ignore_titles_file))
     out_dir = args.out_dir or Path(__file__).resolve().parent / "output"
     write_outputs("ccsglobaltech", filtered, out_dir, args.posted_within_days, args.no_excel)
     return 0

@@ -1,7 +1,11 @@
-import { render, screen, within, waitFor } from "@testing-library/react";
+import { act, render, screen, within, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import App from "./App.jsx";
+
+vi.mock("thinking-orbs", () => ({
+  ThinkingOrb: ({ state, paused }) => <span data-testid="thinking-orb" data-state={state} data-paused={String(Boolean(paused))} />
+}));
 
 const CONFIG = {
   posted_within_days: 4,
@@ -102,6 +106,9 @@ function installFetchMock({ scrapeOk = true, openOk = true, jobsOk = true, stopO
         ? jsonResponse({ ok: true, status: "started", vendor: entry?.label || vendor })
         : jsonResponse({ ok: false, error: "Unknown vendor." }, false, 400);
     }
+    if (url.includes("/api/collected")) {
+      return jsonResponse({ jobs: JOBS.map(j => ({ ...j, key: j.job_id, sourceSlug: "judgegroup", sourceLabel: "Judge Group", review_state: "new" })), total: JOBS.length, counts: { new: JOBS.length } });
+    }
     if (url.includes("/api/jobs")) {
       return jobsOk
         ? jsonResponse({ ok: true, vendor: "Judge Group", jobs: JOBS })
@@ -136,12 +143,12 @@ describe("App", () => {
     const user = userEvent.setup();
     const stop = screen.getByRole("button", { name: "Stop Scrape" });
     await waitFor(() => expect(stop).toBeEnabled());
-    expect(screen.getByRole("button", { name: /Scrape All/ })).toBeDisabled();
+    expect(screen.getByRole("button", { name: 'Run selected scrape' })).toBeDisabled();
     await user.click(stop);
     const call = fetchMock.mock.calls.find(([url]) => url.endsWith("/api/scrape/stop"));
     expect(JSON.parse(call[1].body)).toEqual({ run_id: "active-123" });
     await waitFor(() => expect(stop).toBeDisabled());
-    expect(screen.getByRole("button", { name: /Scrape All/ })).toBeEnabled();
+    expect(screen.getByRole("button", { name: 'Run selected scrape' })).toBeEnabled();
   });
 
   it("disables Stop Scrape when idle", async () => {
@@ -152,7 +159,7 @@ describe("App", () => {
   it("shows a disabled Stopping button while cancellation is pending", async () => {
     await renderLoaded({ runs: [{ id: "pending", status: "stopping", steps: [] }] });
     expect(await screen.findByRole("button", { name: "Stopping…" })).toBeDisabled();
-    expect(screen.getByRole("button", { name: /Scrape All/ })).toBeDisabled();
+    expect(screen.getByRole("button", { name: 'Run selected scrape' })).toBeDisabled();
   });
 
   it("renders the header and loads vendor data from the API", async () => {
@@ -175,8 +182,8 @@ describe("App", () => {
 
   it("keeps the scrape-all and scrape-checked buttons but removes the two-only scrape shortcut", async () => {
     await renderLoaded();
-    expect(screen.getByRole("button", { name: /Scrape All/ })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Scrape Checked" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: 'Run selected scrape' })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Run search for selected portals" })).toBeInTheDocument();
   });
 
   it("does not render a Weekday Rotation section", async () => {
@@ -229,7 +236,8 @@ describe("App", () => {
     const { fetchMock } = await renderLoaded();
     const user = userEvent.setup();
 
-    await user.click(screen.getByRole("button", { name: /Scrape All/ }));
+    await user.selectOptions(screen.getByLabelText('Scrape scope'), 'all');
+    await user.click(screen.getByRole("button", { name: 'Run selected scrape' }));
 
     await waitFor(() => {
       const scrapeCall = fetchMock.mock.calls.find(([url]) => url.endsWith("/api/scrape"));
@@ -243,7 +251,7 @@ describe("App", () => {
     const { fetchMock } = await renderLoaded();
     const user = userEvent.setup();
 
-    await user.click(screen.getByRole("button", { name: "Scrape Checked" }));
+    await user.click(screen.getByRole("button", { name: "Run search for selected portals" }));
 
     await waitFor(() => {
       const scrapeCall = fetchMock.mock.calls.find(([url]) => url.endsWith("/api/scrape"));
@@ -265,25 +273,27 @@ describe("App", () => {
     await renderLoaded({ scrapeOk: false });
     const user = userEvent.setup();
 
-    await user.click(screen.getByRole("button", { name: /Scrape All/ }));
+    await user.selectOptions(screen.getByLabelText('Scrape scope'), 'all');
+    await user.click(screen.getByRole("button", { name: 'Run selected scrape' }));
 
     expect(await screen.findByText(/A scrape is already running\./i)).toBeInTheDocument();
   });
 
-  it("lets the user type multi-word keywords and start a new line without the text snapping back", async () => {
+  it("adds multi-word keyword chips with Enter", async () => {
     await renderLoaded();
     const user = userEvent.setup();
 
     const textarea = screen.getByLabelText("Keywords");
     await user.click(textarea);
     await user.keyboard(" senior ");
-    expect(textarea).toHaveValue("java developer\nspring boot developer senior ");
+    expect(textarea).toHaveValue(" senior ");
 
     await user.keyboard("{Enter}");
-    expect(textarea).toHaveValue("java developer\nspring boot developer senior \n");
+    expect(textarea).toHaveValue("");
+    expect(screen.getByRole("button", { name: "Remove senior from Keywords" })).toBeInTheDocument();
 
     await user.keyboard("qa engineer");
-    expect(textarea).toHaveValue("java developer\nspring boot developer senior \nqa engineer");
+    expect(textarea).toHaveValue("qa engineer");
   });
 
   it("saves normalized keywords (trimmed, blank lines dropped) only on Save Controls", async () => {
@@ -306,10 +316,11 @@ describe("App", () => {
     });
   });
 
-  it("renders a separate Ignore Titles box pre-filled from config", async () => {
+  it("renders saved Ignore Titles as removable chips", async () => {
     await renderLoaded();
     const textarea = screen.getByLabelText("Ignore Titles");
-    expect(textarea).toHaveValue("junior");
+    expect(textarea).toHaveValue("");
+    expect(screen.getByRole("button", { name: "Remove junior from Ignore Titles" })).toBeInTheDocument();
   });
 
   it("saves normalized ignore titles alongside keywords on Save Controls", async () => {
@@ -339,14 +350,12 @@ describe("App", () => {
   });
 
   it("shows a Stop button while a vendor's browser session is running and can stop it", async () => {
-    const { table, fetchMock, vendorState } = await renderLoaded();
+    const { table, fetchMock } = await renderLoaded();
     const row = rowFor(table, "Judge Group");
     expect(within(row).queryByRole("button", { name: "Stop" })).not.toBeInTheDocument();
 
-    const entry = vendorState.find((v) => v.slug === "judgegroup");
-    entry.open_running = true;
     const user = userEvent.setup();
-    await user.click(screen.getByRole("button", { name: "Refresh" }));
+    await user.click(within(row).getByRole("button", { name: "Open Judge Group jobs" }));
 
     const stopBtn = await within(row).findByRole("button", { name: "Stop" });
     await user.click(stopBtn);
@@ -536,3 +545,215 @@ it('closes the jobs drawer with Escape and returns focus to its trigger', async 
   expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   expect(trigger).toHaveFocus();
 });
+
+
+it("reloads results on a new output version even when count and displayed minute stay unchanged", async () => {
+  let poll;
+  const timer = vi.spyOn(globalThis, "setInterval").mockImplementation((callback, delay) => { if (delay === 5000) poll = callback; return 123; });
+  try {
+    const { fetchMock, vendorState } = installFetchMock();
+    render(<App />);
+    await userEvent.click(await screen.findByRole("button", { name: /^Collected jobs/ }));
+    await screen.findAllByRole("button", { name: JOBS[0].title });
+    const jobCalls = () => fetchMock.mock.calls.filter(([url]) => url.includes("/api/collected")).length;
+    const before = jobCalls();
+    vendorState[1].results_version = "new-file:12345";
+    await poll();
+    await waitFor(() => expect(jobCalls()).toBeGreaterThan(before));
+  } finally { timer.mockRestore(); }
+});
+
+it('organizes portals separately from job rows and saves both move directions', async () => {
+  const { calls, table } = await renderLoaded();
+  expect(within(table).queryByRole('combobox', { name: /category/i })).not.toBeInTheDocument();
+  await userEvent.click(screen.getByRole('button', { name: 'Organize portals' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Move TEKsystems to others' }));
+  await screen.findByRole('button', { name: 'Move TEKsystems to prime' });
+  const saved = calls.filter(call => call.url.endsWith('/api/config') && call.options.method === 'POST');
+  expect(JSON.parse(saved[0].options.body)).toEqual({ portal_categories: { teksystems: 'optional' } });
+  await userEvent.click(screen.getByRole('button', { name: 'Move TEKsystems to prime' }));
+  await screen.findByRole('button', { name: 'Move TEKsystems to others' });
+  await userEvent.click(screen.getByRole('button', { name: 'Done organizing' }));
+  expect(screen.queryByRole('region', { name: 'Organize portals' })).not.toBeInTheDocument();
+});
+
+it('keeps a portal in place when saving its category fails', async () => {
+  const { fetchMock } = await renderLoaded();
+  await userEvent.click(screen.getByRole('button', { name: 'Organize portals' }));
+  fetchMock.mockImplementationOnce(() => jsonResponse({ error: 'Storage unavailable' }, false, 500));
+  await userEvent.click(screen.getByRole('button', { name: 'Move TEKsystems to others' }));
+  expect(await screen.findByRole('alert')).toHaveTextContent('Could not move this portal');
+  expect(screen.getByRole('button', { name: 'Move TEKsystems to others' })).toBeEnabled();
+});
+
+
+it('searches only optional portals using the saved category choices', async () => {
+  const { calls } = await renderLoaded();
+  await userEvent.selectOptions(screen.getByLabelText('Scrape scope'), 'optional');
+  expect(screen.getByRole('button', { name: 'Run selected scrape' })).toBeDisabled();
+  await userEvent.click(screen.getByRole('button', { name: 'Organize portals' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Move TEKsystems to others' }));
+  await waitFor(() => expect(screen.getByRole('button', { name: 'Run selected scrape' })).toBeEnabled());
+  await userEvent.click(screen.getByRole('button', { name: 'Run selected scrape' }));
+  await waitFor(() => expect(calls.some(call => call.url.endsWith('/api/scrape'))).toBe(true));
+  const request = calls.find(call => call.url.endsWith('/api/scrape'));
+  expect(JSON.parse(request.options.body)).toEqual({ mode: 'selected', vendors: ['teksystems'] });
+});
+
+
+it('toggles the small star between Prime and Others without changing saved category keys', async () => {
+  const { calls } = await renderLoaded();
+  expect(screen.getByLabelText('Portal category')).toHaveTextContent('Prime');
+  await userEvent.click(screen.getByRole('button', { name: 'Remove TEKsystems from Prime' }));
+  await waitFor(() => expect(screen.queryByRole('button', { name: 'Remove TEKsystems from Prime' })).not.toBeInTheDocument());
+  await userEvent.click(screen.getByLabelText('Portal category'));
+  await userEvent.click(screen.getByRole('option', { name: /Others/ }));
+  const star = screen.getByRole('button', { name: 'Add TEKsystems to Prime' });
+  expect(star).toHaveAttribute('aria-pressed', 'false');
+  await userEvent.click(star);
+  await waitFor(() => expect(screen.queryByRole('button', { name: 'Add TEKsystems to Prime' })).not.toBeInTheDocument());
+  await userEvent.click(screen.getByLabelText('Portal category'));
+  await userEvent.click(screen.getByRole('option', { name: /Prime/ }));
+  expect(screen.getByRole('button', { name: 'Remove TEKsystems from Prime' })).toHaveAttribute('aria-pressed', 'true');
+  const saved = calls.filter(call => call.url.endsWith('/api/config') && call.options.method === 'POST');
+  expect(JSON.parse(saved.at(-1).options.body)).toEqual({ portal_categories: { teksystems: 'important' } });
+});
+
+it('saves individual days and applies the header value to every portal including hidden ones', async () => {
+  const { calls } = installFetchMock();
+  render(<App />);
+  await userEvent.click(await screen.findByRole('button', { name: /^Portals/ }));
+  await userEvent.selectOptions(screen.getByLabelText('Days for TEKsystems'), '7');
+  await waitFor(() => expect(screen.getByLabelText('Days for TEKsystems')).toHaveValue('7'));
+  expect(screen.getByLabelText('Days for Judge Group')).toHaveValue('4');
+  await userEvent.type(screen.getByPlaceholderText('Search portals…'), 'Judge');
+  await userEvent.click(screen.getByLabelText('Days for all portals'));
+  await userEvent.click(within(screen.getByRole('listbox', { name: 'Days for all portals' })).getByRole('option', { name: '14 days' }));
+  await waitFor(() => expect(screen.getByLabelText('Days for Judge Group')).toHaveValue('14'));
+  await userEvent.clear(screen.getByPlaceholderText('Search portals…'));
+  expect(screen.getByLabelText('Days for TEKsystems')).toHaveValue('14');
+  const saved = calls.filter(call => call.url.endsWith('/api/config') && call.options.method === 'POST');
+  expect(JSON.parse(saved.at(-1).options.body)).toEqual({ posted_within_days: 14, portal_days: {} });
+});
+
+it('opens the chosen portal and disables open when it has no jobs', async () => {
+  const { calls } = installFetchMock();
+  render(<App />);
+  await userEvent.click(await screen.findByRole('button', { name: /^Portals/ }));
+  expect(screen.getByRole('button', { name: 'Open TEKsystems jobs' })).toBeDisabled();
+  await userEvent.click(screen.getByRole('button', { name: 'Open Judge Group jobs' }));
+  await waitFor(() => expect(calls.some(call => call.url.endsWith('/api/open') && JSON.parse(call.options.body).vendor === 'judgegroup')).toBe(true));
+});
+
+it('filters portals with the status dropdown and restores all statuses', async () => {
+  const { table } = await renderLoaded();
+  const status = screen.getByRole('button', { name: 'Portal status' });
+  await userEvent.click(status);
+  expect(screen.queryByRole('option', { name: /No matches/i })).not.toBeInTheDocument();
+  await userEvent.click(screen.getByRole('option', { name: /Not searched yet/ }));
+  expect(within(table).getByText('TEKsystems')).toBeInTheDocument();
+  expect(within(table).queryByText('Judge Group')).not.toBeInTheDocument();
+  await userEvent.click(status);
+  await userEvent.click(screen.getByRole('option', { name: /All statuses/ }));
+  expect(within(table).getByText('Judge Group')).toBeInTheDocument();
+});
+
+it('retries all failed portals in one batch regardless of the search filter, without saving settings', async () => {
+  const runs = [{ id: 'old', status: 'failed', vendors: ['teksystems', 'judgegroup'], steps: [
+    { slug: 'teksystems', status: 'failed' }, { slug: 'judgegroup', status: 'failed' },
+  ] }];
+  const { calls } = installFetchMock({ runs });
+  render(<App />);
+  await userEvent.type(await screen.findByPlaceholderText('Search portals…'), 'TEK');
+  await userEvent.click(screen.getByRole('button', { name: 'Retry all failed (2)' }));
+  await waitFor(() => expect(calls.filter(call => call.url.endsWith('/api/scrape'))).toHaveLength(1));
+  expect(JSON.parse(calls.find(call => call.url.endsWith('/api/scrape')).options.body).vendors).toEqual(['teksystems', 'judgegroup']);
+  expect(calls.filter(call => call.url.endsWith('/api/config') && call.options.method === 'POST')).toHaveLength(0);
+});
+
+it('keeps another failed portal retry usable while a search runs, with queued feedback', async () => {
+  const runs = [
+    { id: 'old', status: 'failed', vendors: ['judgegroup'], steps: [{ slug: 'judgegroup', status: 'failed' }] },
+    { id: 'active', status: 'running', vendors: ['teksystems'], steps: [{ slug: 'teksystems', status: 'running' }] },
+  ];
+  const { calls } = installFetchMock({ runs });
+  render(<App />);
+  const retry = await screen.findByRole('button', { name: 'Retry Judge Group' });
+  expect(retry).toBeEnabled();
+  await userEvent.click(retry);
+  expect(retry).toHaveTextContent('Queued');
+  expect(retry).toBeDisabled();
+  expect(screen.getByText(/1 portal queued/)).toBeInTheDocument();
+  expect(calls.filter(call => call.url.endsWith('/api/scrape'))).toHaveLength(0);
+  await userEvent.click(screen.getByRole('button', { name: 'Cancel queued retries' }));
+  expect(retry).toBeEnabled();
+});
+
+it('animates during the real AI request and keeps a dismissible done message', async () => {
+  installFetchMock();
+  const original = global.fetch;
+  let finish;
+  const pending = new Promise(resolve => { finish = resolve; });
+  global.fetch = vi.fn((url, options = {}) =>
+    url.endsWith('/api/jobs/ai-clean') ? pending : original(url, options));
+  render(<App />);
+  const button = screen.getByRole('button', { name: 'Check All Portals with AI' });
+  await waitFor(() => expect(button).toBeEnabled());
+  await userEvent.click(button);
+  await screen.findByText('Reviewing TEKsystems…');
+  expect(screen.getByRole('progressbar', { name: 'Portals checked' })).toHaveAttribute('aria-valuenow', '0');
+  expect(button).toBeDisabled();
+  expect(button).toHaveAttribute('aria-busy', 'true');
+  expect(screen.getAllByTestId('thinking-orb').some(orb => orb.dataset.state === 'solving')).toBe(true);
+  expect(screen.queryByText('Done — portal check complete')).not.toBeInTheDocument();
+  await act(async () => { finish(await jsonResponse({ jobs: [], reviewed_count: 2, removed_count: 0 })); });
+  await screen.findByText('Done — portal check complete');
+  expect(button).toBeEnabled();
+  expect(button).toHaveAttribute('aria-busy', 'false');
+  await userEvent.click(screen.getByRole('button', { name: 'Dismiss AI check notification' }));
+  expect(screen.queryByText('Done — portal check complete')).not.toBeInTheDocument();
+});
+
+it('shows a dismissible failure rather than done if AI setup fails', async () => {
+  installFetchMock();
+  const original = global.fetch;
+  global.fetch = vi.fn((url, options = {}) =>
+    url.endsWith('/api/config') && options.method === 'POST'
+      ? jsonResponse({ error: 'Settings unavailable' }, false, 500)
+      : original(url, options));
+  render(<App />);
+  const button = screen.getByRole('button', { name: 'Check All Portals with AI' });
+  await waitFor(() => expect(button).toBeEnabled());
+  await userEvent.click(button);
+  await screen.findByText('Portal check failed');
+  expect(screen.queryByText('Done — portal check complete')).not.toBeInTheDocument();
+  await userEvent.click(screen.getByRole('button', { name: 'Dismiss AI check notification' }));
+  expect(screen.queryByText('Portal check failed')).not.toBeInTheDocument();
+  expect(button).toBeEnabled();
+});
+
+it('syncs scrape scope with every company filter without starting a scrape', async () => {
+  const { calls } = await renderLoaded();
+  for (const [label, scope] of [['Others', 'optional'], ['All companies', 'all'], ['Prime', 'important']]) {
+    await userEvent.click(screen.getByLabelText('Portal category'));
+    await userEvent.click(screen.getByRole('option', { name: new RegExp(label) }));
+    expect(screen.getByLabelText('Scrape scope')).toHaveValue(scope);
+  }
+  expect(calls.filter(call => call.url.endsWith('/api/scrape'))).toHaveLength(0);
+});
+
+it('syncs scrape scope to all when clearing an empty company view', async () => {
+  await renderLoaded();
+  await userEvent.click(screen.getByLabelText('Portal category'));
+  await userEvent.click(screen.getByRole('option', { name: /Others/ }));
+  await userEvent.click(screen.getByRole('button', { name: 'Clear filters' }));
+  expect(screen.getByLabelText('Scrape scope')).toHaveValue('all');
+});
+
+it('refreshes the selected group using a one-run day window without changing saved days', async () => {
+  const { calls } = await renderLoaded();
+  await userEvent.click(screen.getByRole('button', { name: /Refresh today/ }));
+  const request = calls.find(call => call.url.endsWith('/api/scrape'));
+  expect(JSON.parse(request.options.body)).toMatchObject({ mode: 'selected', refresh_today: true });
+  expect(screen.getByLabelText('Posted within days')).toHaveValue(4);
+ });

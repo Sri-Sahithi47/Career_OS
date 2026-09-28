@@ -316,6 +316,11 @@ def parse_search_results(html_text: str, term: str) -> list[dict[str, str]]:
     return jobs
 
 
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from detail_cache import cached_detail
+
+@cached_detail("apexsystems", "url")
 def fetch_detail(session: requests.Session, url: str, timeout: int) -> dict[str, Any]:
     response = session.get(url, timeout=timeout)
     response.raise_for_status()
@@ -412,7 +417,7 @@ def scrape_apex(
     jobs: list[ApexJob] = []
     for row in candidates:
         try:
-            detail = fetch_detail(session, row["job_url"], timeout)
+            detail = fetch_detail(session, row["job_url"], timeout, _cache_hint=row)
         except requests.RequestException as exc:
             print(f"Detail failed for {row['job_url']}: {exc}")
             detail = {}

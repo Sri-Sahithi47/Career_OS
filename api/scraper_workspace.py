@@ -33,9 +33,9 @@ WORKER_LOCK = threading.Lock()
 logger = logging.getLogger(__name__)
 RUN_TIMEOUT_SECONDS = 4 * 60 * 60
 MAX_STATUS_FAILURES = 5
-GET_ACTIONS = {'config', 'status', 'jobs'}
+GET_ACTIONS = {'config', 'status', 'jobs', 'collected'}
 POST_ACTIONS = {'config', 'scrape', 'scrape/stop', 'open', 'open/stop',
-                'jobs/ai-clean', 'jobs/ai-reset', 'jobs/open-urls'}
+                'jobs/ai-clean', 'jobs/ai-reset', 'jobs/open-urls', 'collected/review'}
 
 
 def stop_worker(worker):
@@ -137,6 +137,7 @@ def finish_scrape(worker, run_id, user_id, before):
     """Keep the shared output lock until the Java run ends, then deliver fresh results."""
     started = time.monotonic()
     failures = 0
+    last_collection_state = None
     try:
         while worker['process'].poll() is None:
             if time.monotonic() - started > RUN_TIMEOUT_SECONDS:
@@ -148,6 +149,17 @@ def finish_scrape(worker, run_id, user_id, before):
                 if run is None:
                     raise ValueError('The scraper lost its active run status.')
                 failures = 0
+                collection_state = json.dumps(run.get('steps', []), sort_keys=True) + run['status']
+                if worker.get('directory') and collection_state != last_collection_state:
+                    try:
+                        from src.collected_jobs import import_outputs, record_run
+                        with SessionLocal() as collection_db:
+                            import_outputs(collection_db, user_id, worker['directory'], portals.VENDORS)
+                            record_run(collection_db, user_id, run)
+                        last_collection_state = collection_state
+                    except Exception:
+                        logger.exception('Collection will retry importing run %s', run_id)
+                        worker['last_error'] = 'Collection import delayed. Saved output files will be retried.'
                 if run['status'] not in {'running', 'stopping'}:
                     for step in run.get('steps', []):
                         slug = step.get('vendor')
@@ -190,6 +202,10 @@ def finish_scrape(worker, run_id, user_id, before):
 
 
 def forward(user_id, action, method, payload, query):
+    if action in {'collected', 'collected/review'}:
+        from api.collected_jobs import collection_action
+        directory = settings.DATA_DIR / 'portal_dashboard' / str(user_id) / 'workspace'
+        return collection_action(str(user_id), action, method, payload, query, directory, portals.VENDORS)
     worker = worker_for(user_id)
     locked = action == 'scrape' and method == 'POST'
     if locked and not RUN_LOCK.acquire(blocking=False):
@@ -201,6 +217,14 @@ def forward(user_id, action, method, payload, query):
         if action == 'status' and worker.get('last_error'):
             body['last_error'] = worker['last_error']
         if locked and response.is_success and body.get('run_id'):
+            if worker.get('directory'):
+                try:
+                    from src.collected_jobs import record_run
+                    snapshot = json.loads((worker['directory'] / 'job_portal_dashboard_config.json').read_text())
+                    with SessionLocal() as db:
+                        record_run(db, user_id, {'id': body['run_id'], 'status': 'running'}, snapshot)
+                except Exception:
+                    logger.exception('Could not record search settings for run')
             threading.Thread(target=finish_scrape, args=(worker, body['run_id'], user_id, before), daemon=True).start()
             locked = False
         return JSONResponse(body, status_code=response.status_code)

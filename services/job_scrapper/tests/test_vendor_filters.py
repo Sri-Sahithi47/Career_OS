@@ -28,7 +28,7 @@ def make_job(title: str) -> VendorJob:
 
 
 class SharedVendorFilterTest(unittest.TestCase):
-    def test_java_titles_are_excluded(self):
+    def test_java_titles_are_kept_unless_explicitly_ignored(self):
         jobs = [
             make_job("Java Full Stack Developer"),
             make_job("Senior Java Developer"),
@@ -36,7 +36,9 @@ class SharedVendorFilterTest(unittest.TestCase):
             make_job("Python Full Stack Developer"),
         ]
         kept = filter_and_sort_jobs(jobs, posted_within_days=4, exclude_disallowed_work=False)
-        self.assertEqual([job.title for job in kept], ["Python Full Stack Developer"])
+        self.assertCountEqual([job.title for job in kept], [job.title for job in jobs])
+        ignored = filter_and_sort_jobs(jobs, 4, False, ignore_titles=["java"])
+        self.assertEqual([job.title for job in ignored], ["Python Full Stack Developer"])
 
     def test_javascript_title_is_not_treated_as_java(self):
         jobs = [make_job("JavaScript Full Stack Developer")]

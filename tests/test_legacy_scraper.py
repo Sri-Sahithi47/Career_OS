@@ -95,3 +95,13 @@ def test_applied_marks_survive_days(tmp_path, monkeypatch):
     module = legacy.dashboard_for('persistent-history')
     module.save_applied_marks({'job-1': {'marked_at': time.time() - 7 * 86400}})
     assert 'job-1' in module.load_applied_marks()
+
+
+def test_mitchell_martin_command_uses_selected_keywords(tmp_path, monkeypatch):
+    monkeypatch.setattr(legacy.settings, 'DATA_DIR', tmp_path)
+    monkeypatch.setattr(legacy, 'DASHBOARDS', {})
+    module = legacy.dashboard_for('keyword-test')
+    vendor = next(v for v in module.VENDORS if v.slug == 'mitchellmartin')
+    command = module.command_for_scrape(vendor, {'keywords': ['java developer', 'spring boot']})
+    terms = [command[i + 1] for i, item in enumerate(command) if item == '--term']
+    assert terms == ['java developer', 'spring boot']

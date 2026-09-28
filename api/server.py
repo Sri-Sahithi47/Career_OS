@@ -30,7 +30,7 @@ from api.jobs import router as jobs_router
 from api.onboarding import router as onboarding_router
 from api.ai import router as ai_router
 from api.opportunities import router as opportunities_router
-from src.models import ApplicationEvent, MatchedJob, User, ScrapeRun
+from src.models import ApplicationEvent, MatchedJob, User, ScrapeRun, CollectionRun
 from src.database import SessionLocal
 
 @asynccontextmanager
@@ -40,6 +40,8 @@ async def lifespan(_app: FastAPI):
     with SessionLocal() as db:
         interrupted = db.query(ScrapeRun).filter(ScrapeRun.source == "portal", ScrapeRun.status.in_(["pending", "running"]))
         interrupted.update({"status": "failed", "error_msg": "Server restarted. Start this search again.", "finished_at": datetime.utcnow()}, synchronize_session=False)
+        db.query(CollectionRun).filter(CollectionRun.status.in_(["running", "stopping"])).update(
+            {"status": "interrupted", "finished_at": datetime.utcnow()}, synchronize_session=False)
         db.commit()
     yield
 

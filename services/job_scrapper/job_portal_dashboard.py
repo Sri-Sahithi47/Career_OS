@@ -74,7 +74,7 @@ VENDORS: list[Vendor] = [
     Vendor("experis", "Experis", "experis_applying_script", "experis_scraper.py", "experis_open_jobs.py", "experis", "append", "max-pages", 3),
     Vendor("brooksource", "Brooksource", "brooksource_applying_script", "brooksource_scraper.py", "brooksource_open_jobs.py", "brooksource"),
     Vendor("kellymitchell", "KellyMitchell", "kellymitchell_applying_script", "kellymitchell_scraper.py", "kellymitchell_open_jobs.py", "kellymitchell", "append", "jobs-per-page", 50),
-    Vendor("mitchellmartin", "Mitchell Martin", "mitchellmartin_applying_script", "mitchellmartin_scraper.py", "mitchellmartin_open_jobs.py", "mitchellmartin", "none", "max-jobs", 40, color="red"),
+    Vendor("mitchellmartin", "Mitchell Martin", "mitchellmartin_applying_script", "mitchellmartin_scraper.py", "mitchellmartin_open_jobs.py", "mitchellmartin", "append", "max-jobs", 40, color="red"),
     Vendor("cbts", "CBTS", "cbts_applying_script", "cbts_scraper.py", "cbts_open_jobs.py", "cbts", "file"),
     Vendor("roberthalf", "Robert Half", "roberthalf_applying_script", "roberthalf_scraper.py", "roberthalf_open_jobs.py", "roberthalf", "file", "max-pages", 3),
     Vendor("kforce", "Kforce", "kforce_applying_script", "kforce_scraper.py", "kforce_open_jobs.py", "kforce", "file"),
@@ -1417,7 +1417,6 @@ HTML = r"""<!doctype html>
     <section>
       <div class="toolbar">
         <h2>Weekday Rotation</h2>
-        <span class="pill" id="runState">idle</span>
       </div>
       <div class="rotation" id="rotation"></div>
       <div class="toolbar">
@@ -1458,7 +1457,7 @@ HTML = r"""<!doctype html>
           <div class="empty-state">Choose a portal to see the latest filtered jobs.</div>
         </div>
       </div>
-      <div class="log" id="log">Ready.</div>
+      <p id="actionNotice" role="status" aria-live="polite"></p>
     </section>
   </main>
   <script>
@@ -1687,30 +1686,6 @@ HTML = r"""<!doctype html>
       });
     }
 
-    function renderRuns() {
-      const latest = state.runs[state.runs.length - 1];
-      const activeCount = state.activeProcesses.length;
-      $("runState").textContent = activeCount ? `${activeCount} running` : (latest ? latest.status : "idle");
-      $("runState").classList.toggle("stop-pill", state.stopRequested);
-      if (!latest) return;
-      const freshNote = latest.kind === "today" ? "Fresh scrape from page/API start for today's 2 portals" : "Fresh scrape run";
-      const lines = [`Run ${latest.id} - ${latest.kind} - ${latest.status}`, freshNote];
-      const completed = (latest.steps || []).filter((step) => ["done", "failed", "stopped"].includes(step.status)).length;
-      lines.push(`Progress: ${completed}/${(latest.vendors || []).length} portals completed`);
-      for (const step of latest.steps || []) {
-        const countText = step.status === "running" ? "scraping from beginning..." : `${step.count ?? 0} jobs`;
-        const duration = step.duration_seconds == null ? "" : ` in ${step.duration_seconds}s`;
-        const freshness = step.changed ? "new output" : "no new file";
-        const newText = step.status === "done" ? `, ${step.new_count || 0} new` : "";
-        const readyText = step.ready_at ? ` ready ${step.ready_at}` : "";
-        lines.push(`${step.status.padEnd(7)} ${step.vendor}: ${countText}${newText}${duration} (${freshness})${readyText}`);
-        if (step.latest_file) lines.push(`        file: ${step.latest_file}`);
-        if (step.summary) lines.push(`        ${step.summary}`);
-        if (step.status === "failed" && step.output) lines.push(step.output);
-      }
-      $("log").textContent = lines.join("\n");
-    }
-
     async function refresh() {
       const configData = await api("/api/config");
       state.config = configData.config || {};
@@ -1729,7 +1704,6 @@ HTML = r"""<!doctype html>
       renderRotation();
       renderVendors();
       await loadSelectedJobs();
-      renderRuns();
     }
 
     async function loadSelectedJobs() {
@@ -1761,7 +1735,7 @@ HTML = r"""<!doctype html>
       await loadSelectedJobs();
       const vendor = state.vendors.find((item) => item.slug === slug);
       const count = data.count || 0;
-      $("log").textContent = count
+      $("actionNotice").textContent = count
         ? `Opening ${count} new job${count === 1 ? "" : "s"} for ${vendor?.label || slug}.`
         : `No new jobs to open for ${vendor?.label || slug}.`;
     }
@@ -1770,7 +1744,7 @@ HTML = r"""<!doctype html>
       state.stopRequested = false;
       await saveConfig();
       await api("/api/scrape", { method: "POST", body: JSON.stringify({ mode, vendors }) });
-      $("log").textContent = mode === "today"
+      $("actionNotice").textContent = mode === "today"
         ? "Fresh scrape started for today's 2 portals from the beginning. Old counts remain visible until new output finishes."
         : "Fresh scrape started. Old counts remain visible until new output finishes.";
       setTimeout(refresh, 1200);
@@ -1787,19 +1761,19 @@ HTML = r"""<!doctype html>
       await saveConfig();
       const payload = { vendor: slug, limit: Number($("openLimit").value || 0), start_at: Number($("startAt").value || 1), keep_open_minutes: Number($("keepOpen").value || 60) };
       await api("/api/open", { method: "POST", body: JSON.stringify(payload) });
-      $("log").textContent = `Opening ${slug} jobs in the browser.`;
+      $("actionNotice").textContent = `Opening ${slug} jobs in the browser.`;
     }
 
     async function openSingleJob(key) {
       const data = await api("/api/open-job", { method: "POST", body: JSON.stringify({ vendor: state.selectedVendor, key }) });
-      $("log").textContent = `Opening ${data.title || data.job_url} in the browser. (opened ${data.open_count || 1}x today)`;
+      $("actionNotice").textContent = `Opening ${data.title || data.job_url} in the browser. (opened ${data.open_count || 1}x today)`;
       await loadSelectedJobs();
     }
 
     async function markApplied(key, applied) {
       await api("/api/applied", { method: "POST", body: JSON.stringify({ vendor: state.selectedVendor, key, applied }) });
       await loadSelectedJobs();
-      $("log").textContent = applied ? "Marked applied. This stays saved until you clear it." : "Applied mark cleared.";
+      $("actionNotice").textContent = applied ? "Marked applied. This stays saved until you clear it." : "Applied mark cleared.";
     }
 
     async function judgeApply() {
@@ -1812,14 +1786,14 @@ HTML = r"""<!doctype html>
         keep_open_seconds: Number($("judgeKeepOpen").value || 45),
       };
       const data = await api("/api/judge-apply", { method: "POST", body: JSON.stringify(payload) });
-      $("log").textContent = `Filling and submitting ${data.count || 1} Judge Group application(s), starting at #${data.start_at || payload.start_at}.`;
+      $("actionNotice").textContent = `Filling and submitting ${data.count || 1} Judge Group application(s), starting at #${data.start_at || payload.start_at}.`;
       await loadSelectedJobs();
     }
 
     async function stopAll() {
       state.stopRequested = true;
       const data = await api("/api/stop", { method: "POST", body: JSON.stringify({}) });
-      $("log").textContent = data.count
+      $("actionNotice").textContent = data.count
         ? `Stop requested. Terminated ${data.count} running process(es). Already opened browser tabs may remain open.`
         : "Stop requested. No running dashboard processes were found.";
       await refreshStatus();
@@ -1861,7 +1835,7 @@ HTML = r"""<!doctype html>
     });
     $("judgeFill").addEventListener("click", () => judgeApply());
     setInterval(refreshStatus, 5000);
-    refresh().catch((error) => { $("log").textContent = error.message; });
+    refresh().catch((error) => { $("actionNotice").textContent = error.message; });
 
     function updateToggleAll() {
       const boxes = [...document.querySelectorAll(".pick")];

@@ -1148,3 +1148,5 @@ input[type="checkbox"] {
 .mobile-workspace-header svg { color:#c9420c; }
 .mobile-workspace-header .brand-mark { background:#c9420c; }
 .sidebar-saved-dot { background:#c7a48f; }
+
+@media(min-width:861px) { .scraper-page > .scraper-frame { height:100dvh; } }
