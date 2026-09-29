@@ -399,3 +399,60 @@ class KeywordIgnore(Base):
     user_id = Column(String(36), ForeignKey('users.id'), nullable=False, index=True)
     keyword = Column(String(100), nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class CollectedPosting(Base):
+    """A user's durable portal collection, independent of shortlist membership."""
+    __tablename__ = 'collected_postings'
+    __table_args__ = (UniqueConstraint('user_id', 'portal', 'identity', name='uq_collected_identity'),)
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = Column(String(36), ForeignKey('users.id'), nullable=False, index=True)
+    portal = Column(String(80), nullable=False, index=True)
+    identity = Column(String(80), nullable=False)
+    source_id = Column(String(255))
+    canonical_url = Column(Text, nullable=False)
+    payload = Column(JSON, nullable=False)
+    fingerprint = Column(String(64), nullable=False)
+    first_seen = Column(DateTime, nullable=False, index=True)
+    last_seen = Column(DateTime, nullable=False, index=True)
+    updated_at = Column(DateTime, nullable=False, index=True)
+    posted_at = Column(DateTime, index=True)
+    review_state = Column(String(20), nullable=False, default='new', index=True)
+    reviewed_at = Column(DateTime)
+    has_update = Column(Boolean, nullable=False, default=False)
+
+
+class CollectionImport(Base):
+    """Durable checkpoint for a complete output file; failures remain retryable."""
+    __tablename__ = 'collection_imports'
+    __table_args__ = (UniqueConstraint('user_id', 'source_key', name='uq_collection_import'),)
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = Column(String(36), ForeignKey('users.id'), nullable=False, index=True)
+    source_key = Column(String(64), nullable=False)
+    portal = Column(String(80), nullable=False)
+    observed_at = Column(DateTime, nullable=False, index=True)
+    summary = Column(JSON, nullable=False)
+
+
+class PostingObservation(Base):
+    __tablename__ = 'posting_observations'
+    __table_args__ = (UniqueConstraint('import_id', 'posting_id', name='uq_posting_observation'),)
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    import_id = Column(String(36), ForeignKey('collection_imports.id'), nullable=False, index=True)
+    posting_id = Column(String(36), ForeignKey('collected_postings.id'), nullable=False, index=True)
+    outcome = Column(String(20), nullable=False)
+    observed_at = Column(DateTime, nullable=False)
+    changes = Column(JSON, nullable=False, default=dict)
+
+
+class CollectionRun(Base):
+    __tablename__ = 'collection_runs'
+    __table_args__ = (UniqueConstraint('user_id', 'run_key', name='uq_collection_run'),)
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = Column(String(36), ForeignKey('users.id'), nullable=False, index=True)
+    run_key = Column(String(100), nullable=False)
+    status = Column(String(30), nullable=False)
+    settings_snapshot = Column(JSON, nullable=False, default=dict)
+    steps = Column(JSON, nullable=False, default=list)
+    started_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    finished_at = Column(DateTime)

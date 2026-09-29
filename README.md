@@ -1,3 +1,11 @@
+# Career OS + Job Scrapper
+
+The repositories are merged. Career OS now runs all 33 staffing-portal scrapers from **Settings → Job portals** and imports results into its existing job feed and application tracker.
+
+See [merged setup and startup instructions](docs/MERGED_SETUP.md). For local development, install the dependencies and run `./dev.sh`.
+
+---
+
 # Job Applications Automation
 
 Automate LinkedIn job searching and resume evaluation using Playwright and OpenAI.

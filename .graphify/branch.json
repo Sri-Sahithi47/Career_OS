@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "branchName": null,
-  "worktreePath": "/Users/srisahithiperiketi",
-  "upstream": null,
-  "mergeBase": null,
-  "firstSeenHead": null,
-  "lastSeenHead": null,
-  "lastAnalyzedHead": null,
+  "branchName": "integrate-job-scrapper",
+  "worktreePath": "/Users/saisujan/Desktop/careeros",
+  "upstream": "origin/integrate-job-scrapper",
+  "mergeBase": "fbe32a50eb8f288fe69c1194a1a11980a6f6d749",
+  "firstSeenHead": "d5229d31ff859ffc61cc1465c06d34494112865d",
+  "lastSeenHead": "fbe32a50eb8f288fe69c1194a1a11980a6f6d749",
+  "lastAnalyzedHead": "fbe32a50eb8f288fe69c1194a1a11980a6f6d749",
   "stale": false,
   "staleReason": null,
   "staleSince": null,
   "lifecycleEvent": null,
-  "createdAt": "2026-09-20T17:18:24.232Z",
-  "updatedAt": "2026-09-20T17:18:24.232Z"
+  "createdAt": "2026-09-23T01:20:44.209Z",
+  "updatedAt": "2026-09-29T22:08:23.172Z"
 }

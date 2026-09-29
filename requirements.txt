@@ -15,7 +15,7 @@
 # ============================================
 
 # Browser automation
-playwright>=1.41.0
+playwright>=1.44.0
 
 # Data handling and Excel output
 pandas>=2.1.4
@@ -66,3 +66,6 @@ pgvector>=0.2.5
 celery>=5.3.6
 redis>=5.0.1
 instructor>=1.2.6
+
+# Imported staffing portal scrapers
+beautifulsoup4>=4.12.0

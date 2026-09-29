@@ -27,7 +27,7 @@ it.each(['/today', '/tailor', '/opportunities', '/tracker', '/applied'])('redire
   for (const name of ['Today Feed', 'AI Resume Tailor', 'Opportunity Inbox', 'Tracker', 'Applied Jobs']) {
     expect(screen.queryByRole('link', { name })).not.toBeInTheDocument()
   }
-  expect(screen.getAllByRole('link', { name: /All Jobs/ })[0]).toHaveAttribute('aria-current', 'page')
+  expect(screen.getAllByRole('link', { name: /Find contracts/ })[0]).toHaveAttribute('aria-current', 'page')
 })
 
 it('does not show failed note changes as persisted', async () => {

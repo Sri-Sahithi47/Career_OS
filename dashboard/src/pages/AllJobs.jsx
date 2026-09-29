@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { getContractSignal } from '../lib/contracts'
 import JobCard from '../components/JobCard'
 import AddJobDialog from '../components/AddJobDialog'
 import { formatCompactDate, getDisplayMatchScore, getJobId, getSourceLabel, normalizeStatus } from '../lib/jobs'
@@ -181,7 +182,7 @@ function NotesEditor({ job, onNotesChange }) {
   )
 }
 
-export function DetailPanel({ job, onNotesChange }) {
+export function DetailPanel({ job, onNotesChange, onStatusChange }) {
   const [activeTab, setActiveTab] = useState(DETAIL_TABS[0])
   const score      = getDisplayMatchScore(job)
   const skills     = getSkills(job)
@@ -198,7 +199,7 @@ export function DetailPanel({ job, onNotesChange }) {
     job.Location,
     jobType,
     source,
-    posted ? `Posted ${posted}` : null,
+    posted ? `Found ${posted}` : null,
   ].filter(Boolean)
 
   return (
@@ -219,6 +220,7 @@ export function DetailPanel({ job, onNotesChange }) {
 
         {/* ── Job title ── */}
         <h2 className="detail-job-title">{job.Title || 'Untitled role'}</h2>
+        <div className={`contract-evidence ${getContractSignal(job).key}`}><strong>{getContractSignal(job).label}</strong><p>{getContractSignal(job).detail}</p></div>
 
         {/* ── Trust row — legitimacy signals, not AI confidence ── */}
         <div className="detail-trust-row">
@@ -232,15 +234,15 @@ export function DetailPanel({ job, onNotesChange }) {
           {job.Location?.toLowerCase().includes('remote') && (
             <span className="detail-trust-item">Remote eligible</span>
           )}
-          {posted && <span className="detail-trust-item">Posted {posted}</span>}
+          {posted && <span className="detail-trust-item">Found {posted}</span>}
         </div>
 
         {/* ── Decision trigger — understated, trust-first ── */}
         {score >= 70 && (
           <div className="detail-decision-trigger">
             {score >= 90
-              ? '✔️ Strong fit — you meet key requirements'
-              : '✔️ Likely match based on your profile'}
+              ? 'Strong profile match — review the posting requirements'
+              : 'Likely match based on your profile'}
           </div>
         )}
 
@@ -261,7 +263,7 @@ export function DetailPanel({ job, onNotesChange }) {
             {getStatusLabel(job)}
           </span>
           {posted && (
-            <span className="detail-urgency">🕐 Posted {posted}</span>
+            <span className="detail-urgency"> Found {posted}</span>
           )}
         </div>
 
@@ -313,6 +315,10 @@ export function DetailPanel({ job, onNotesChange }) {
         {activeTab === 'Company' && (
           <div className="detail-body">
             <section className="detail-section">
+              <span className="detail-section-label">Recruiter contact</span>
+              <p className="detail-description">{job['Contact Info']?.name || 'Contact name not provided'}</p>
+              {job['Contact Info']?.email && <a href={`mailto:${job['Contact Info'].email}`}>{job['Contact Info'].email}</a>}
+              {job['Contact Info']?.phone && <p>{job['Contact Info'].phone}</p>}
               <span className="detail-section-label">Company</span>
               <h3>{job.Company || 'Unknown company'}</h3>
               <p className="detail-description">
@@ -340,6 +346,7 @@ export function DetailPanel({ job, onNotesChange }) {
 
       {/* ── Sticky Apply Bar ── */}
       <div className="detail-sticky-bar">
+        {onStatusChange && <label className="pipeline-select">Pipeline stage<select aria-label="Pipeline stage" value={normalizeStatus(job.Status)} onChange={e => onStatusChange(job, e.target.value)}><option value="not_applied">Shortlisted</option><option value="applied">Applied</option><option value="screening">Screening</option><option value="interviewing">Interviewing</option><option value="accepted">Offer</option><option value="skipped">Archived</option></select></label>}
         {applyUrl ? (
           <a className="detail-apply" href={applyUrl} target="_blank" rel="noreferrer">
             Apply on Company Site
@@ -354,8 +361,9 @@ export function DetailPanel({ job, onNotesChange }) {
   )
 }
 
-const AllJobs = ({ jobs, onNotesChange, onJobAdded }) => {
+const AllJobs = ({ jobs, onNotesChange, onJobAdded, onStatusChange }) => {
   const [addingJob, setAddingJob] = useState(false)
+  const [contractFilter, setContractFilter] = useState('Any')
   const [searchParams, setSearchParams] = useSearchParams()
   const [selectedJobId, setSelectedJobId]   = useState('')
   const searchQuery = searchParams.get('q') || ''
@@ -366,8 +374,8 @@ const AllJobs = ({ jobs, onNotesChange, onJobAdded }) => {
   const [salaryFilter, setSalaryFilter]     = useState('Any')
   const [experienceFilter, setExperienceFilter] = useState('Any')
   const [sortKey, setSortKey]               = useState('relevance')
-  const [dateRange, setDateRange]           = useState('today')
-  const [panelWidth, setPanelWidth]         = useState(780)   // open at max — users can drag left to shrink
+  const [dateRange, setDateRange]           = useState('all')
+  const [panelWidth, setPanelWidth]         = useState(460)   // open at max — users can drag left to shrink
   const isDragging                          = useRef(false)
   const startX                              = useRef(0)
   const startWidth                          = useRef(0)
@@ -405,6 +413,10 @@ const AllJobs = ({ jobs, onNotesChange, onJobAdded }) => {
       : null
 
     const list = jobs.filter((job) => {
+      const signal = getContractSignal(job)
+      if (contractFilter === 'C2C mentioned' && signal.key !== 'c2c') return false
+      if (contractFilter === 'Needs confirmation' && signal.key !== 'unknown') return false
+      if (contractFilter === 'Restrictions found' && signal.key !== 'restricted') return false
       const search = searchQuery.trim().toLowerCase()
       if (search) {
         const haystack = [job.Title, job.Company, job.Location, job['Matched Skills'], job['Search Query']]
@@ -449,7 +461,7 @@ const AllJobs = ({ jobs, onNotesChange, onJobAdded }) => {
       sorted.sort((a, b) => getDisplayMatchScore(b) - getDisplayMatchScore(a))
     }
     return sorted
-  }, [activeFilters, jobs, searchQuery, roleFilter, salaryFilter, experienceFilter, sortKey, dateRange, now])
+  }, [activeFilters, jobs, searchQuery, roleFilter, salaryFilter, experienceFilter, sortKey, dateRange, now, contractFilter])
 
   const selectedJob = useMemo(() => {
     if (filteredJobs.length === 0) return null
@@ -467,9 +479,9 @@ const AllJobs = ({ jobs, onNotesChange, onJobAdded }) => {
       <header className="alljobs-header">
         {/* Layer 1 — Title + subtitle */}
         <div className="alljobs-title-block">
-          <h1>All Jobs</h1>
+          <span className="eyebrow">DISCOVER</span><h1>Find your next contract</h1>
           <p className="alljobs-subtitle">
-            <strong>{filteredJobs.length.toLocaleString()}</strong> roles{searchQuery ? ` matching "${searchQuery}"` : ''}
+            <strong>{filteredJobs.length.toLocaleString()}</strong> opportunities · Review C2C terms before applying{searchQuery ? ` matching "${searchQuery}"` : ''}
           </p>
         </div>
 
@@ -488,6 +500,7 @@ const AllJobs = ({ jobs, onNotesChange, onJobAdded }) => {
 
           {/* Filter cluster — grouped pill container */}
           <div className="alljobs-filter-cluster">
+            <FilterDropdown label="Contract terms" value={contractFilter} options={['Any', 'C2C mentioned', 'Needs confirmation', 'Restrictions found']} onChange={setContractFilter} />
             <FilterDropdown label="Role" value={roleFilter} options={ROLE_OPTIONS} onChange={setRoleFilter} />
             <button type="button" className={`filter-chip${activeFilters.includes('Remote') ? ' active' : ''}`} onClick={() => toggleFilter('Remote')}>
               Location: Remote
@@ -584,7 +597,7 @@ const AllJobs = ({ jobs, onNotesChange, onJobAdded }) => {
         />
         <aside className="alljobs-detail-panel" style={{ width: panelWidth, minWidth: panelWidth, maxWidth: panelWidth }}>
           {selectedJob ? (
-            <DetailPanel key={selectedJob.id} job={selectedJob} onNotesChange={onNotesChange} />
+            <DetailPanel key={selectedJob.id} job={selectedJob} onNotesChange={onNotesChange} onStatusChange={onStatusChange} />
           ) : (
             <div className="alljobs-detail-empty">
               <h2>Select a matched job</h2>

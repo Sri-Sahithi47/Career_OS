@@ -21,44 +21,45 @@
     .saved-msg.show { opacity: 1; }
     .hint { font-size: 11px; color: #94a3b8; margin-top: 3px; }
   </style>
+  <link rel="stylesheet" href="options.css" />
 </head>
 <body>
-  <h1>🐾 CareerOS Settings</h1>
+  <h1>CareerOS / Browser companion</h1>
   <p class="subtitle">Profile data used to autofill job applications. Synced from your CareerOS account.</p>
 
   <div class="section">
     <div class="section-title">Personal Info</div>
     <div class="row">
       <div class="field">
-        <label>First Name</label>
-        <input id="firstName" type="text" placeholder="Sujan" />
+        <label for="firstName">First Name</label>
+        <input id="firstName" type="text" placeholder="First name" />
       </div>
       <div class="field">
-        <label>Last Name</label>
-        <input id="lastName" type="text" placeholder="Dora" />
+        <label for="lastName">Last Name</label>
+        <input id="lastName" type="text" placeholder="Last name" />
       </div>
     </div>
     <div class="field">
-      <label>Email</label>
-      <input id="email" type="email" placeholder="you@example.com" />
+      <label for="email">Email</label>
+        <input id="email" type="email" placeholder="you@example.com" />
     </div>
     <div class="row">
       <div class="field">
-        <label>Phone</label>
+        <label for="phone">Phone</label>
         <input id="phone" type="tel" placeholder="+1 555-000-0000" />
       </div>
       <div class="field">
-        <label>City</label>
+        <label for="city">City</label>
         <input id="city" type="text" placeholder="Springfield" />
       </div>
     </div>
     <div class="row">
       <div class="field">
-        <label>State</label>
+        <label for="state">State</label>
         <input id="state" type="text" placeholder="MO" />
       </div>
       <div class="field">
-        <label>Zip</label>
+        <label for="zip">Zip</label>
         <input id="zip" type="text" placeholder="65801" />
       </div>
     </div>
@@ -67,16 +68,16 @@
   <div class="section">
     <div class="section-title">Online Presence</div>
     <div class="field">
-      <label>LinkedIn URL</label>
-      <input id="linkedin" type="url" placeholder="https://linkedin.com/in/..." />
+      <label for="linkedin">LinkedIn URL</label>
+        <input id="linkedin" type="url" placeholder="https://linkedin.com/in/..." />
     </div>
     <div class="field">
-      <label>GitHub URL</label>
-      <input id="github" type="url" placeholder="https://github.com/..." />
+      <label for="github">GitHub URL</label>
+        <input id="github" type="url" placeholder="https://github.com/..." />
     </div>
     <div class="field">
-      <label>Portfolio / Website</label>
-      <input id="portfolio" type="url" placeholder="https://yoursite.com" />
+      <label for="portfolio">Portfolio / Website</label>
+        <input id="portfolio" type="url" placeholder="https://yoursite.com" />
     </div>
   </div>
 
@@ -84,14 +85,14 @@
     <div class="section-title">Work Authorization</div>
     <div class="row">
       <div class="field">
-        <label>Authorized to work in USA?</label>
+        <label for="authorized">Authorized to work in USA?</label>
         <select id="authorized">
           <option value="true">Yes</option>
           <option value="false">No</option>
         </select>
       </div>
       <div class="field">
-        <label>Requires sponsorship?</label>
+        <label for="requires_sponsorship">Requires sponsorship?</label>
         <select id="requires_sponsorship">
           <option value="false">No</option>
           <option value="true">Yes</option>
@@ -99,8 +100,8 @@
       </div>
     </div>
     <div class="field">
-      <label>Visa Status</label>
-      <input id="visa_status" type="text" placeholder="OPT, H1B, Citizen, etc." />
+      <label for="visa_status">Visa Status</label>
+        <input id="visa_status" type="text" placeholder="OPT, H1B, Citizen, etc." />
     </div>
   </div>
 
@@ -108,8 +109,8 @@
     <div class="section-title">Voluntary EEO Disclosures</div>
     <p style="font-size:11px;color:#94a3b8;margin-bottom:14px;">Auto-filled on Equal Employment Opportunity forms. All fields default to "prefer not to answer."</p>
     <div class="field">
-      <label>Gender</label>
-      <select id="eeo_gender">
+      <label for="eeo_gender">Gender</label>
+        <select id="eeo_gender">
         <option>Male</option>
         <option>Female</option>
         <option>Non-binary</option>
@@ -118,8 +119,8 @@
       </select>
     </div>
     <div class="field">
-      <label>Race / Ethnicity</label>
-      <select id="eeo_race">
+      <label for="eeo_race">Race / Ethnicity</label>
+        <select id="eeo_race">
         <option>Hispanic or Latino</option>
         <option>White (Not Hispanic or Latino)</option>
         <option>Black or African American (Not Hispanic or Latino)</option>
@@ -131,8 +132,8 @@
       </select>
     </div>
     <div class="field">
-      <label>Veteran Status</label>
-      <select id="eeo_veteran">
+      <label for="eeo_veteran">Veteran Status</label>
+        <select id="eeo_veteran">
         <option>I identify as one or more of the classifications of a protected veteran</option>
         <option>I am a veteran, but I am not a protected veteran</option>
         <option>I am not a protected veteran</option>
@@ -140,8 +141,8 @@
       </select>
     </div>
     <div class="field">
-      <label>Disability Status</label>
-      <select id="eeo_disability">
+      <label for="eeo_disability">Disability Status</label>
+        <select id="eeo_disability">
         <option>Yes, I have a disability, or have had one in the past</option>
         <option>No, I do not have a disability and have not had one in the past</option>
         <option>I don't wish to answer</option>
@@ -152,8 +153,8 @@
   <div class="section">
     <div class="section-title">API Settings</div>
     <div class="field">
-      <label>API Base URL</label>
-      <input id="api_base" type="url" placeholder="http://localhost:5001" />
+      <label for="api_base">API Base URL</label>
+        <input id="api_base" type="url" placeholder="http://localhost:5001" />
       <div class="hint">Change only if your CareerOS backend runs on a different URL.</div>
     </div>
   </div>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import './Settings.css'
+import LegacyScraper from './LegacyScraper'
 import { api } from '../lib/api'
 import { getApiErrorMessage } from '../lib/errors'
 import {
@@ -11,7 +12,8 @@ import {
 } from '../lib/eeo'
 
 const TABS = [
-  { key: 'profile', label: 'Profile', hint: 'Contact info, address, compensation, and work authorization — used for deterministic autofill.' },
+  { key: 'portals', label: 'Job portals', hint: 'Search staffing portals and import jobs into your feed.' },
+  { key: 'profile', label: 'Profile', hint: 'Your contact details, compensation preferences, and work authorization.' },
   { key: 'personal_disclosures', label: 'EEO / Disclosures', hint: 'Voluntary EEO responses auto-filled on job applications.' },
   { key: 'notifications', label: 'Notifications', hint: 'Control which alerts and summaries you receive.' },
   { key: 'job_config', label: 'Search config', hint: 'Roles, locations, skills, compensation, and matching filters.' },
@@ -293,8 +295,8 @@ function Settings({ onboarding, onUpdated }) {
       <header className="settings-hero">
         <div>
           <span className="eyebrow">Workspace setup</span>
-          <h1>Configure the search engine, candidate profile, and runtime safely.</h1>
-          <p>These values still live on local disk today, so treat this as operator-facing settings rather than end-user account management.</p>
+          <h1>Profile & preferences</h1>
+          <p>Manage the profile used for your search and browser autofill.</p>
         </div>
         <div className="settings-hero-note">
           <span>Current panel</span>
@@ -325,6 +327,8 @@ function Settings({ onboarding, onUpdated }) {
             <h2>{activeMeta?.label}</h2>
             <p>{activeMeta?.hint}</p>
           </div>
+
+          {activeTab === 'portals' && <LegacyScraper />}
 
           {activeTab === 'profile' && (
             <ProfileSettingsTab fp={fp} setFp={setFp} />
@@ -443,7 +447,7 @@ function Settings({ onboarding, onUpdated }) {
             </div>
           )}
 
-          <div className="settings-actions">
+          <div className="settings-actions" hidden={activeTab === 'portals'}>
             <button className="primary-action" onClick={saveConfig} disabled={saving}>
               {saving ? 'Saving...' : 'Save changes'}
             </button>
@@ -609,6 +613,25 @@ function SearchConfigTab({ searchProfile, setSearchProfile }) {
         items={searchProfile.industries}
         onChange={(items) => setField('industries', items)}
       />
+
+      <section className="sc-card sc-card-wide">
+        <div className="sc-card-title"><h3>Job feed filters</h3><p>Staffing portals require staffing agencies and recruiter posts to be allowed.</p></div>
+        {[
+          ['hide_staffing_agencies', 'Hide staffing agencies'],
+          ['exclude_recruiter_posts', 'Exclude recruiter posts'],
+          ['hide_suspicious_jobs', 'Hide suspicious jobs'],
+        ].map(([key, label]) => (
+          <label key={key} style={{ display: 'block', margin: '12px 0' }}>
+            <input type="checkbox" checked={!!searchProfile.quality_filters[key]} onChange={event => setField('quality_filters', { ...searchProfile.quality_filters, [key]: event.target.checked })} /> {label}
+          </label>
+        ))}
+        <Field label="Minimum match score">
+          <input className="sp-input" type="number" min="0" max="100" value={searchProfile.quality_filters.minimum_match_score || 0} onChange={event => setField('quality_filters', { ...searchProfile.quality_filters, minimum_match_score: Number(event.target.value) })} />
+        </Field>
+        <label style={{ display: 'block', marginTop: 12 }}>
+          <input type="checkbox" checked={!(searchProfile.quality_filters.preferred_sources || []).length} onChange={event => setField('quality_filters', { ...searchProfile.quality_filters, preferred_sources: event.target.checked ? [] : ['LinkedIn', 'Indeed', 'Company Site'] })} /> Include all sources, including staffing portals
+        </label>
+      </section>
 
       <section className="sc-card sc-card-wide">
         <div className="sc-card-title">

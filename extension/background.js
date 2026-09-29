@@ -267,7 +267,7 @@ async function handleMessage(msg) {
 
     case "SAVE_JOB": {
       const res = await apiRequest("POST", "/api/jobs", jobForSave(msg.job));
-      if (res.ok) return { ok: true, created: res.data.created, job: res.data.job };
+      if (res.ok) return { ok: true, created: res.data.created, updated: res.data.updated, job: res.data.job };
       return { ok: false, status: res.status, error: apiErrorMessage(res, "Failed to save job") };
     }
 

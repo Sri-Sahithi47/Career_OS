@@ -915,6 +915,7 @@ class CreateJobRequest(BaseModel):
     matched_skills: Optional[list] = None
     contact_info: Optional[dict] = None
     employment_type: Optional[str] = None
+    special_interest: bool = False
 
 
 def _normalize_job_url(url: str) -> str:
@@ -923,23 +924,23 @@ def _normalize_job_url(url: str) -> str:
     LinkedIn search pages embed the job ID in ?currentJobId=NNN — convert those
     to the canonical /jobs/view/NNN/ form so they match scraper-stored URLs.
     """
-    import re
-    from urllib.parse import urlparse, parse_qs
-    try:
-        parsed = urlparse(url)
-        if "linkedin.com" in parsed.netloc:
-            # Search results page: linkedin.com/jobs/search-results/?currentJobId=123...
-            qs = parse_qs(parsed.query)
-            if "currentJobId" in qs:
-                job_id = qs["currentJobId"][0]
-                return f"https://www.linkedin.com/jobs/view/{job_id}/"
-            # Strip trailing query params from view pages (keep clean path)
-            view_match = re.match(r"(https://[^/]*linkedin\.com/jobs/view/\d+)", url)
-            if view_match:
-                return view_match.group(1) + "/"
-    except Exception:
-        pass
-    return url
+    from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
+    parsed = urlsplit(url.strip())
+    host = (parsed.hostname or "").lower()
+    query = parse_qsl(parsed.query, keep_blank_values=True)
+    if host == "linkedin.com" or host.endswith(".linkedin.com"):
+        job_id = dict(query).get("currentJobId")
+        match = re.fullmatch(r"/jobs/view/(?:[^/]*-)?(\d+)/?", parsed.path)
+        if job_id and job_id.isdigit():
+            return f"https://www.linkedin.com/jobs/view/{job_id}/"
+        if match:
+            return f"https://www.linkedin.com/jobs/view/{match[1]}/"
+    # Remove only known marketing parameters; requisition/query/hash identifiers
+    # may distinguish jobs and must remain intact.
+    query = [(key, value) for key, value in query
+             if not key.lower().startswith("utm_") and key.lower() not in {"gclid", "fbclid", "msclkid"}]
+    return urlunsplit((parsed.scheme.lower(), parsed.netloc.lower(), parsed.path,
+                       urlencode(sorted(query)), parsed.fragment))
 
 
 DESCRIPTION_PLACEHOLDERS = {
@@ -958,7 +959,7 @@ def _clean_saved_description(value: Optional[str]) -> str:
         if line and line.strip()
     ]
     useful_lines = [line for line in lines if line.lower() not in DESCRIPTION_PLACEHOLDERS]
-    description = re.sub(r"\s+", " ", "\n".join(useful_lines)).strip()
+    description = "\n".join(re.sub(r"[ \t]+", " ", line) for line in useful_lines).strip()
     if description.lower() in DESCRIPTION_PLACEHOLDERS:
         return ""
     return description[:50000]
@@ -972,7 +973,7 @@ def _should_replace_saved_description(current: Optional[str], incoming: str) -> 
         return True
     if current_clean.lower() in DESCRIPTION_PLACEHOLDERS:
         return True
-    return len(incoming) >= 80 and len(incoming) > len(current_clean) + 40
+    return len(incoming) > len(current_clean)
 
 
 @router.post("/jobs", dependencies=[Depends(require_csrf)])
@@ -981,7 +982,21 @@ def create_job_manual(
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user),
 ):
-    """Manually save a job (e.g. from the Chrome extension). Dedupes by URL and title+company."""
+    """Save and shortlist atomically, recovering concurrent unique-key inserts."""
+    from sqlalchemy.exc import IntegrityError
+    for attempt in range(3):
+        try:
+            return _save_job_manual(req, db, user)
+        except IntegrityError:
+            db.rollback()
+            if attempt == 2:
+                raise HTTPException(409, "The job changed during saving. Please retry.")
+        except Exception:
+            db.rollback()
+            raise
+
+
+def _save_job_manual(req: CreateJobRequest, db: Session, user: User):
     from datetime import datetime as dt
     from src.models import Job, MatchedJob
     import uuid as _uuid
@@ -1016,18 +1031,9 @@ def create_job_manual(
         )
         .first()
     )
-    # Fallback dedup: same title + company for this user. Skipped when either was
-    # missing from the payload, since the placeholders would collide across unrelated jobs.
-    if not existing_job and raw_title and raw_company:
-        existing_job = (
-            db.query(Job)
-            .filter(
-                Job.user_id == str(user.id),
-                Job.title == title,
-                Job.company == company,
-            )
-            .first()
-        )
+    # A title/company pair is not a posting identity: agencies reuse both for
+    # different clients, locations and requisitions. Only match the posting URL
+    # (or the deterministic identity above for URL-less manual records).
     if existing_job:
         matched = db.query(MatchedJob).filter(
             MatchedJob.user_id == str(user.id),
@@ -1042,7 +1048,7 @@ def create_job_manual(
                 matched.delivery_status = "active"
                 matched.delivered_at = dt.utcnow()
                 should_commit = True
-            if source and (existing_job.source or "").strip().lower() in {"extension", "json-ld", ""}:
+            if source and source != (existing_job.source or "").strip().lower() and (existing_job.source or "").strip().lower() in {"extension", "json-ld", ""}:
                 existing_job.source = source
                 should_commit = True
             if _should_replace_saved_description(existing_job.job_description, incoming_description):
@@ -1054,12 +1060,15 @@ def create_job_manual(
             if req.employment_type and not (existing_job.employment_type or "").strip():
                 existing_job.employment_type = req.employment_type
                 should_commit = True
+            if req.special_interest and not matched.special_interest:
+                matched.special_interest = True
+                should_commit = True
             if should_commit:
                 db.commit()
                 db.refresh(matched)
-            return {"created": was_archived, "job": serialize_matched_job(matched)}
+            return {"created": was_archived, "updated": should_commit and not was_archived, "job": serialize_matched_job(matched)}
 
-    job = Job(
+    job = existing_job or Job(
         id=str(_uuid.uuid4()),
         user_id=str(user.id),
         company=company,
@@ -1075,6 +1084,8 @@ def create_job_manual(
         contact_info=req.contact_info or None,
         employment_type=req.employment_type or None,
     )
+    if existing_job and _should_replace_saved_description(job.job_description, incoming_description):
+        job.job_description = incoming_description
     db.add(job)
     db.flush()
 
@@ -1083,6 +1094,7 @@ def create_job_manual(
         user_id=str(user.id),
         job_id=job.id,
         delivery_origin="extension",
+        special_interest=req.special_interest,
         delivery_status="active",
         user_status="not_applied",
         fit_score=0,
@@ -1112,7 +1124,7 @@ def delete_single_job(job_id: str, db: Session = Depends(get_db), user: User = D
 @router.post("/jobs/backup", dependencies=[Depends(require_csrf)])
 def backup_jobs():
     """Trigger backup of jobs database."""
-    return {"message": "Backup triggered"}
+    raise HTTPException(status_code=501, detail="Automatic backup is not implemented. No backup was created.")
 
 
 _REQUIRED_SIGNAL_RE = re.compile(r"\b(required|must|need(?:ed)?|requirements?|minimum|at least|proficient|strong|expertise|hands-on|responsible for|you will)\b", re.IGNORECASE)

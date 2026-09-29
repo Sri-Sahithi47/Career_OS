@@ -92,7 +92,7 @@
   background: #f8fafc; color: #0f172a;
   cursor: pointer;
 }
-.tp-job-picker select:focus { outline: none; border-color: #4f46e5; }
+.tp-job-picker select:focus { outline: none; border-color: #087f70; }
 
 /* ── Main workspace grid ── */
 .tp-workspace {
@@ -122,7 +122,7 @@
 .tp-ats-badge {
   display: inline-flex; align-items: center; gap: 0.35rem;
   padding: 0.25rem 0.6rem;
-  background: #eef1ff; color: #4338ca;
+  background: #edf5ef; color: #08675c;
   font-size: 0.72rem; font-weight: 700; border-radius: 999px;
 }
 .tp-ats-badge.good { background: #dcfce7; color: #15803d; }
@@ -141,11 +141,11 @@
   letter-spacing: 0.08em; color: #94a3b8; margin-top: 0.2rem;
 }
 .tp-ats-bar { height: 4px; background: #e2e8f0; border-radius: 999px; overflow: hidden; margin-top: 0.5rem; }
-.tp-ats-bar span { display: block; height: 100%; background: #4f46e5; border-radius: 999px; transition: width 0.5s ease; }
+.tp-ats-bar span { display: block; height: 100%; background: #087f70; border-radius: 999px; transition: width 0.5s ease; }
 .tp-ats-bar-inline {
   width: 80px; height: 4px; background: #e2e8f0; border-radius: 999px; overflow: hidden; flex-shrink: 0;
 }
-.tp-ats-bar-inline span { display: block; height: 100%; background: #4f46e5; border-radius: 999px; transition: width 0.5s ease; }
+.tp-ats-bar-inline span { display: block; height: 100%; background: #087f70; border-radius: 999px; transition: width 0.5s ease; }
 
 .tp-jd-textarea {
   width: 100%; box-sizing: border-box;
@@ -161,7 +161,7 @@
   background: #fafafa;
 }
 .tp-jd-textarea:focus {
-  outline: none; border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+  outline: none; border-color: #087f70; box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
   background: #fff;
 }
 .tp-jd-hint { font-size: 0.72rem; color: #94a3b8; }
@@ -202,9 +202,9 @@
 }
 .tp-col-head-tailored {
   background: #f5f3ff;
-  border-bottom-color: #e0e7ff;
+  border-bottom-color: #deeee3;
 }
-.tp-col-head-tailored strong { color: #4338ca; }
+.tp-col-head-tailored strong { color: #08675c; }
 .tp-sparkle {
   width: 0.9rem; height: 0.9rem;
   fill: currentColor;
@@ -212,7 +212,7 @@
 .tp-muted { color: #94a3b8; font-size: 0.75rem; }
 .tp-pending-count {
   padding: 0.2rem 0.55rem;
-  background: #eef1ff; color: #4338ca;
+  background: #edf5ef; color: #08675c;
   font-size: 0.7rem; font-weight: 600;
   border-radius: 999px;
 }
@@ -264,7 +264,7 @@
   color: #0f172a; letter-spacing: -0.01em;
 }
 .tp-br-title {
-  font-size: 0.74rem; color: #4f46e5; font-weight: 600;
+  font-size: 0.74rem; color: #087f70; font-weight: 600;
   line-height: 1.4; margin-bottom: 0.3rem;
 }
 .tp-br-contacts {
@@ -389,8 +389,8 @@
 }
 .tp-suggestion.accepted { background: #f0fdf4; border-color: #bbf7d0; }
 .tp-suggestion-type {
-  display: inline-block; font-size: 0.72rem; font-weight: 700; color: #3b4ce2;
-  padding: 0.1rem 0.4rem; background: #eef1ff; border-radius: 4px;
+  display: inline-block; font-size: 0.72rem; font-weight: 700; color: #087f70;
+  padding: 0.1rem 0.4rem; background: #edf5ef; border-radius: 4px;
 }
 .tp-suggestion p { margin: 0.35rem 0 0.55rem; color: #374151; font-size: 0.82rem; }
 .tp-suggestion-actions { display: inline-flex; gap: 0.4rem; }
@@ -436,7 +436,7 @@
   letter-spacing: -0.02em;
 }
 .tp-preview-role {
-  color: #3b4ce2; font-size: 1rem; font-weight: 600;
+  color: #087f70; font-size: 1rem; font-weight: 600;
   margin-top: 0.2rem;
 }
 .tp-preview-contact {
@@ -556,7 +556,7 @@
 .tp-qa-targeting-card {
   margin-top: 0.45rem;
   padding: 0.7rem 0.85rem;
-  background: #eef1ff; border-radius: 0.5rem;
+  background: #edf5ef; border-radius: 0.5rem;
 }
 .tp-qa-targeting-card strong { display: block; color: #0f172a; font-size: 0.88rem; }
 .tp-qa-targeting-card span { display: block; color: #6b7280; font-size: 0.78rem; }
@@ -600,12 +600,12 @@
   padding: 12px 20px; margin-bottom: 14px; flex-wrap: wrap;
 }
 .tp-step { display: flex; align-items: center; gap: 7px; font-size: 13px; color: #94a3b8; transition: color 0.3s; }
-.tp-step.active { color: #4f46e5; font-weight: 600; }
+.tp-step.active { color: #087f70; font-weight: 600; }
 .tp-step.done { color: #059669; }
 .tp-step-dot {
   width: 8px; height: 8px; border-radius: 50%; background: #e2e8f0; flex-shrink: 0; transition: background 0.3s;
 }
-.tp-step.active .tp-step-dot { background: #4f46e5; animation: tp-pulse 1s infinite; }
+.tp-step.active .tp-step-dot { background: #087f70; animation: tp-pulse 1s infinite; }
 .tp-step.done .tp-step-dot { background: #059669; }
 @keyframes tp-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
 
@@ -650,10 +650,10 @@
 }
 .tp-add-bullet-btn {
   border: 1px dashed #c7d2fe; background: transparent;
-  color: #4338ca; font-size: 0.78rem; font-weight: 600;
+  color: #08675c; font-size: 0.78rem; font-weight: 600;
   padding: 0.2rem 0.6rem; border-radius: 0.4rem; cursor: pointer;
 }
-.tp-add-bullet-btn:hover { background: #eef1ff; }
+.tp-add-bullet-btn:hover { background: #edf5ef; }
 .tp-bullet-row {
   display: grid; grid-template-columns: 1rem 1fr 1.5rem;
   gap: 0.5rem; align-items: start;
@@ -670,7 +670,7 @@
   resize: vertical; min-height: 2.5rem;
   background: #fafafa;
 }
-.tp-bullet-input:focus { outline: none; border-color: #4f46e5; background: #fff; box-shadow: 0 0 0 2px rgba(79,70,229,0.1); }
+.tp-bullet-input:focus { outline: none; border-color: #087f70; background: #fff; box-shadow: 0 0 0 2px rgba(79,70,229,0.1); }
 .tp-bullet-remove {
   border: none; background: none; color: #94a3b8;
   font-size: 1.1rem; cursor: pointer; padding: 0;
@@ -684,7 +684,7 @@
   color: #1e293b; font-family: inherit;
   background: #fafafa;
 }
-.tp-location-input:focus { outline: none; border-color: #4f46e5; background: #fff; }
+.tp-location-input:focus { outline: none; border-color: #087f70; background: #fff; }
 
 /* PDF ready banner */
 .tp-pdf-ready-banner {
@@ -705,7 +705,7 @@
 }
 .tp-pdf-spinner {
   width: 36px; height: 36px; border: 3px solid #e2e8f0;
-  border-top-color: #4f46e5; border-radius: 50%;
+  border-top-color: #087f70; border-radius: 50%;
   animation: tp-spin 0.8s linear infinite;
 }
 @keyframes tp-spin { to { transform: rotate(360deg); } }

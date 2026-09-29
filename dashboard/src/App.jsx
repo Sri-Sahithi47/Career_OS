@@ -7,6 +7,10 @@ import AuthPage from './pages/AuthPage'
 import OnboardingPage from './pages/OnboardingPage'
 import ResumeCheck from './pages/ResumeCheck'
 import Settings from './pages/Settings'
+import LegacyScraper from './pages/ScraperPage'
+import Overview from './pages/Overview'
+import ExtensionPage from './pages/ExtensionPage'
+import TrackerBoard from './pages/TrackerBoard'
 import SavedJobs from './pages/SavedJobs'
 import KeywordBank from './pages/KeywordBank'
 import { api, storeToken } from './lib/api'
@@ -257,13 +261,12 @@ function App() {
         <div className="brand-block">
           <span className="brand-mark">
             <svg viewBox="0 0 24 24" aria-hidden="true">
-              <rect x="3" y="7" width="18" height="13" rx="2.2" />
-              <path d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7" />
-              <path d="M3 12h18" />
+              <path d="M17 6.5a7.5 7.5 0 1 0 0 11" />
+              <path d="M13 12h7m-3-3 3 3-3 3" />
             </svg>
           </span>
           <div>
-            <h1>CareerOS</h1>
+            <h1>Career<span className="brand-os">OS</span><span className="brand-caption">C2C WORKSPACE</span></h1>
           </div>
           <button type="button" className="sidebar-collapse" aria-label="Collapse" title="Collapse sidebar" onClick={() => setSidebarCollapsed((c) => !c)}>
             {sidebarCollapsed ? '›' : '‹'}
@@ -274,29 +277,36 @@ function App() {
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="M20 20l-3.5-3.5" /></svg>
           <input
             ref={sidebarSearchRef}
-            placeholder="Search jobs… (Enter)"
+            aria-label="Search jobs"
+            placeholder="Search jobs…"
             value={sidebarSearch}
             onChange={(e) => setSidebarSearch(e.target.value)}
             onKeyDown={handleSidebarSearchSubmit}
           />
         </label>
 
-        <div className="sidebar-section-title">MAIN MENU</div>
+        <div className="sidebar-section-title">Workspace</div>
         <nav className="topnav" aria-label="Primary navigation">
+          <NavLink to="/overview" className={({ isActive }) => `topnav-link ${isActive ? 'active' : ''}`}><span className="nav-icon">{NAV_ICONS.today}</span><span className="nav-label">Overview</span></NavLink>
           <NavLink to="/jobs" className={({ isActive }) => `topnav-link ${isActive ? 'active' : ''}`}>
             <span className="nav-icon">{NAV_ICONS.recommended}</span>
-            <span className="nav-label">All Jobs</span>
+            <span className="nav-label">Find contracts</span>
             {renderNavCount(totalCount)}
           </NavLink>
           <NavLink to="/saved" className={({ isActive }) => `topnav-link ${isActive ? 'active' : ''}`}>
             <span className="nav-icon">{NAV_ICONS.saved}</span>
-            <span className="nav-label">Saved Jobs</span>
+            <span className="nav-label">Shortlist</span>
             {renderNavCount(savedCount)}
           </NavLink>
         </nav>
 
-        <div className="sidebar-section-title">TOOLS</div>
+        <nav className="topnav"><NavLink to="/pipeline" className={({ isActive }) => `topnav-link ${isActive ? 'active' : ''}`}><span className="nav-icon">{NAV_ICONS.tracker}</span><span className="nav-label">Application pipeline</span></NavLink></nav>
+        <div className="sidebar-section-title">Sourcing tools</div>
         <nav className="topnav" aria-label="Tools">
+          <NavLink to="/job-scraper" title="Job Scraper" className={({ isActive }) => `topnav-link ${isActive ? 'active' : ''}`}>
+            <span className="nav-icon">{NAV_ICONS.today}</span>
+            <span className="nav-label">Job Scraper</span>
+          </NavLink>
           <NavLink to="/keyword-bank" className={({ isActive }) => `topnav-link ${isActive ? 'active' : ''}`}>
             <span className="nav-icon">{NAV_ICONS.keywords}</span>
             <span className="nav-label">Keyword Bank</span>
@@ -308,7 +318,7 @@ function App() {
         </nav>
 
         <div className="sidebar-section-title sidebar-section-title-row">
-          <span>SAVED SEARCHES</span>
+          <span>Saved searches</span>
           <button type="button" className="sidebar-add" aria-label="Add saved search" onClick={() => navigate('/jobs')}>+</button>
         </div>
         <div className="sidebar-saved">
@@ -320,15 +330,16 @@ function App() {
                 className="sidebar-saved-item"
                 onClick={() => navigate(`/jobs?q=${encodeURIComponent(s.label || s.role || '')}`)}
               >
-                <span className="sidebar-saved-dot" style={{ background: '#6366f1' }} />
+                <span className="sidebar-saved-dot" />
                 <span>{s.label || s.role}</span>
               </button>
             ))
           ) : (
-            <p className="sidebar-saved-empty">No saved searches yet.<br />Use All Jobs to search and save.</p>
+            <p className="sidebar-saved-empty">No saved searches yet.<br />Save a search in Find contracts.</p>
           )}
         </div>
 
+        <NavLink to="/extension" className="sidebar-settings extension-nav"><span className="nav-icon">{NAV_ICONS.inbox}</span><span>Browser companion ↗</span></NavLink>
         <NavLink to="/settings" className="sidebar-settings">
           <span className="nav-icon">{NAV_ICONS.profile}</span>
           <span>Settings</span>
@@ -338,7 +349,7 @@ function App() {
           <div className="user-avatar">{(session.full_name || session.username || 'U').trim().charAt(0).toUpperCase()}</div>
           <div>
             <span>{session.full_name || session.username}</span>
-            <strong>Free Plan</strong>
+            <strong>Personal workspace</strong>
           </div>
           <button type="button" className="secondary-action" onClick={handleLogout}>
             Log out
@@ -346,29 +357,9 @@ function App() {
         </div>
       </aside>
 
-      {/* MOBILE NAV (Section 9) */}
+      <header className="mobile-workspace-header"><NavLink to="/overview"><img src="/careeros.svg" width="26" height="26" alt="" />CareerOS</NavLink><details><summary>Workspace menu</summary><nav aria-label="More navigation"><NavLink to="/keyword-bank">Keyword Bank</NavLink><NavLink to="/resume-check">Resume Check</NavLink><NavLink to="/extension">Browser companion</NavLink><NavLink to="/settings">Settings</NavLink><button onClick={handleLogout}>Sign out</button></nav></details></header>
       <nav className="mobile-nav" aria-label="Mobile navigation">
-        <NavLink to="/saved" className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`}>
-          <span className="nav-icon">{NAV_ICONS.saved}</span>
-          <span>Saved</span>
-        </NavLink>
-        <NavLink to="/jobs" className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`}>
-          <span className="nav-icon">{NAV_ICONS.recommended}</span>
-          <span>All Jobs</span>
-          {renderNavCount(totalCount)}
-        </NavLink>
-        <NavLink to="/keyword-bank" className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`}>
-          <span className="nav-icon">{NAV_ICONS.keywords}</span>
-          <span>Keywords</span>
-        </NavLink>
-        <NavLink to="/resume-check" className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`}>
-          <span className="nav-icon">{NAV_ICONS.resumeCheck}</span>
-          <span>Check</span>
-        </NavLink>
-        <NavLink to="/settings" className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`}>
-          <span className="nav-icon">{NAV_ICONS.profile}</span>
-          <span>Settings</span>
-        </NavLink>
+        {[['/overview','Overview','today'],['/jobs','Discover','recommended'],['/saved','Shortlist','saved'],['/pipeline','Pipeline','tracker'],['/job-scraper','Scraper','keywords']].map(([path,label,icon]) => <NavLink key={path} to={path} className={({isActive}) => `mobile-nav-link ${isActive ? 'active' : ''}`}><span className="nav-icon">{NAV_ICONS[icon]}</span><span>{label}</span></NavLink>)}
       </nav>
 
       <main className="app-main">
@@ -379,11 +370,15 @@ function App() {
         )}
 
         <Routes>
-          <Route path="/" element={<Navigate to="/jobs" replace />} />
+          <Route path="/" element={<Navigate to="/overview" replace />} />
+          <Route path="/overview" element={<Overview jobs={jobs} session={session} />} />
+          <Route path="/extension" element={<ExtensionPage />} />
+          <Route path="/pipeline" element={<TrackerBoard jobs={jobs} onStatusChange={handleStatusChange} onDelete={handleDeleteJob} />} />
           <Route path="/jobs" element={<AllJobs jobs={jobs} stats={stats} onStatusChange={handleStatusChange} onDelete={handleDeleteJob} onNotesChange={handleNotesChange} onJobAdded={handleJobAdded} />} />
           <Route path="/saved" element={<SavedJobs jobs={jobs} session={session} onStatusChange={handleStatusChange} onDelete={handleDeleteJob} onNotesChange={handleNotesChange} />} />
           <Route path="/keyword-bank" element={<KeywordBank onResumeUpdated={setOnboarding} />} />
           <Route path="/resume-check" element={<ResumeCheck />} />
+          <Route path="/job-scraper" element={<LegacyScraper />} />
           <Route
             path="/settings"
             element={(

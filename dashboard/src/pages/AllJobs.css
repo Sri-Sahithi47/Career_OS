@@ -63,8 +63,8 @@
 .alljobs-search input::placeholder { color: #94a3b8; }
 .alljobs-search input:focus {
   outline: none;
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+  border-color: #087f70;
+  box-shadow: 0 0 0 3px rgba(8, 127, 112, 0.12);
 }
 
 /* 2. Filter Cluster Group */
@@ -95,16 +95,16 @@
 .filter-chip svg { width: 0.875rem; height: 0.875rem; color: #94a3b8; }
 
 .filter-chip.active {
-  background: #eef2ff;
+  background: #edf5ef;
   border-color: #c7d2fe;
-  color: #4338ca;
+  color: #08675c;
   font-weight: 600;
 }
-.filter-chip.active svg { color: #818cf8; }
+.filter-chip.active svg { color: #6ab99f; }
 
 .remove-filter {
   margin-left: 0.25rem;
-  color: #4f46e5; font-size: 1rem; line-height: 1; opacity: 0.7;
+  color: #087f70; font-size: 1rem; line-height: 1; opacity: 0.7;
 }
 .remove-filter:hover { opacity: 1; }
 
@@ -138,7 +138,7 @@
 
 .date-range-btn.active {
   background: #fff;
-  color: #4f46e5;
+  color: #087f70;
   font-weight: 600;
   box-shadow: 0 1px 3px rgba(15,23,42,0.08);
 }
@@ -302,7 +302,7 @@
 .alljobs-resize-handle:active::before {
   left: 1px;
   width: 3px;
-  background: #4f46e5;
+  background: #087f70;
 }
 
 .alljobs-resize-handle:hover::after,
@@ -351,11 +351,11 @@
 .detail-logo {
   width: 2.5rem; height: 2.5rem; /* 40px */
   border-radius: 0.625rem;
-  background: #eef1ff; color: #4f46e5;
+  background: #edf5ef; color: #087f70;
   font-size: 1rem; font-weight: 800;
   display: flex; align-items: center; justify-content: center;
   flex: 0 0 auto;
-  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.12);
+  box-shadow: 0 2px 8px rgba(8, 127, 112, 0.12);
 }
 .detail-company-info {
   flex: 1;
@@ -453,7 +453,7 @@
   border-radius: 999px; font-size: 0.72rem; font-weight: 600;
 }
 .dp-not_applied { background: #f1f5f9; color: #64748b; }
-.dp-applied     { background: #eef1ff; color: #4338ca; }
+.dp-applied     { background: #edf5ef; color: #08675c; }
 .dp-interviewing{ background: #fef3c7; color: #b45309; }
 .dp-accepted    { background: #dcfce7; color: #16a34a; }
 .dp-skipped     { background: #fee2e2; color: #dc2626; }
@@ -489,7 +489,7 @@
 .detail-tabs button:hover { color: #0f172a; }
 .detail-tabs button.active {
   background: #ffffff;  /* white active tab — stronger contrast on #F1F5F9 tray */
-  color: #4338ca;
+  color: #08675c;
   font-weight: 600;
   box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
 }
@@ -511,7 +511,7 @@
   background: transparent; color: var(--accent); font-size: 0.88rem; font-weight: 700;
   cursor: pointer; transition: background 150ms ease, transform 100ms ease;
 }
-.detail-tailor:hover { background: rgba(79, 70, 229, 0.05); transform: translateY(-1px); }
+.detail-tailor:hover { background: rgba(8, 127, 112, 0.05); transform: translateY(-1px); }
 
 /* ── Sticky apply bar ── */
 .detail-sticky-bar {
@@ -532,20 +532,20 @@
   padding: 0 1rem;
   border-radius: 0.75rem; /* 12px */
   border: 0;
-  background: #4f46e5;
+  background: #087f70;
   color: #fff;
   font-size: 0.875rem;
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.22);
+  box-shadow: 0 4px 12px rgba(8, 127, 112, 0.22);
   transition: background 150ms ease, transform 100ms ease, box-shadow 150ms ease;
 }
 .detail-apply svg { width: 1rem; height: 1rem; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; }
 .detail-apply:hover:not(:disabled) {
-  background: #4338ca;
+  background: #08675c;
   transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(79, 70, 229, 0.30);
+  box-shadow: 0 6px 18px rgba(8, 127, 112, 0.30);
 }
 .detail-apply:disabled { background: #f1f5f9; color: #94a3b8; cursor: not-allowed; box-shadow: none; }
 
@@ -716,7 +716,7 @@
   display: inline-flex; align-items: center;
   height: 1.5rem;
   padding: 0 0.625rem;
-  background: #eef2ff; color: #4338ca;
+  background: #edf5ef; color: #08675c;
   font-size: 0.75rem; font-weight: 500;
   border-radius: 999px;
 }
@@ -741,7 +741,7 @@
 .detail-facts strong { color: #6b7280; font-weight: 600; }
 
 .detail-notes { width: 100%; min-height: 140px; padding: 0.85rem; border: 1px solid #e5e7eb; border-radius: 0.6rem; font-size: 0.9rem; font-family: inherit; color: #0f172a; resize: vertical; transition: border-color 150ms ease; }
-.detail-notes:focus { outline: none; border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,0.12); }
+.detail-notes:focus { outline: none; border-color: #087f70; box-shadow: 0 0 0 3px rgba(79,70,229,0.12); }
 
 /* Section 3 Polish: Secondary Toolbar Actions */
 .toolbar-secondary-btn {

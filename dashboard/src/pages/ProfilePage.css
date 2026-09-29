@@ -68,9 +68,9 @@
 
 .settings-tabbar button > span {
   font-size: 0.95rem;
-  color: #4f46e5;
+  color: #087f70;
 }
-.settings-tabbar button.active > span { color: #4f46e5; }
+.settings-tabbar button.active > span { color: #087f70; }
 
 .settings-stack {
   display: grid;
@@ -100,8 +100,8 @@
   justify-content: center;
   flex: 0 0 auto;
   border-radius: 0.5rem;
-  background: #eef1ff;
-  color: #4f46e5;
+  background: #edf5ef;
+  color: #087f70;
   font-size: 1rem;
   font-weight: 700;
 }
@@ -145,9 +145,9 @@
 .settings-chip:hover { background: #f7f8fc; border-color: #d1d5db; }
 
 .settings-chip.purple {
-  background: #eef1ff;
+  background: #edf5ef;
   border-color: #c9d0ff;
-  color: #3b4ce2;
+  color: #087f70;
 }
 .settings-chip.purple:hover { background: #dee3ff; }
 
@@ -183,8 +183,8 @@
 .profile-grid-simple input:focus,
 .resume-editor:focus {
   outline: none;
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.14);
+  border-color: #087f70;
+  box-shadow: 0 0 0 3px rgba(8, 127, 112, 0.14);
 }
 
 .settings-inline-input button {
@@ -292,7 +292,7 @@
   transition: transform 150ms ease;
   box-shadow: 0 2px 4px rgba(15, 23, 42, 0.16);
 }
-.notification-row input[type="checkbox"]:checked { background: #4f46e5; }
+.notification-row input[type="checkbox"]:checked { background: #087f70; }
 .notification-row input[type="checkbox"]:checked::after { transform: translateX(1rem); }
 
 .resume-editor {

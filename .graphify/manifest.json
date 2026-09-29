@@ -1,0 +1,2658 @@
+{
+  "api/__init__.py": {
+    "mtime": 1790125773414.828,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "api/ai.py": {
+    "mtime": 1790125773414.9856,
+    "hash": "8c3def046a888da28d3b626ab0768183"
+  },
+  "api/auth.py": {
+    "mtime": 1790125773415.0938,
+    "hash": "2f2c8e101016a0034ec3ef543c92fbcf"
+  },
+  "api/deps.py": {
+    "mtime": 1790125773415.2002,
+    "hash": "e015864d36c72dbca6662560c25949c5"
+  },
+  "api/internal.py": {
+    "mtime": 1790126179201.79,
+    "hash": "0c97c445f73e8089759b650c81dc2c5e"
+  },
+  "api/jobs.py": {
+    "mtime": 1790125773415.5654,
+    "hash": "022390ebc172439b5a9485408b1a11b9"
+  },
+  "api/onboarding.py": {
+    "mtime": 1790125773415.7053,
+    "hash": "52883ae4033ea031d3cf49dfa68f4a79"
+  },
+  "api/opportunities.py": {
+    "mtime": 1790125773415.827,
+    "hash": "241bc146e70d5f04a5abb7ff899e5f61"
+  },
+  "api/server.py": {
+    "mtime": 1790126493461.0027,
+    "hash": "c5d33fc3ef1065a1f9c78f582fae5576"
+  },
+  "config/prompts/__init__.py": {
+    "mtime": 1790125773418.9387,
+    "hash": "3686eee9e2bd1bcbdf02271aa00bd0b3"
+  },
+  "config/prompts/_loader.py": {
+    "mtime": 1790125773419.033,
+    "hash": "bba88e265bf796f0fe4640d9eb109a97"
+  },
+  "config/prompts/_schema.py": {
+    "mtime": 1790125773419.106,
+    "hash": "f18cb124bc73458f2cf0b75aaa0f6413"
+  },
+  "dashboard/eslint.config.js": {
+    "mtime": 1790125773420.3271,
+    "hash": "49c8473bcfcec3aef596a5fb04a6df06"
+  },
+  "dashboard/parse_html_again.py": {
+    "mtime": 1790125773421.4685,
+    "hash": "2735dfff99214857878118ac6e8e05d3"
+  },
+  "dashboard/src/App.jsx": {
+    "mtime": 1790125773421.886,
+    "hash": "e8a67c2fec5931ffda8e8f7be8644580"
+  },
+  "dashboard/src/App.test.jsx": {
+    "mtime": 1790125773421.9746,
+    "hash": "9520104fff93aac06be426f4e6df0a1c"
+  },
+  "dashboard/src/api/client.js": {
+    "mtime": 1790125773422.0945,
+    "hash": "afdaa3ae392eb9ec02a60790d3664e5b"
+  },
+  "dashboard/src/components/AddJobDialog.jsx": {
+    "mtime": 1790125773422.478,
+    "hash": "0a9b0935b29d2ea7226a4cd383bdf352"
+  },
+  "dashboard/src/components/AddJobDialog.test.jsx": {
+    "mtime": 1790125773422.5686,
+    "hash": "10fc948ba50931e0b8a832aafd3b054b"
+  },
+  "dashboard/src/components/JobCard.jsx": {
+    "mtime": 1790125773422.7559,
+    "hash": "c0073aeaaf0adb49d33329c87f269e20"
+  },
+  "dashboard/src/components/JobCard.test.jsx": {
+    "mtime": 1790125773422.8562,
+    "hash": "33e53033c3bea677d53bc3be6008d39b"
+  },
+  "dashboard/src/components/JobSidebar.jsx": {
+    "mtime": 1790125773423.1277,
+    "hash": "44ffdc41e1bac0ecdb228fad012d043a"
+  },
+  "dashboard/src/components/NotificationToast.jsx": {
+    "mtime": 1790125773423.298,
+    "hash": "5903427758c80d56a9bcc147446d175f"
+  },
+  "dashboard/src/components/TrackerCard.jsx": {
+    "mtime": 1790125773423.5593,
+    "hash": "571977aa2fd4f1d4cf8800a9c9719d74"
+  },
+  "dashboard/src/components/dashboard/ActionCards.jsx": {
+    "mtime": 1790125773423.6917,
+    "hash": "83396b71c2143eaf4c72af63d4bac7ad"
+  },
+  "dashboard/src/components/dashboard/ActivityChart.jsx": {
+    "mtime": 1790125773423.7654,
+    "hash": "d201d82bb1b618f0f6872b158b24033c"
+  },
+  "dashboard/src/components/dashboard/DashboardHeader.jsx": {
+    "mtime": 1790125773423.84,
+    "hash": "7a48adc8f81eceb781bda891d70ccee8"
+  },
+  "dashboard/src/components/dashboard/JobRecommendations.jsx": {
+    "mtime": 1790125773423.9297,
+    "hash": "707a5dc8f45e2bf9553152732b9ec6df"
+  },
+  "dashboard/src/components/dashboard/PipelineStats.jsx": {
+    "mtime": 1790125773424.0308,
+    "hash": "22b173de45969ca74a914ed38900ba2b"
+  },
+  "dashboard/src/components/dashboard/PriorityFollowUps.jsx": {
+    "mtime": 1790125773424.1172,
+    "hash": "f0525d22c18e6c04bceca0fa73cbea8a"
+  },
+  "dashboard/src/components/icons/DashboardIcons.jsx": {
+    "mtime": 1790125773424.3108,
+    "hash": "b8bed314199230400f8f3aaf7612f134"
+  },
+  "dashboard/src/hooks/useDashboardData.js": {
+    "mtime": 1790125773424.667,
+    "hash": "2b2a5dd0fa405caba842b5a762c84df7"
+  },
+  "dashboard/src/lib/api.js": {
+    "mtime": 1790125773424.9453,
+    "hash": "c9590827ce195728258a1ab01a6d3f2e"
+  },
+  "dashboard/src/lib/api.test.js": {
+    "mtime": 1790125773425.1023,
+    "hash": "e1b2d55be7b134a9bc35c9f0cff9d1d2"
+  },
+  "dashboard/src/lib/dashboardUtils.js": {
+    "mtime": 1790125773425.21,
+    "hash": "3d945ab0b32af6dfb0ce331be7bc04fa"
+  },
+  "dashboard/src/lib/dashboardUtils.test.js": {
+    "mtime": 1790125773425.305,
+    "hash": "f3c7cfa96dbf9e798c1aeb217df1f144"
+  },
+  "dashboard/src/lib/eeo.js": {
+    "mtime": 1790125773425.3918,
+    "hash": "fdd766d6182e87b7f81dd62668f29e36"
+  },
+  "dashboard/src/lib/errors.js": {
+    "mtime": 1790125773425.4763,
+    "hash": "e68c8636ebe175f9dfe424d837ee8ac3"
+  },
+  "dashboard/src/lib/errors.test.js": {
+    "mtime": 1790125773425.5632,
+    "hash": "ff659b5381e6a6a3cd68b79e2dcc0977"
+  },
+  "dashboard/src/lib/jobs.js": {
+    "mtime": 1790125773425.8682,
+    "hash": "ccfb7670dafa070e94caedad7130cf2e"
+  },
+  "dashboard/src/lib/jobs.test.js": {
+    "mtime": 1790125773425.983,
+    "hash": "72a6833c2a9b482e8bdcef27dd2b289c"
+  },
+  "dashboard/src/lib/openExternal.js": {
+    "mtime": 1790125773426.069,
+    "hash": "e704c2dc5ba57b45e589973ffd22fc47"
+  },
+  "dashboard/src/main.jsx": {
+    "mtime": 1790125773426.2258,
+    "hash": "c4adc3416fc131ee631f95dc5e8338c4"
+  },
+  "dashboard/src/pages/AllJobs.jsx": {
+    "mtime": 1790125773426.6702,
+    "hash": "719dec2be754424acfd478c77121aaac"
+  },
+  "dashboard/src/pages/AllJobs.test.jsx": {
+    "mtime": 1790125773426.777,
+    "hash": "6743adac0f0102fabd0d1ccb6fb194ec"
+  },
+  "dashboard/src/pages/AppliedJobs.jsx": {
+    "mtime": 1790125773427.0613,
+    "hash": "e22e2f4607f847e572cbf957d2e42e93"
+  },
+  "dashboard/src/pages/AppliedJobs.test.jsx": {
+    "mtime": 1790125773427.1575,
+    "hash": "fa160c9ae0e6a67487c40fff70200937"
+  },
+  "dashboard/src/pages/AuthPage.jsx": {
+    "mtime": 1790125773427.3586,
+    "hash": "500fcfab7cc6bfeabf36d1a0a0bb299f"
+  },
+  "dashboard/src/pages/AuthPage.test.jsx": {
+    "mtime": 1790125773427.4597,
+    "hash": "382d8e4e4538a743cfbdb4e557bd8a7e"
+  },
+  "dashboard/src/pages/KeywordBank.jsx": {
+    "mtime": 1790125773427.6985,
+    "hash": "371d5bb0b44c051b7520c0da0f86a624"
+  },
+  "dashboard/src/pages/OnboardingPage.jsx": {
+    "mtime": 1790125773427.9683,
+    "hash": "8ee263cd5585c3f2396bdc93b9a4ad5d"
+  },
+  "dashboard/src/pages/OnboardingPage.test.jsx": {
+    "mtime": 1790125773428.0676,
+    "hash": "d678c664f693026ddd1391624fea8f4b"
+  },
+  "dashboard/src/pages/OpportunityInbox.jsx": {
+    "mtime": 1790125773428.297,
+    "hash": "ecf2615bd139450e9a1d7aea760d71e0"
+  },
+  "dashboard/src/pages/ProfilePage.jsx": {
+    "mtime": 1790125773428.5364,
+    "hash": "2dff0af08d1758a0c627eee5f20e9653"
+  },
+  "dashboard/src/pages/ResumeCheck.jsx": {
+    "mtime": 1790125773428.8108,
+    "hash": "c0de6fe43928b0d1b222c172292407ed"
+  },
+  "dashboard/src/pages/SavedJobs.jsx": {
+    "mtime": 1790125773429.0396,
+    "hash": "372ac490d4e82c9635d6546ed8892c04"
+  },
+  "dashboard/src/pages/Settings.jsx": {
+    "mtime": 1790126351676.9133,
+    "hash": "0f79a622ec88f1c6243b7b2f232b557e"
+  },
+  "dashboard/src/pages/TailorPage.jsx": {
+    "mtime": 1790125773429.863,
+    "hash": "676d45c0685ba4cc0a55dbc23d70d3aa"
+  },
+  "dashboard/src/pages/TailorPage.test.jsx": {
+    "mtime": 1790125773429.9722,
+    "hash": "24255a8930ec991970daf593a7d3634c"
+  },
+  "dashboard/src/pages/TodaysJobs.jsx": {
+    "mtime": 1790125773430.184,
+    "hash": "dde40447de61316bfee61764bc014f40"
+  },
+  "dashboard/src/pages/TodaysJobs.test.jsx": {
+    "mtime": 1790125773430.2896,
+    "hash": "db2cdeef1ce8dc1995fb87f7dc1c61b3"
+  },
+  "dashboard/src/pages/TrackerBoard.jsx": {
+    "mtime": 1790125773430.4866,
+    "hash": "926e810fc992db4067d74b5f8ab7b2b1"
+  },
+  "dashboard/src/pages/TrackerBoard.test.jsx": {
+    "mtime": 1790125773430.5857,
+    "hash": "4a4caa9870067e27f07d7a897cf9cd5d"
+  },
+  "dashboard/src/test/mocks.js": {
+    "mtime": 1790125773430.7405,
+    "hash": "8f9e2cc5be83786d9fe97deb0db8789d"
+  },
+  "dashboard/src/test/render.jsx": {
+    "mtime": 1790125773430.828,
+    "hash": "cb3346e61c5e7197b800144e64300553"
+  },
+  "dashboard/src/test/setup.js": {
+    "mtime": 1790125773430.961,
+    "hash": "a258548e88cc99b89ebaa8b9d7a8deea"
+  },
+  "dashboard/vite.config.js": {
+    "mtime": 1790125773431.044,
+    "hash": "c785011fd0d2bac428878ba8210f227c"
+  },
+  "extension/background.js": {
+    "mtime": 1790125773437.175,
+    "hash": "6e29d77d703453cfbd31ca64cbdf5eae"
+  },
+  "extension/content/ai_panel.js": {
+    "mtime": 1790125773437.345,
+    "hash": "81af37729e16bcfea760eb987ab93664"
+  },
+  "extension/content/autofill.js": {
+    "mtime": 1790125773437.558,
+    "hash": "22b528ccdf74c5cfa06610d131dc229c"
+  },
+  "extension/content/detector.js": {
+    "mtime": 1790125773437.7183,
+    "hash": "81292e5d05eb1fcdf0855c2d039e5bc5"
+  },
+  "extension/lib/fillers/common.js": {
+    "mtime": 1790125773438.3875,
+    "hash": "dc41a4c05e4225eece2ea94a518583e0"
+  },
+  "extension/lib/parsers/ashby.js": {
+    "mtime": 1790125773438.5225,
+    "hash": "c0071b82c14a46f5df2c34e5ee767303"
+  },
+  "extension/lib/parsers/generic.js": {
+    "mtime": 1790125773438.625,
+    "hash": "8f654a2225528a304eaedd489cdde362"
+  },
+  "extension/lib/parsers/greenhouse.js": {
+    "mtime": 1790125773438.7712,
+    "hash": "3c05e32cb14942b195da356ff0d0a76a"
+  },
+  "extension/lib/parsers/indeed.js": {
+    "mtime": 1790125773438.855,
+    "hash": "3a19616e4c0ed0a565f5c0cde688a00f"
+  },
+  "extension/lib/parsers/lever.js": {
+    "mtime": 1790125773438.9463,
+    "hash": "ccda41e839b7abaad1ba42044a8f0d87"
+  },
+  "extension/lib/parsers/linkedin.js": {
+    "mtime": 1790125773439.0422,
+    "hash": "8844af8f28027996096ddaa2951d81e4"
+  },
+  "extension/lib/parsers/workday.js": {
+    "mtime": 1790125773439.1323,
+    "hash": "61764a87dc77196a46c32dc571b5a33a"
+  },
+  "extension/options/options.js": {
+    "mtime": 1790125773439.503,
+    "hash": "39a3070f6b1656d899a9499ee2cb8ca0"
+  },
+  "extension/popup/popup.js": {
+    "mtime": 1790125773439.9995,
+    "hash": "1b62f1816e9ed78b28490b8e745760b4"
+  },
+  "find_jobs.py": {
+    "mtime": 1790125773440.1248,
+    "hash": "3b63ce9f2d2529adec5d45ed9c3f9e54"
+  },
+  "jobsearchplatform_contract/api/__init__.py": {
+    "mtime": 1790125773442.7192,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "jobsearchplatform_contract/api/ai.py": {
+    "mtime": 1790125773442.872,
+    "hash": "8c3def046a888da28d3b626ab0768183"
+  },
+  "jobsearchplatform_contract/api/auth.py": {
+    "mtime": 1790125773442.9717,
+    "hash": "2f2c8e101016a0034ec3ef543c92fbcf"
+  },
+  "jobsearchplatform_contract/api/deps.py": {
+    "mtime": 1790125773443.075,
+    "hash": "e015864d36c72dbca6662560c25949c5"
+  },
+  "jobsearchplatform_contract/api/internal.py": {
+    "mtime": 1790125773443.1663,
+    "hash": "9c181cd7ce53158750b1100e4e21a317"
+  },
+  "jobsearchplatform_contract/api/jobs.py": {
+    "mtime": 1790125773443.2666,
+    "hash": "d014f18c228b5578dbcf97a5069ef24b"
+  },
+  "jobsearchplatform_contract/api/onboarding.py": {
+    "mtime": 1790125773443.4111,
+    "hash": "3154449fc6d77cddcf9e8e7843fa3ef3"
+  },
+  "jobsearchplatform_contract/api/opportunities.py": {
+    "mtime": 1790125773443.544,
+    "hash": "bded7cc24cb952f5bdaa43459bcc579d"
+  },
+  "jobsearchplatform_contract/api/server.py": {
+    "mtime": 1790125773443.7917,
+    "hash": "8ddb087e082a5a688213e7238ff1ea0c"
+  },
+  "jobsearchplatform_contract/config/prompts/__init__.py": {
+    "mtime": 1790125773446.827,
+    "hash": "3686eee9e2bd1bcbdf02271aa00bd0b3"
+  },
+  "jobsearchplatform_contract/config/prompts/_loader.py": {
+    "mtime": 1790125773446.9246,
+    "hash": "bba88e265bf796f0fe4640d9eb109a97"
+  },
+  "jobsearchplatform_contract/config/prompts/_schema.py": {
+    "mtime": 1790125773447.0137,
+    "hash": "f18cb124bc73458f2cf0b75aaa0f6413"
+  },
+  "jobsearchplatform_contract/dashboard/eslint.config.js": {
+    "mtime": 1790125773448.0542,
+    "hash": "49c8473bcfcec3aef596a5fb04a6df06"
+  },
+  "jobsearchplatform_contract/dashboard/parse_html_again.py": {
+    "mtime": 1790125773448.311,
+    "hash": "2735dfff99214857878118ac6e8e05d3"
+  },
+  "jobsearchplatform_contract/dashboard/src/App.jsx": {
+    "mtime": 1790125773448.7256,
+    "hash": "89b7821fea85c84b7242c7f267431444"
+  },
+  "jobsearchplatform_contract/dashboard/src/api/client.js": {
+    "mtime": 1790125773448.8774,
+    "hash": "afdaa3ae392eb9ec02a60790d3664e5b"
+  },
+  "jobsearchplatform_contract/dashboard/src/components/JobCard.jsx": {
+    "mtime": 1790125773449.345,
+    "hash": "1b4daa3caf186a0f778ac1a3290080e2"
+  },
+  "jobsearchplatform_contract/dashboard/src/components/JobCard.test.jsx": {
+    "mtime": 1790125773449.4163,
+    "hash": "e0a0bb7fb8f6ae2d8ee3cbf4822fe4cb"
+  },
+  "jobsearchplatform_contract/dashboard/src/components/JobSidebar.jsx": {
+    "mtime": 1790125773449.646,
+    "hash": "24bb1cd6af3d74ca64900d7d56fd4713"
+  },
+  "jobsearchplatform_contract/dashboard/src/components/NotificationToast.jsx": {
+    "mtime": 1790125773449.8162,
+    "hash": "5903427758c80d56a9bcc147446d175f"
+  },
+  "jobsearchplatform_contract/dashboard/src/components/TrackerCard.jsx": {
+    "mtime": 1790125773450.0803,
+    "hash": "571977aa2fd4f1d4cf8800a9c9719d74"
+  },
+  "jobsearchplatform_contract/dashboard/src/components/dashboard/ActionCards.jsx": {
+    "mtime": 1790125773450.2175,
+    "hash": "4455e0cbd670294791f06d6a05846038"
+  },
+  "jobsearchplatform_contract/dashboard/src/components/dashboard/ActivityChart.jsx": {
+    "mtime": 1790125773450.3,
+    "hash": "d201d82bb1b618f0f6872b158b24033c"
+  },
+  "jobsearchplatform_contract/dashboard/src/components/dashboard/DashboardHeader.jsx": {
+    "mtime": 1790125773450.3867,
+    "hash": "7a48adc8f81eceb781bda891d70ccee8"
+  },
+  "jobsearchplatform_contract/dashboard/src/components/dashboard/JobRecommendations.jsx": {
+    "mtime": 1790125773450.4678,
+    "hash": "136fac800e18915bab899efcf06c07b8"
+  },
+  "jobsearchplatform_contract/dashboard/src/components/dashboard/PipelineStats.jsx": {
+    "mtime": 1790125773450.545,
+    "hash": "22b173de45969ca74a914ed38900ba2b"
+  },
+  "jobsearchplatform_contract/dashboard/src/components/dashboard/PriorityFollowUps.jsx": {
+    "mtime": 1790125773450.6453,
+    "hash": "4560b5c8eab24083fd7920d5bae48e76"
+  },
+  "jobsearchplatform_contract/dashboard/src/components/icons/DashboardIcons.jsx": {
+    "mtime": 1790125773450.7886,
+    "hash": "b8bed314199230400f8f3aaf7612f134"
+  },
+  "jobsearchplatform_contract/dashboard/src/hooks/useDashboardData.js": {
+    "mtime": 1790125773450.9229,
+    "hash": "2b2a5dd0fa405caba842b5a762c84df7"
+  },
+  "jobsearchplatform_contract/dashboard/src/lib/api.js": {
+    "mtime": 1790125773451.1375,
+    "hash": "2bf2568c7017863f1ed46d53974c227f"
+  },
+  "jobsearchplatform_contract/dashboard/src/lib/api.test.js": {
+    "mtime": 1790125773451.2114,
+    "hash": "e1b2d55be7b134a9bc35c9f0cff9d1d2"
+  },
+  "jobsearchplatform_contract/dashboard/src/lib/dashboardUtils.js": {
+    "mtime": 1790125773451.2905,
+    "hash": "513457a7fa52bda8cbf8c1f41da110d8"
+  },
+  "jobsearchplatform_contract/dashboard/src/lib/eeo.js": {
+    "mtime": 1790125773451.3635,
+    "hash": "fdd766d6182e87b7f81dd62668f29e36"
+  },
+  "jobsearchplatform_contract/dashboard/src/lib/jobs.js": {
+    "mtime": 1790125773451.4404,
+    "hash": "ccfb7670dafa070e94caedad7130cf2e"
+  },
+  "jobsearchplatform_contract/dashboard/src/lib/jobs.test.js": {
+    "mtime": 1790125773451.5447,
+    "hash": "72a6833c2a9b482e8bdcef27dd2b289c"
+  },
+  "jobsearchplatform_contract/dashboard/src/main.jsx": {
+    "mtime": 1790125773451.6213,
+    "hash": "c4adc3416fc131ee631f95dc5e8338c4"
+  },
+  "jobsearchplatform_contract/dashboard/src/pages/AllJobs.jsx": {
+    "mtime": 1790125773451.8442,
+    "hash": "474d0fc433bcf0870bb6aee255e6d75b"
+  },
+  "jobsearchplatform_contract/dashboard/src/pages/AllJobs.test.jsx": {
+    "mtime": 1790125773451.924,
+    "hash": "0190ce6abdeb3b58df4b98cc5d19859f"
+  },
+  "jobsearchplatform_contract/dashboard/src/pages/AppliedJobs.jsx": {
+    "mtime": 1790125773452.291,
+    "hash": "e22e2f4607f847e572cbf957d2e42e93"
+  },
+  "jobsearchplatform_contract/dashboard/src/pages/AppliedJobs.test.jsx": {
+    "mtime": 1790125773452.3804,
+    "hash": "d7a7a0af9fe0b7d6f344fff53a595a92"
+  },
+  "jobsearchplatform_contract/dashboard/src/pages/AuthPage.jsx": {
+    "mtime": 1790125773452.6436,
+    "hash": "18a8a55cc7e2bf6ee033f15547f69c0d"
+  },
+  "jobsearchplatform_contract/dashboard/src/pages/AuthPage.test.jsx": {
+    "mtime": 1790125773452.736,
+    "hash": "b222023a262fb06ce4cbf19e4503c0a9"
+  },
+  "jobsearchplatform_contract/dashboard/src/pages/KeywordBank.jsx": {
+    "mtime": 1790125773453.0183,
+    "hash": "4c93bc1ac1ddfb36b42ec6bc854b023c"
+  },
+  "jobsearchplatform_contract/dashboard/src/pages/OnboardingPage.jsx": {
+    "mtime": 1790125773453.4578,
+    "hash": "c9bff90e66390f8433b1075f5dd4a036"
+  },
+  "jobsearchplatform_contract/dashboard/src/pages/OnboardingPage.test.jsx": {
+    "mtime": 1790125773453.575,
+    "hash": "4c3b6d2b16324636835389be63283b1e"
+  },
+  "jobsearchplatform_contract/dashboard/src/pages/OpportunityInbox.jsx": {
+    "mtime": 1790125773454.2395,
+    "hash": "ecf2615bd139450e9a1d7aea760d71e0"
+  },
+  "jobsearchplatform_contract/dashboard/src/pages/ProfilePage.jsx": {
+    "mtime": 1790125773454.912,
+    "hash": "f99f0e70bbf651e8523f8369cb35780f"
+  },
+  "jobsearchplatform_contract/dashboard/src/pages/SavedJobs.jsx": {
+    "mtime": 1790125773455.301,
+    "hash": "b2fc432c448cad99495863a77da2ec35"
+  },
+  "jobsearchplatform_contract/dashboard/src/pages/Settings.jsx": {
+    "mtime": 1790125773455.5552,
+    "hash": "f35118a86ada67ed360fad143923c1ab"
+  },
+  "jobsearchplatform_contract/dashboard/src/pages/TailorPage.jsx": {
+    "mtime": 1790125773455.8555,
+    "hash": "31bd744a875642d0ca198b7e297951cc"
+  },
+  "jobsearchplatform_contract/dashboard/src/pages/TodaysJobs.jsx": {
+    "mtime": 1790125773456.051,
+    "hash": "8bc6da8b1dd35f7b149beba741bfdbf7"
+  },
+  "jobsearchplatform_contract/dashboard/src/pages/TodaysJobs.test.jsx": {
+    "mtime": 1790125773456.131,
+    "hash": "d685296ad0a8963822de9360a52e3c29"
+  },
+  "jobsearchplatform_contract/dashboard/src/pages/TrackerBoard.jsx": {
+    "mtime": 1790125773456.3125,
+    "hash": "926e810fc992db4067d74b5f8ab7b2b1"
+  },
+  "jobsearchplatform_contract/dashboard/src/pages/TrackerBoard.test.jsx": {
+    "mtime": 1790125773456.4048,
+    "hash": "ab70b426ce57acefe0ad07545f8a0ff6"
+  },
+  "jobsearchplatform_contract/dashboard/src/test/mocks.js": {
+    "mtime": 1790125773456.543,
+    "hash": "8f9e2cc5be83786d9fe97deb0db8789d"
+  },
+  "jobsearchplatform_contract/dashboard/src/test/setup.js": {
+    "mtime": 1790125773456.6147,
+    "hash": "994c5bf3f0f8742b450d0ab09b0d6bb9"
+  },
+  "jobsearchplatform_contract/dashboard/vite.config.js": {
+    "mtime": 1790125773456.695,
+    "hash": "fe35182b71f5bb212fb4a59f92d30b11"
+  },
+  "jobsearchplatform_contract/extension/background.js": {
+    "mtime": 1790125773461.611,
+    "hash": "0849b98fbba5c503a9b0e787d0f4afa1"
+  },
+  "jobsearchplatform_contract/extension/content/ai_panel.js": {
+    "mtime": 1790125773461.7876,
+    "hash": "81af37729e16bcfea760eb987ab93664"
+  },
+  "jobsearchplatform_contract/extension/content/autofill.js": {
+    "mtime": 1790125773462.0117,
+    "hash": "8f05e5b475793cd3ad0e5a8e76b1a285"
+  },
+  "jobsearchplatform_contract/extension/content/detector.js": {
+    "mtime": 1790125773462.1262,
+    "hash": "89fdba3898c84557f3e0ef71ee4fabcb"
+  },
+  "jobsearchplatform_contract/extension/lib/fillers/common.js": {
+    "mtime": 1790125773462.8147,
+    "hash": "dc41a4c05e4225eece2ea94a518583e0"
+  },
+  "jobsearchplatform_contract/extension/lib/parsers/ashby.js": {
+    "mtime": 1790125773462.9636,
+    "hash": "c0071b82c14a46f5df2c34e5ee767303"
+  },
+  "jobsearchplatform_contract/extension/lib/parsers/generic.js": {
+    "mtime": 1790125773463.057,
+    "hash": "8f654a2225528a304eaedd489cdde362"
+  },
+  "jobsearchplatform_contract/extension/lib/parsers/greenhouse.js": {
+    "mtime": 1790125773463.1443,
+    "hash": "3c05e32cb14942b195da356ff0d0a76a"
+  },
+  "jobsearchplatform_contract/extension/lib/parsers/indeed.js": {
+    "mtime": 1790125773463.2202,
+    "hash": "3a19616e4c0ed0a565f5c0cde688a00f"
+  },
+  "jobsearchplatform_contract/extension/lib/parsers/lever.js": {
+    "mtime": 1790125773463.3633,
+    "hash": "ccda41e839b7abaad1ba42044a8f0d87"
+  },
+  "jobsearchplatform_contract/extension/lib/parsers/linkedin.js": {
+    "mtime": 1790125773463.5623,
+    "hash": "0efa907ab779d117641e7b6a2a892dbb"
+  },
+  "jobsearchplatform_contract/extension/lib/parsers/workday.js": {
+    "mtime": 1790125773463.646,
+    "hash": "61764a87dc77196a46c32dc571b5a33a"
+  },
+  "jobsearchplatform_contract/extension/options/options.js": {
+    "mtime": 1790125773463.977,
+    "hash": "39a3070f6b1656d899a9499ee2cb8ca0"
+  },
+  "jobsearchplatform_contract/extension/popup/popup.js": {
+    "mtime": 1790125773464.3042,
+    "hash": "ecb2320c429703954e901a86f9b5d0e0"
+  },
+  "jobsearchplatform_contract/find_jobs.py": {
+    "mtime": 1790125773464.5334,
+    "hash": "3b63ce9f2d2529adec5d45ed9c3f9e54"
+  },
+  "jobsearchplatform_contract/main.py": {
+    "mtime": 1790125773464.6392,
+    "hash": "03b312013228a9e6dd5c3ac774a3f1bd"
+  },
+  "jobsearchplatform_contract/run_automation.py": {
+    "mtime": 1790125773464.8958,
+    "hash": "2dabb174d210650e2b181c21b762488c"
+  },
+  "jobsearchplatform_contract/scheduler.py": {
+    "mtime": 1790125773464.994,
+    "hash": "fb6a8bab82d27661c27c6e697f786f2a"
+  },
+  "jobsearchplatform_contract/scripts/analysis/analyze_batch.py": {
+    "mtime": 1790125773465.228,
+    "hash": "a9d923f33afc2a22221ef35247638a39"
+  },
+  "jobsearchplatform_contract/scripts/analysis/analyze_resume_rows.py": {
+    "mtime": 1790125773465.3289,
+    "hash": "7cc89af6e021caca19aadc3477e5ef01"
+  },
+  "jobsearchplatform_contract/scripts/analysis/update_excel_analysis.py": {
+    "mtime": 1790125773465.4294,
+    "hash": "d152282d39c5b45c9393245165899acf"
+  },
+  "jobsearchplatform_contract/scripts/dev/dump_batch1.py": {
+    "mtime": 1790125773465.564,
+    "hash": "b5d6308ba57b2f921867b7dd970052df"
+  },
+  "jobsearchplatform_contract/scripts/dev/dump_batch_generic.py": {
+    "mtime": 1790125773465.6455,
+    "hash": "2313d94512927dce3801ff1e719e201d"
+  },
+  "jobsearchplatform_contract/scripts/dev/find_jds_from_excel.py": {
+    "mtime": 1790125773465.7275,
+    "hash": "b14193ae36a36e9564078522ef938de0"
+  },
+  "jobsearchplatform_contract/scripts/dev/find_jds_from_excel_v2.py": {
+    "mtime": 1790125773465.806,
+    "hash": "c19a50d11cf61ccda4c743b1dccb7d8b"
+  },
+  "jobsearchplatform_contract/scripts/dev/test_location.py": {
+    "mtime": 1790125773465.8882,
+    "hash": "26856292e72e471c2e1bd2440a866009"
+  },
+  "jobsearchplatform_contract/scripts/maintenance/clean_master_excel.py": {
+    "mtime": 1790125773466.04,
+    "hash": "c26d6cd02f80d008f220bf81fde2fb73"
+  },
+  "jobsearchplatform_contract/scripts/maintenance/clean_recent_run.py": {
+    "mtime": 1790125773466.1328,
+    "hash": "44894ef8ad212f8a95afcc837ef09a06"
+  },
+  "jobsearchplatform_contract/scripts/maintenance/mark_applied.py": {
+    "mtime": 1790125773466.2861,
+    "hash": "22eee0073c503a9509786e7378c6342d"
+  },
+  "jobsearchplatform_contract/scripts/maintenance/process_jobs.py": {
+    "mtime": 1790125773466.405,
+    "hash": "0e79ee709e5e817f9880f3e500fbd85f"
+  },
+  "jobsearchplatform_contract/scripts/maintenance/rescore_jobs.py": {
+    "mtime": 1790125773466.5159,
+    "hash": "4ca00b8867a905292d55eb232e2c6ad5"
+  },
+  "jobsearchplatform_contract/scripts/maintenance/retroactive_tailor.py": {
+    "mtime": 1790125773466.6267,
+    "hash": "58a898b883b78cc4e83839ebed944b10"
+  },
+  "jobsearchplatform_contract/scripts/maintenance/run_ai_evaluation.py": {
+    "mtime": 1790125773466.7185,
+    "hash": "958c162dfdd5a2e80f7a2b6cd196ecf5"
+  },
+  "jobsearchplatform_contract/scripts/utilities/check_columns.py": {
+    "mtime": 1790125773466.8962,
+    "hash": "389989d34cce7349a968a8b752f84742"
+  },
+  "jobsearchplatform_contract/scripts/utilities/login_helper.py": {
+    "mtime": 1790125773466.9832,
+    "hash": "67967c5029becb7f2e11ccf437a931b9"
+  },
+  "jobsearchplatform_contract/scripts/utilities/mass_update_tech_stack.py": {
+    "mtime": 1790125773467.0652,
+    "hash": "d8c819db074a42e0950fede896f989a0"
+  },
+  "jobsearchplatform_contract/scripts/utilities/update_excel_with_json_paths.py": {
+    "mtime": 1790125773467.1514,
+    "hash": "6d9e8f9489f1c45db5c69b5a14d14c69"
+  },
+  "jobsearchplatform_contract/src/__init__.py": {
+    "mtime": 1790125773467.3787,
+    "hash": "87e1f328b028370146e6da3b226b0fa6"
+  },
+  "jobsearchplatform_contract/src/ai_match_service.py": {
+    "mtime": 1790125773467.4827,
+    "hash": "a831c820932270323fe7cf6ce96785b7"
+  },
+  "jobsearchplatform_contract/src/api/routes.py": {
+    "mtime": 1790125773467.6238,
+    "hash": "6e709f48420a3d65b690616ef24b83e6"
+  },
+  "jobsearchplatform_contract/src/api/v1/auth.py": {
+    "mtime": 1790125773467.765,
+    "hash": "e7612b12b4ed2d56be46caebedc47b19"
+  },
+  "jobsearchplatform_contract/src/api/v1/jobs.py": {
+    "mtime": 1790125773467.85,
+    "hash": "3629fa5cd4c09e2da98f12d778688122"
+  },
+  "jobsearchplatform_contract/src/api/v1/notifications.py": {
+    "mtime": 1790125773467.9287,
+    "hash": "7d6a118d012e9426e39a83928c9f60f0"
+  },
+  "jobsearchplatform_contract/src/crud.py": {
+    "mtime": 1790125773468.062,
+    "hash": "a56271e76776af682ef728bda4d49070"
+  },
+  "jobsearchplatform_contract/src/data/__init__.py": {
+    "mtime": 1790125773468.1946,
+    "hash": "245afc24a45896c255610bb107dd323b"
+  },
+  "jobsearchplatform_contract/src/data/excel_manager.py": {
+    "mtime": 1790125773468.3142,
+    "hash": "bf4dc342e3053b1275afe45dc353a2b3"
+  },
+  "jobsearchplatform_contract/src/data/output_writer.py": {
+    "mtime": 1790125773468.59,
+    "hash": "6681676f96220b4ee6fdd94ac1d173cc"
+  },
+  "jobsearchplatform_contract/src/database.py": {
+    "mtime": 1790125773468.7166,
+    "hash": "fec4ad9c14f6239b6a99ad548591944f"
+  },
+  "jobsearchplatform_contract/src/evaluation/__init__.py": {
+    "mtime": 1790125773468.8628,
+    "hash": "725c69f6f0e9b21867edca2fd2e2b70e"
+  },
+  "jobsearchplatform_contract/src/evaluation/ai_evaluator.py": {
+    "mtime": 1790125773468.968,
+    "hash": "dcadf339018051a446ddc1874cd33481"
+  },
+  "jobsearchplatform_contract/src/evaluation/ats_scorer.py": {
+    "mtime": 1790125773469.095,
+    "hash": "aab7d5895435365f47a052bdb50e4946"
+  },
+  "jobsearchplatform_contract/src/evaluation/gemini_evaluator.py": {
+    "mtime": 1790125773469.3657,
+    "hash": "201b0ef02d12c45b08f9b8ed644f1068"
+  },
+  "jobsearchplatform_contract/src/evaluation/keyword_extractor.py": {
+    "mtime": 1790125773469.76,
+    "hash": "9b41010625619c69f71d91669e3a32cb"
+  },
+  "jobsearchplatform_contract/src/evaluation/prompts.py": {
+    "mtime": 1790125773469.941,
+    "hash": "01049ef5cce5642ba30e90bd30b566f4"
+  },
+  "jobsearchplatform_contract/src/evaluation/rag_service.py": {
+    "mtime": 1790125773470.0664,
+    "hash": "e8f6d8bc2833d34f87576038e62fd5cb"
+  },
+  "jobsearchplatform_contract/src/evaluation/resume_evaluator.py": {
+    "mtime": 1790125773470.3694,
+    "hash": "90ddc110c0b6907454f65db2639ba2a3"
+  },
+  "jobsearchplatform_contract/src/evaluation/score_service.py": {
+    "mtime": 1790125773470.489,
+    "hash": "b442e3bf00953a3b640fc64aa4942d0d"
+  },
+  "jobsearchplatform_contract/src/evaluation/simple_evaluator.py": {
+    "mtime": 1790125773470.5767,
+    "hash": "beb7b15b4cb29b697395c45d4dc009a3"
+  },
+  "jobsearchplatform_contract/src/evaluation/skill_matcher.py": {
+    "mtime": 1790125773470.6667,
+    "hash": "5d3c71abd546d36ee9c8b27c6a8b0bf3"
+  },
+  "jobsearchplatform_contract/src/evaluation/tailor_service.py": {
+    "mtime": 1790125773470.7988,
+    "hash": "6a0bcaea05ed10e75a829993f2c27e3c"
+  },
+  "jobsearchplatform_contract/src/llm/__init__.py": {
+    "mtime": 1790125773470.9321,
+    "hash": "85b43ea171472f72a2ade1f54ee74bfe"
+  },
+  "jobsearchplatform_contract/src/llm/base.py": {
+    "mtime": 1790125773471.0056,
+    "hash": "566ae5f802ad1bc946c01c37992a3dba"
+  },
+  "jobsearchplatform_contract/src/llm/cache.py": {
+    "mtime": 1790125773471.0757,
+    "hash": "a0ba36726dbd6900cb291d3112952f37"
+  },
+  "jobsearchplatform_contract/src/llm/circuit_breaker.py": {
+    "mtime": 1790125773471.152,
+    "hash": "5e6b1717d236754773982483f76e21c7"
+  },
+  "jobsearchplatform_contract/src/llm/cost_table.py": {
+    "mtime": 1790125773471.2324,
+    "hash": "fc5528033ab55999ed28e5fa819885c6"
+  },
+  "jobsearchplatform_contract/src/llm/dispatcher.py": {
+    "mtime": 1790125773471.318,
+    "hash": "1384519827459b1c6b519b20f6078e33"
+  },
+  "jobsearchplatform_contract/src/llm/factory.py": {
+    "mtime": 1790125773471.3984,
+    "hash": "81af9b5c50d0979b05337356027bc1af"
+  },
+  "jobsearchplatform_contract/src/llm/providers/__init__.py": {
+    "mtime": 1790125773471.5422,
+    "hash": "ca8e0fb9d963e40e020dbed77ecb56e4"
+  },
+  "jobsearchplatform_contract/src/llm/providers/claude_provider.py": {
+    "mtime": 1790125773471.6558,
+    "hash": "01bf5992495b535ff1835c994c777918"
+  },
+  "jobsearchplatform_contract/src/llm/providers/gemini_provider.py": {
+    "mtime": 1790125773471.729,
+    "hash": "e10cc83c65d8a931fd3d48e262fab091"
+  },
+  "jobsearchplatform_contract/src/llm/providers/groq_provider.py": {
+    "mtime": 1790125773471.81,
+    "hash": "613023d332b3f632656c3c8f0445913d"
+  },
+  "jobsearchplatform_contract/src/llm/providers/mock_provider.py": {
+    "mtime": 1790125773471.8936,
+    "hash": "75f9013b6a1c03d0f164962e321c0073"
+  },
+  "jobsearchplatform_contract/src/llm/rate_limit.py": {
+    "mtime": 1790125773471.9658,
+    "hash": "3bf622e00b6f9872feaa45abf42edaee"
+  },
+  "jobsearchplatform_contract/src/llm/router.py": {
+    "mtime": 1790125773472.0544,
+    "hash": "a41bebbb430cb919c036909b0ded49f1"
+  },
+  "jobsearchplatform_contract/src/llm/telemetry.py": {
+    "mtime": 1790125773472.2708,
+    "hash": "430bddcf2b1f44d0f4834e98180e66f0"
+  },
+  "jobsearchplatform_contract/src/llm/types.py": {
+    "mtime": 1790125773472.3694,
+    "hash": "2df3de03860c6650a084547f4288a8f5"
+  },
+  "jobsearchplatform_contract/src/main.py": {
+    "mtime": 1790125773472.464,
+    "hash": "0cf1b0a686149f364afa4240b8977b32"
+  },
+  "jobsearchplatform_contract/src/migration.py": {
+    "mtime": 1790125773472.566,
+    "hash": "30204a4570e789e3ea27db485774d966"
+  },
+  "jobsearchplatform_contract/src/models.py": {
+    "mtime": 1790125773472.664,
+    "hash": "2e21fd80092607ec3a8d4884deb6c87c"
+  },
+  "jobsearchplatform_contract/src/onboarding.py": {
+    "mtime": 1790125773472.9902,
+    "hash": "8cb9f3c9745fcba48b7086f4e7b3f93c"
+  },
+  "jobsearchplatform_contract/src/opportunities.py": {
+    "mtime": 1790125773473.1213,
+    "hash": "2686098c8c403d278bd3db5d776aa318"
+  },
+  "jobsearchplatform_contract/src/recommendations.py": {
+    "mtime": 1790125773473.282,
+    "hash": "64b5d70c58b402d715a5380eac38dd34"
+  },
+  "jobsearchplatform_contract/src/resume/__init__.py": {
+    "mtime": 1790125773473.361,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "jobsearchplatform_contract/src/resume/resume_generator.py": {
+    "mtime": 1790125773473.5066,
+    "hash": "d225e18b2e34b72440b939319ff8e18d"
+  },
+  "jobsearchplatform_contract/src/resume/single_generator.py": {
+    "mtime": 1790125773473.6184,
+    "hash": "71ef75610dd3b606d75763689950cda3"
+  },
+  "jobsearchplatform_contract/src/resume/workspace_service.py": {
+    "mtime": 1790125773473.7104,
+    "hash": "31bc437a77a302da682298fd717d1192"
+  },
+  "jobsearchplatform_contract/src/scraper/__init__.py": {
+    "mtime": 1790125773473.823,
+    "hash": "216e3ee8b3882caa6c31812910b7d9f3"
+  },
+  "jobsearchplatform_contract/src/scraper/history_manager.py": {
+    "mtime": 1790125773473.8943,
+    "hash": "9374dfb5af7f88f331258cdc0b524277"
+  },
+  "jobsearchplatform_contract/src/scraper/job_scraper.py": {
+    "mtime": 1790125773474.0034,
+    "hash": "6bb5b42aa4a5618a526238c318c051f2"
+  },
+  "jobsearchplatform_contract/src/settings.py": {
+    "mtime": 1790125773474.12,
+    "hash": "0e6f47e1ca1b49384a0505ca2f49e665"
+  },
+  "jobsearchplatform_contract/src/tasks/celery_app.py": {
+    "mtime": 1790125773474.2441,
+    "hash": "4a8c141dce2376b42da3513401b1b5dc"
+  },
+  "jobsearchplatform_contract/src/tasks/email_tasks.py": {
+    "mtime": 1790125773474.3206,
+    "hash": "7dab99383d16050771f8a6fa6b0421d4"
+  },
+  "jobsearchplatform_contract/src/tasks/job_tasks.py": {
+    "mtime": 1790125773474.3965,
+    "hash": "70e961f43a0350bba6ecaa0db417e2d0"
+  },
+  "jobsearchplatform_contract/src/tasks/scrape_tasks.py": {
+    "mtime": 1790125773474.472,
+    "hash": "957bfd60b8b46fb2e22b65bcbba4c5a1"
+  },
+  "jobsearchplatform_contract/src/utils.py": {
+    "mtime": 1790125773474.5552,
+    "hash": "412e7bce91a7a57ddd4bea462f7482d0"
+  },
+  "jobsearchplatform_contract/src/utils/__init__.py": {
+    "mtime": 1790125773474.692,
+    "hash": "412e7bce91a7a57ddd4bea462f7482d0"
+  },
+  "jobsearchplatform_contract/src/utils/ai_utils.py": {
+    "mtime": 1790125773474.7698,
+    "hash": "1675cf846f682b084bbc7dc7f3666f33"
+  },
+  "jobsearchplatform_contract/tests/auth.spec.js": {
+    "mtime": 1790125773475.4001,
+    "hash": "25fee7fb6761ab6d5a485004e091476f"
+  },
+  "jobsearchplatform_contract/tests/helpers.js": {
+    "mtime": 1790125773475.4907,
+    "hash": "f502b01d09791769d4e61fb86b08ece8"
+  },
+  "jobsearchplatform_contract/tests/jobs.spec.js": {
+    "mtime": 1790125773475.5908,
+    "hash": "51363365eeb3e4c8cc54f220dd8b8ec7"
+  },
+  "jobsearchplatform_contract/tests/onboarding.spec.js": {
+    "mtime": 1790125773476.0352,
+    "hash": "271ea05267c8a20aa32134d37d5ebae5"
+  },
+  "jobsearchplatform_contract/tests/playwright.config.js": {
+    "mtime": 1790125773476.182,
+    "hash": "f35d9fd95f9ccc7af7efb406e5728007"
+  },
+  "jobsearchplatform_contract/tests/scoring.spec.js": {
+    "mtime": 1790125773476.2815,
+    "hash": "6a4b348a3b231b0965cd867a23b799f9"
+  },
+  "jobsearchplatform_contract/tests/security.spec.js": {
+    "mtime": 1790125773476.3953,
+    "hash": "ff253f7769b1bdc3a010d7dae4e41a05"
+  },
+  "jobsearchplatform_contract/tests/test_new_api_endpoints.py": {
+    "mtime": 1790125773476.5254,
+    "hash": "1effb3f605a81e3f1c70c69f10d7d048"
+  },
+  "jobsearchplatform_contract/tests/test_new_features.py": {
+    "mtime": 1790125773476.647,
+    "hash": "9548540ef51d34945ced09c40041aa9d"
+  },
+  "jobsearchplatform_contract/tests/test_scoring.py": {
+    "mtime": 1790125773476.7507,
+    "hash": "497e78079c3409112a76f2b9d16c6708"
+  },
+  "jobsearchplatform_contract/tests/ui.spec.js": {
+    "mtime": 1790125773476.8972,
+    "hash": "d00bbc984eb425cd1ca922e74f66915f"
+  },
+  "main.py": {
+    "mtime": 1790125773476.9978,
+    "hash": "03b312013228a9e6dd5c3ac774a3f1bd"
+  },
+  "run_automation.py": {
+    "mtime": 1790125773477.2356,
+    "hash": "2dabb174d210650e2b181c21b762488c"
+  },
+  "scheduler.py": {
+    "mtime": 1790125773477.3174,
+    "hash": "fb6a8bab82d27661c27c6e697f786f2a"
+  },
+  "scratch/test_save_job.py": {
+    "mtime": 1790125773477.4316,
+    "hash": "d7a77336027a4072342b602ddd181c55"
+  },
+  "scripts/analysis/analyze_batch.py": {
+    "mtime": 1790125773477.6914,
+    "hash": "a9d923f33afc2a22221ef35247638a39"
+  },
+  "scripts/analysis/analyze_resume_rows.py": {
+    "mtime": 1790125773477.78,
+    "hash": "7cc89af6e021caca19aadc3477e5ef01"
+  },
+  "scripts/analysis/update_excel_analysis.py": {
+    "mtime": 1790125773477.8647,
+    "hash": "d152282d39c5b45c9393245165899acf"
+  },
+  "scripts/dev/dump_batch1.py": {
+    "mtime": 1790125773477.9785,
+    "hash": "b5d6308ba57b2f921867b7dd970052df"
+  },
+  "scripts/dev/dump_batch_generic.py": {
+    "mtime": 1790125773478.0503,
+    "hash": "2313d94512927dce3801ff1e719e201d"
+  },
+  "scripts/dev/find_jds_from_excel.py": {
+    "mtime": 1790125773478.1272,
+    "hash": "b14193ae36a36e9564078522ef938de0"
+  },
+  "scripts/dev/find_jds_from_excel_v2.py": {
+    "mtime": 1790125773478.2026,
+    "hash": "c19a50d11cf61ccda4c743b1dccb7d8b"
+  },
+  "scripts/dev/test_location.py": {
+    "mtime": 1790125773478.271,
+    "hash": "26856292e72e471c2e1bd2440a866009"
+  },
+  "scripts/maintenance/clean_master_excel.py": {
+    "mtime": 1790125773478.5247,
+    "hash": "c26d6cd02f80d008f220bf81fde2fb73"
+  },
+  "scripts/maintenance/clean_recent_run.py": {
+    "mtime": 1790125773478.6162,
+    "hash": "44894ef8ad212f8a95afcc837ef09a06"
+  },
+  "scripts/maintenance/mark_applied.py": {
+    "mtime": 1790125773478.7053,
+    "hash": "22eee0073c503a9509786e7378c6342d"
+  },
+  "scripts/maintenance/process_jobs.py": {
+    "mtime": 1790125773478.8035,
+    "hash": "0e79ee709e5e817f9880f3e500fbd85f"
+  },
+  "scripts/maintenance/rescore_jobs.py": {
+    "mtime": 1790125773478.8882,
+    "hash": "4ca00b8867a905292d55eb232e2c6ad5"
+  },
+  "scripts/maintenance/retroactive_tailor.py": {
+    "mtime": 1790125773478.9758,
+    "hash": "58a898b883b78cc4e83839ebed944b10"
+  },
+  "scripts/maintenance/run_ai_evaluation.py": {
+    "mtime": 1790125773479.0884,
+    "hash": "958c162dfdd5a2e80f7a2b6cd196ecf5"
+  },
+  "scripts/utilities/check_columns.py": {
+    "mtime": 1790125773479.4648,
+    "hash": "389989d34cce7349a968a8b752f84742"
+  },
+  "scripts/utilities/login_helper.py": {
+    "mtime": 1790125773479.5583,
+    "hash": "67967c5029becb7f2e11ccf437a931b9"
+  },
+  "scripts/utilities/mass_update_tech_stack.py": {
+    "mtime": 1790125773479.644,
+    "hash": "d8c819db074a42e0950fede896f989a0"
+  },
+  "scripts/utilities/update_excel_with_json_paths.py": {
+    "mtime": 1790125773479.7212,
+    "hash": "6d9e8f9489f1c45db5c69b5a14d14c69"
+  },
+  "services/job_scrapper/akkodis_applying_script/akkodis_open_jobs.py": {
+    "mtime": 1790125792215.2922,
+    "hash": "ee903d77151316f4420cae799a4b9cbd"
+  },
+  "services/job_scrapper/akkodis_applying_script/akkodis_scraper.py": {
+    "mtime": 1790125792215.4553,
+    "hash": "08cc4ed47bf4390d3355c8cd42b1d25d"
+  },
+  "services/job_scrapper/apexsystems_applying_script/apex_apply.py": {
+    "mtime": 1790125792216.3667,
+    "hash": "fbfa79e1ec75532ac1cab2253b5261e1"
+  },
+  "services/job_scrapper/apexsystems_applying_script/apex_open_apply_redirects.py": {
+    "mtime": 1790125792216.4875,
+    "hash": "02f43180e3749fe39c8cbd52512a8851"
+  },
+  "services/job_scrapper/apexsystems_applying_script/apex_open_jobs.py": {
+    "mtime": 1790125792216.5767,
+    "hash": "36ba0a1748a3728a65fd0cfb33862885"
+  },
+  "services/job_scrapper/apexsystems_applying_script/apex_scraper.py": {
+    "mtime": 1790125792216.7107,
+    "hash": "156e83702ccedaf6cac7b57866a11c45"
+  },
+  "services/job_scrapper/artech_applying_script/artech_open_jobs.py": {
+    "mtime": 1790125792216.9988,
+    "hash": "6867198a059e821670df7012e9b07a97"
+  },
+  "services/job_scrapper/artech_applying_script/artech_scraper.py": {
+    "mtime": 1790125792217.0989,
+    "hash": "ac25d5e68a8ff336d1a5f7c0be17a44a"
+  },
+  "services/job_scrapper/beaconhill_applying_script/beaconhill_apply.py": {
+    "mtime": 1790125792217.432,
+    "hash": "f29c842941aeb90732f8cdbf072a5981"
+  },
+  "services/job_scrapper/beaconhill_applying_script/beaconhill_open_jobs.py": {
+    "mtime": 1790125792217.6628,
+    "hash": "2db9a88a3fb974575e7e7b8f38be2937"
+  },
+  "services/job_scrapper/beaconhill_applying_script/beaconhill_scraper.py": {
+    "mtime": 1790125792217.8818,
+    "hash": "52028bfbeecce7e370d24f3e70ca410d"
+  },
+  "services/job_scrapper/brooksource_applying_script/brooksource_open_jobs.py": {
+    "mtime": 1790125792218.2476,
+    "hash": "8deb9648cfae88378aa82216400a1e54"
+  },
+  "services/job_scrapper/brooksource_applying_script/brooksource_scraper.py": {
+    "mtime": 1790125792218.3657,
+    "hash": "c1c9e2357162ca2dd597cbd6cfd9681a"
+  },
+  "services/job_scrapper/cbts_applying_script/cbts_open_jobs.py": {
+    "mtime": 1790125792218.7114,
+    "hash": "485fb024529ad9abcb258bde5182a0dc"
+  },
+  "services/job_scrapper/cbts_applying_script/cbts_scraper.py": {
+    "mtime": 1790125792218.8267,
+    "hash": "704b95cb7f2f8f0c3d7964377232f52c"
+  },
+  "services/job_scrapper/ccsglobaltech_applying_script/ccsglobaltech_open_jobs.py": {
+    "mtime": 1790125792218.9617,
+    "hash": "73a75345d955ffbfe4d464cdfcc2dc1e"
+  },
+  "services/job_scrapper/ccsglobaltech_applying_script/ccsglobaltech_scraper.py": {
+    "mtime": 1790125792219.058,
+    "hash": "ed214605a3d83764896a30900a7c40e1"
+  },
+  "services/job_scrapper/diverselynx_applying_script/diverselynx_open_jobs.py": {
+    "mtime": 1790125792219.6018,
+    "hash": "1d2e553370a248e3ed5d72e68ac848d3"
+  },
+  "services/job_scrapper/diverselynx_applying_script/diverselynx_scraper.py": {
+    "mtime": 1790125792219.7024,
+    "hash": "6e3f9b378132102156cb1f17f1f4e79e"
+  },
+  "services/job_scrapper/eliassen_applying_script/eliassen_open_jobs.py": {
+    "mtime": 1790125792220.4885,
+    "hash": "c9b06c5309eb9a1a1a72344b869bfaa1"
+  },
+  "services/job_scrapper/eliassen_applying_script/eliassen_scraper.py": {
+    "mtime": 1790125792220.578,
+    "hash": "022a348ba076161bb1f480e3ec3357c0"
+  },
+  "services/job_scrapper/ettaingroup_applying_script/ettaingroup_open_jobs.py": {
+    "mtime": 1790125792220.7107,
+    "hash": "363f2703e45b6083fab21cb71c5a7604"
+  },
+  "services/job_scrapper/ettaingroup_applying_script/ettaingroup_scraper.py": {
+    "mtime": 1790125792220.8057,
+    "hash": "99541f474f0b7e0de29d0a608593b23e"
+  },
+  "services/job_scrapper/experis_applying_script/experis_open_jobs.py": {
+    "mtime": 1790125792221.0173,
+    "hash": "4e2068f16304649f029f2b851ab0791e"
+  },
+  "services/job_scrapper/experis_applying_script/experis_scraper.py": {
+    "mtime": 1790125792221.1184,
+    "hash": "083be1e00954e5cc3ffc7fc01ff43528"
+  },
+  "services/job_scrapper/harveynash_applying_script/harveynash_open_jobs.py": {
+    "mtime": 1790125792221.2546,
+    "hash": "a518c567b56b170c07fa16c026294bf9"
+  },
+  "services/job_scrapper/harveynash_applying_script/harveynash_scraper.py": {
+    "mtime": 1790125792221.3809,
+    "hash": "0133d8418925d742cb03c209166605b5"
+  },
+  "services/job_scrapper/hays_applying_script/hays_open_jobs.py": {
+    "mtime": 1790125792221.52,
+    "hash": "77c8f3785d00add4409a614af1b42ff3"
+  },
+  "services/job_scrapper/hays_applying_script/hays_scraper.py": {
+    "mtime": 1790125792221.6238,
+    "hash": "955c76a9129aa100d71d1f6579669985"
+  },
+  "services/job_scrapper/insightglobal_applying_script/insightglobal_open_jobs.py": {
+    "mtime": 1790125792221.8503,
+    "hash": "1a5cdb0c574dffd2b5d4a4a2b098a93b"
+  },
+  "services/job_scrapper/insightglobal_applying_script/insightglobal_scraper.py": {
+    "mtime": 1790125792221.941,
+    "hash": "572954b33bbfa42c6c873237615f3836"
+  },
+  "services/job_scrapper/inspyr_applying_script/inspyr_open_jobs.py": {
+    "mtime": 1790125792222.0723,
+    "hash": "49264697c0d4e60c480f45c5d7a739fc"
+  },
+  "services/job_scrapper/inspyr_applying_script/inspyr_scraper.py": {
+    "mtime": 1790125792222.1904,
+    "hash": "01b22e0c70cf5afd1ac23fab19317c78"
+  },
+  "services/job_scrapper/java-dashboard/backend/src/main/java/com/jobportal/dashboard/DashboardApplication.java": {
+    "mtime": 1790125792222.8625,
+    "hash": "816e35a9b41218f5b3fae194d67cc08e"
+  },
+  "services/job_scrapper/java-dashboard/backend/src/main/java/com/jobportal/dashboard/DashboardController.java": {
+    "mtime": 1790125792222.985,
+    "hash": "2ca6638707f50ac5b3fa78b4ddbdcd4c"
+  },
+  "services/job_scrapper/java-dashboard/backend/src/main/java/com/jobportal/dashboard/DashboardService.java": {
+    "mtime": 1790125792223.1367,
+    "hash": "31abce07b3dcfa6763a3e0e4d64958ad"
+  },
+  "services/job_scrapper/java-dashboard/backend/src/main/java/com/jobportal/dashboard/JobFilter.java": {
+    "mtime": 1790125792223.2366,
+    "hash": "e56f6adf9691055aaec1f88ed8123694"
+  },
+  "services/job_scrapper/java-dashboard/backend/src/test/java/com/jobportal/dashboard/DashboardControllerTest.java": {
+    "mtime": 1790125792223.7498,
+    "hash": "5eb517eac9c221442fb4ab588c21ff99"
+  },
+  "services/job_scrapper/java-dashboard/backend/src/test/java/com/jobportal/dashboard/DashboardServiceTest.java": {
+    "mtime": 1790125792224.0388,
+    "hash": "1ec0a6d13b804e8d2a827ae3ce04ea44"
+  },
+  "services/job_scrapper/java-dashboard/backend/src/test/java/com/jobportal/dashboard/JobFilterTest.java": {
+    "mtime": 1790125792224.153,
+    "hash": "d78c476d63061bfc6d6c1eae7f36a1c4"
+  },
+  "services/job_scrapper/java-dashboard/frontend/src/App.jsx": {
+    "mtime": 1790125792226.849,
+    "hash": "70e60d83f3483318df0fc84abb2aac2e"
+  },
+  "services/job_scrapper/java-dashboard/frontend/src/App.test.jsx": {
+    "mtime": 1790125792227.0803,
+    "hash": "f2250be5ec77ff6b40096470c06a1a3d"
+  },
+  "services/job_scrapper/java-dashboard/frontend/src/main.jsx": {
+    "mtime": 1790125792227.8389,
+    "hash": "f83abf44db7a8f3be19a1c75de717cc9"
+  },
+  "services/job_scrapper/java-dashboard/frontend/src/setupTests.js": {
+    "mtime": 1790125792227.9258,
+    "hash": "3709e3aa95abf0544678f0f2d9b46702"
+  },
+  "services/job_scrapper/java-dashboard/frontend/vite.config.js": {
+    "mtime": 1790125792228.1406,
+    "hash": "31313501961d8028a73c3f192d792856"
+  },
+  "services/job_scrapper/job_portal_dashboard.py": {
+    "mtime": 1790125792228.755,
+    "hash": "43b22647cb7a1a6cfea8d5c615be4754"
+  },
+  "services/job_scrapper/judgegroup_applying_script/judgegroup_apply.py": {
+    "mtime": 1790125792229.17,
+    "hash": "d306a69970cb03f81714904e3ecf5c65"
+  },
+  "services/job_scrapper/judgegroup_applying_script/judgegroup_open_jobs.py": {
+    "mtime": 1790125792229.2422,
+    "hash": "bc705d17fc7cb74d76907f8e7e5e4726"
+  },
+  "services/job_scrapper/judgegroup_applying_script/judgegroup_scraper.py": {
+    "mtime": 1790125792229.3496,
+    "hash": "f9f5759648c58c714634487f1a38bfaf"
+  },
+  "services/job_scrapper/kellymitchell_applying_script/kellymitchell_open_jobs.py": {
+    "mtime": 1790125792230.074,
+    "hash": "daf3c530c20aa6f6b8fe5754337bba0d"
+  },
+  "services/job_scrapper/kellymitchell_applying_script/kellymitchell_scraper.py": {
+    "mtime": 1790125792230.212,
+    "hash": "42462df782e81d1710e4be702ee9f8ae"
+  },
+  "services/job_scrapper/kforce_applying_script/kforce_open_jobs.py": {
+    "mtime": 1790125792230.479,
+    "hash": "937586d64bbb389d4457eeac38804438"
+  },
+  "services/job_scrapper/kforce_applying_script/kforce_scraper.py": {
+    "mtime": 1790125792230.6016,
+    "hash": "ef77269cb48da7ab3391b1ff41bf3ea9"
+  },
+  "services/job_scrapper/matlensilver_applying_script/matlensilver_open_jobs.py": {
+    "mtime": 1790125792230.7441,
+    "hash": "f75216501c40860c806ee47982af92d1"
+  },
+  "services/job_scrapper/matlensilver_applying_script/matlensilver_scraper.py": {
+    "mtime": 1790125792230.8323,
+    "hash": "f4d9dbbf225d95e97c323165ff329a77"
+  },
+  "services/job_scrapper/mitchellmartin_applying_script/mitchellmartin_open_jobs.py": {
+    "mtime": 1790125792231.0662,
+    "hash": "a08a5dcabcd614caf95fdfd9bf589614"
+  },
+  "services/job_scrapper/mitchellmartin_applying_script/mitchellmartin_scraper.py": {
+    "mtime": 1790125792231.233,
+    "hash": "a0ec784d2bde8e48ae9becaf6168574f"
+  },
+  "services/job_scrapper/motionrecruitment_applying_script/motionrecruitment_open_jobs.py": {
+    "mtime": 1790125792231.4094,
+    "hash": "008608dcde3ab6297e88c52fafc75bdc"
+  },
+  "services/job_scrapper/motionrecruitment_applying_script/motionrecruitment_scraper.py": {
+    "mtime": 1790125792231.5664,
+    "hash": "beee7b20cdcb680e49ff782ee89e5e6f"
+  },
+  "services/job_scrapper/nttdata_applying_script/nttdata_open_jobs.py": {
+    "mtime": 1790125792231.7322,
+    "hash": "c23dd3d1b0e4e5b8a1f4b2a6d06da2ef"
+  },
+  "services/job_scrapper/nttdata_applying_script/nttdata_scraper.py": {
+    "mtime": 1790125792231.8428,
+    "hash": "9199802c54affcf82f16ee5b190156a4"
+  },
+  "services/job_scrapper/oliverjames_applying_script/oliverjames_open_jobs.py": {
+    "mtime": 1790125792231.998,
+    "hash": "c3c51d604907fb3c9b501a0acf21d971"
+  },
+  "services/job_scrapper/oliverjames_applying_script/oliverjames_scraper.py": {
+    "mtime": 1790125792232.1028,
+    "hash": "109a46d0e20c0806598e211a91c79ac8"
+  },
+  "services/job_scrapper/opensystemstechnologies_applying_script/opensystemstechnologies_open_jobs.py": {
+    "mtime": 1790125792232.3323,
+    "hash": "b0d0bb023fb245b62efeba5fae40506e"
+  },
+  "services/job_scrapper/opensystemstechnologies_applying_script/opensystemstechnologies_scraper.py": {
+    "mtime": 1790125792232.4343,
+    "hash": "18c3fa0c974446b048cea1f1b260d990"
+  },
+  "services/job_scrapper/optomi_applying_script/optomi_open_jobs.py": {
+    "mtime": 1790125792232.5847,
+    "hash": "5ea9f845a8614c5b60976f6314e738fb"
+  },
+  "services/job_scrapper/optomi_applying_script/optomi_scraper.py": {
+    "mtime": 1790125792232.6953,
+    "hash": "a65c0ae8cc3217dad92660b8d3e0e05e"
+  },
+  "services/job_scrapper/ptrglobal_applying_script/ptrglobal_open_jobs.py": {
+    "mtime": 1790125792232.8374,
+    "hash": "334d88ba52698e9dd3c469ded7bd0c9f"
+  },
+  "services/job_scrapper/ptrglobal_applying_script/ptrglobal_scraper.py": {
+    "mtime": 1790125792232.9395,
+    "hash": "704bba157fb0e5bd420013b04cea84ac"
+  },
+  "services/job_scrapper/pyramidconsulting_applying_script/pyramidconsulting_open_jobs.py": {
+    "mtime": 1790125792233.081,
+    "hash": "a6fbcf2173ce1dab050fa13d1ea801cc"
+  },
+  "services/job_scrapper/pyramidconsulting_applying_script/pyramidconsulting_scraper.py": {
+    "mtime": 1790125792233.1929,
+    "hash": "44e57e0a20f2ef135c538dbd2e62f640"
+  },
+  "services/job_scrapper/randstad_applying_script/randstad_open_jobs.py": {
+    "mtime": 1790125792233.4243,
+    "hash": "5e09102c014e22ddd8cad3b33c5ffeb2"
+  },
+  "services/job_scrapper/randstad_applying_script/randstad_scraper.py": {
+    "mtime": 1790125792233.5513,
+    "hash": "9ef060fa7045310354808bd0c2f3d446"
+  },
+  "services/job_scrapper/roberthalf_applying_script/roberthalf_open_jobs.py": {
+    "mtime": 1790125792233.913,
+    "hash": "9edce22d896aed7ef5a2aff3740f8f6f"
+  },
+  "services/job_scrapper/roberthalf_applying_script/roberthalf_scraper.py": {
+    "mtime": 1790125792234.0356,
+    "hash": "5ffbf6ae5d52b6af5fa190d799ef8c8d"
+  },
+  "services/job_scrapper/run_daily_scrape.py": {
+    "mtime": 1790125792234.1316,
+    "hash": "c210b30014db88c6a2516348b6247b13"
+  },
+  "services/job_scrapper/shared_search_page_scraper.py": {
+    "mtime": 1790125792234.4534,
+    "hash": "f3aedb9989419bd6ab996e46d2d0b5ff"
+  },
+  "services/job_scrapper/shared_vendor_filters.py": {
+    "mtime": 1790125792234.8523,
+    "hash": "5b4e8f99b8b472bbe07df6c0d4f6948a"
+  },
+  "services/job_scrapper/shared_vendor_http.py": {
+    "mtime": 1790125792234.9343,
+    "hash": "e53f41851920dc6a8a188a36ca8460eb"
+  },
+  "services/job_scrapper/shared_vendor_open_jobs.py": {
+    "mtime": 1790125792235.029,
+    "hash": "e09105452f9248b213710ab0e93e2e15"
+  },
+  "services/job_scrapper/src/job_checker/__init__.py": {
+    "mtime": 1790125792235.224,
+    "hash": "1b0f2fd42a70cc24ca69292d39abaac2"
+  },
+  "services/job_scrapper/src/job_checker/__main__.py": {
+    "mtime": 1790125792235.3865,
+    "hash": "1d1086d0c6cd293d8a6a6486001cc39d"
+  },
+  "services/job_scrapper/src/job_checker/config.py": {
+    "mtime": 1790125792235.4656,
+    "hash": "0c0fc24e8277783028ab3bbbcb5f044c"
+  },
+  "services/job_scrapper/src/job_checker/matcher.py": {
+    "mtime": 1790125792235.5566,
+    "hash": "890474c4614574d63070c86e3d344e8d"
+  },
+  "services/job_scrapper/src/job_checker/models.py": {
+    "mtime": 1790125792235.6355,
+    "hash": "5a12de4d28227f86792f19e19bd05b82"
+  },
+  "services/job_scrapper/src/job_checker/report.py": {
+    "mtime": 1790125792235.7485,
+    "hash": "df0b2946ad47dc368048570ea57ed14f"
+  },
+  "services/job_scrapper/src/job_checker/resume.py": {
+    "mtime": 1790125792235.8362,
+    "hash": "c16ee41349319b95a36b1148e35918cb"
+  },
+  "services/job_scrapper/src/job_checker/scheduler.py": {
+    "mtime": 1790125792235.9077,
+    "hash": "1a197458a025e0a21afa28398a16947c"
+  },
+  "services/job_scrapper/src/job_checker/scraper.py": {
+    "mtime": 1790125792236.011,
+    "hash": "2ac85a6405d037a9e1c821d32a3d24cd"
+  },
+  "services/job_scrapper/src/job_checker/storage.py": {
+    "mtime": 1790125792236.138,
+    "hash": "9f059c25c49c227603fcfe33e14c7961"
+  },
+  "services/job_scrapper/src/job_checker/worker.py": {
+    "mtime": 1790125792236.2346,
+    "hash": "6a6a285359edfb2277aaec3ec7873972"
+  },
+  "services/job_scrapper/strategicstaffing_applying_script/strategicstaffing_open_jobs.py": {
+    "mtime": 1790125792236.3743,
+    "hash": "fe334a1ea9ed8db803e728e35bfdf669"
+  },
+  "services/job_scrapper/strategicstaffing_applying_script/strategicstaffing_scraper.py": {
+    "mtime": 1790125792236.4673,
+    "hash": "d97b004cde84dc976468ec920c830187"
+  },
+  "services/job_scrapper/teksystems_applying_script/teksystems_open_jobs.py": {
+    "mtime": 1790125792236.794,
+    "hash": "484bd1413a7b099834212fbab0af76bd"
+  },
+  "services/job_scrapper/teksystems_applying_script/teksystems_scraper.py": {
+    "mtime": 1790125792236.9126,
+    "hash": "dee896be6047aa43bb9ac5f0736d11fd"
+  },
+  "services/job_scrapper/tests/test_dashboard_seen.py": {
+    "mtime": 1790125792237.049,
+    "hash": "cf7780743abc3875ad8c9a963cdcafa7"
+  },
+  "services/job_scrapper/tests/test_matcher.py": {
+    "mtime": 1790125792237.1365,
+    "hash": "b88ca1f42f192bfd27f2a290547bb3fc"
+  },
+  "services/job_scrapper/tests/test_priority_vendor_scrapers.py": {
+    "mtime": 1790125792237.2642,
+    "hash": "a16ef3cb181f296335d0ac45536cf8ed"
+  },
+  "services/job_scrapper/tests/test_resume.py": {
+    "mtime": 1790125792237.3496,
+    "hash": "738a309b82acf2cee4279228565e8778"
+  },
+  "services/job_scrapper/tests/test_scraper.py": {
+    "mtime": 1790125792237.438,
+    "hash": "ec1bcbc6d9d9cf7b688b6e7a1abb4d63"
+  },
+  "services/job_scrapper/tests/test_storage.py": {
+    "mtime": 1790125792237.5188,
+    "hash": "bedc2f5174d4cc40777fe0ee410e494e"
+  },
+  "services/job_scrapper/tests/test_teksystems_scraper.py": {
+    "mtime": 1790125792237.601,
+    "hash": "6373c4f4724d23cbd4403cf9784f2758"
+  },
+  "services/job_scrapper/tests/test_vendor_filters.py": {
+    "mtime": 1790125792237.6707,
+    "hash": "971078c22ecf6a424de9e4e7a3abc37a"
+  },
+  "services/job_scrapper/vaco_applying_script/vaco_open_jobs.py": {
+    "mtime": 1790125792237.798,
+    "hash": "bd8a4a28711e5d255ae9af176bdc6230"
+  },
+  "services/job_scrapper/vaco_applying_script/vaco_scraper.py": {
+    "mtime": 1790125792237.8916,
+    "hash": "ca55bbfe0be498e73161550b99ba5f27"
+  },
+  "services/job_scrapper/venturigroup_applying_script/venturigroup_open_jobs.py": {
+    "mtime": 1790125792238.029,
+    "hash": "3fda8692d43df32bcd04c338a53f36ec"
+  },
+  "services/job_scrapper/venturigroup_applying_script/venturigroup_scraper.py": {
+    "mtime": 1790125792238.551,
+    "hash": "a0e1884470182c9ae79d2c1007b95de4"
+  },
+  "src/__init__.py": {
+    "mtime": 1790125773479.987,
+    "hash": "87e1f328b028370146e6da3b226b0fa6"
+  },
+  "src/ai_match_service.py": {
+    "mtime": 1790125773480.1047,
+    "hash": "a831c820932270323fe7cf6ce96785b7"
+  },
+  "src/api/routes.py": {
+    "mtime": 1790125773480.228,
+    "hash": "6e709f48420a3d65b690616ef24b83e6"
+  },
+  "src/api/v1/auth.py": {
+    "mtime": 1790125773480.3625,
+    "hash": "e7612b12b4ed2d56be46caebedc47b19"
+  },
+  "src/api/v1/jobs.py": {
+    "mtime": 1790125773480.4573,
+    "hash": "3629fa5cd4c09e2da98f12d778688122"
+  },
+  "src/api/v1/notifications.py": {
+    "mtime": 1790125773480.532,
+    "hash": "7d6a118d012e9426e39a83928c9f60f0"
+  },
+  "src/crud.py": {
+    "mtime": 1790126386040.617,
+    "hash": "10f771fae9b7c0925119d3e20d5fd09a"
+  },
+  "src/data/__init__.py": {
+    "mtime": 1790125773480.798,
+    "hash": "245afc24a45896c255610bb107dd323b"
+  },
+  "src/data/excel_manager.py": {
+    "mtime": 1790125773480.9253,
+    "hash": "bf4dc342e3053b1275afe45dc353a2b3"
+  },
+  "src/data/output_writer.py": {
+    "mtime": 1790125773481.0432,
+    "hash": "6681676f96220b4ee6fdd94ac1d173cc"
+  },
+  "src/database.py": {
+    "mtime": 1790125773481.1482,
+    "hash": "fec4ad9c14f6239b6a99ad548591944f"
+  },
+  "src/evaluation/__init__.py": {
+    "mtime": 1790125773481.2932,
+    "hash": "725c69f6f0e9b21867edca2fd2e2b70e"
+  },
+  "src/evaluation/ai_evaluator.py": {
+    "mtime": 1790125773481.3987,
+    "hash": "dcadf339018051a446ddc1874cd33481"
+  },
+  "src/evaluation/ats_scorer.py": {
+    "mtime": 1790125773481.5276,
+    "hash": "aab7d5895435365f47a052bdb50e4946"
+  },
+  "src/evaluation/gemini_evaluator.py": {
+    "mtime": 1790125773481.6143,
+    "hash": "201b0ef02d12c45b08f9b8ed644f1068"
+  },
+  "src/evaluation/keyword_extractor.py": {
+    "mtime": 1790125773481.7498,
+    "hash": "9114419df3f51fd74920052c29889cd3"
+  },
+  "src/evaluation/prompts.py": {
+    "mtime": 1790125773481.8372,
+    "hash": "01049ef5cce5642ba30e90bd30b566f4"
+  },
+  "src/evaluation/rag_service.py": {
+    "mtime": 1790125773481.9553,
+    "hash": "e8f6d8bc2833d34f87576038e62fd5cb"
+  },
+  "src/evaluation/resume_evaluator.py": {
+    "mtime": 1790125773482.2627,
+    "hash": "90ddc110c0b6907454f65db2639ba2a3"
+  },
+  "src/evaluation/score_service.py": {
+    "mtime": 1790125773482.3677,
+    "hash": "b442e3bf00953a3b640fc64aa4942d0d"
+  },
+  "src/evaluation/simple_evaluator.py": {
+    "mtime": 1790125773482.4453,
+    "hash": "beb7b15b4cb29b697395c45d4dc009a3"
+  },
+  "src/evaluation/skill_matcher.py": {
+    "mtime": 1790125773482.5422,
+    "hash": "5d3c71abd546d36ee9c8b27c6a8b0bf3"
+  },
+  "src/evaluation/tailor_service.py": {
+    "mtime": 1790125773482.6462,
+    "hash": "250f5e0918df3f5ca634174f945cee0f"
+  },
+  "src/llm/__init__.py": {
+    "mtime": 1790125773482.7744,
+    "hash": "85b43ea171472f72a2ade1f54ee74bfe"
+  },
+  "src/llm/base.py": {
+    "mtime": 1790125773482.8508,
+    "hash": "566ae5f802ad1bc946c01c37992a3dba"
+  },
+  "src/llm/cache.py": {
+    "mtime": 1790125773482.9268,
+    "hash": "a0ba36726dbd6900cb291d3112952f37"
+  },
+  "src/llm/circuit_breaker.py": {
+    "mtime": 1790125773483.0022,
+    "hash": "5e6b1717d236754773982483f76e21c7"
+  },
+  "src/llm/cost_table.py": {
+    "mtime": 1790125773483.095,
+    "hash": "fc5528033ab55999ed28e5fa819885c6"
+  },
+  "src/llm/dispatcher.py": {
+    "mtime": 1790125773483.1934,
+    "hash": "1384519827459b1c6b519b20f6078e33"
+  },
+  "src/llm/factory.py": {
+    "mtime": 1790125773483.2932,
+    "hash": "81af9b5c50d0979b05337356027bc1af"
+  },
+  "src/llm/providers/__init__.py": {
+    "mtime": 1790125773483.4197,
+    "hash": "ca8e0fb9d963e40e020dbed77ecb56e4"
+  },
+  "src/llm/providers/claude_provider.py": {
+    "mtime": 1790125773483.5068,
+    "hash": "01bf5992495b535ff1835c994c777918"
+  },
+  "src/llm/providers/gemini_provider.py": {
+    "mtime": 1790125773483.5728,
+    "hash": "e10cc83c65d8a931fd3d48e262fab091"
+  },
+  "src/llm/providers/groq_provider.py": {
+    "mtime": 1790125773483.6477,
+    "hash": "613023d332b3f632656c3c8f0445913d"
+  },
+  "src/llm/providers/mock_provider.py": {
+    "mtime": 1790125773483.7214,
+    "hash": "75f9013b6a1c03d0f164962e321c0073"
+  },
+  "src/llm/rate_limit.py": {
+    "mtime": 1790125773483.7979,
+    "hash": "3bf622e00b6f9872feaa45abf42edaee"
+  },
+  "src/llm/router.py": {
+    "mtime": 1790125773483.8784,
+    "hash": "a41bebbb430cb919c036909b0ded49f1"
+  },
+  "src/llm/telemetry.py": {
+    "mtime": 1790125773483.9504,
+    "hash": "430bddcf2b1f44d0f4834e98180e66f0"
+  },
+  "src/llm/types.py": {
+    "mtime": 1790125773484.0215,
+    "hash": "2df3de03860c6650a084547f4288a8f5"
+  },
+  "src/main.py": {
+    "mtime": 1790125773484.098,
+    "hash": "986efaf231a28463ccca2a206f1f235f"
+  },
+  "src/migration.py": {
+    "mtime": 1790125773484.1975,
+    "hash": "30204a4570e789e3ea27db485774d966"
+  },
+  "src/models.py": {
+    "mtime": 1790125773484.3086,
+    "hash": "4b8139a03dd7884a922388e423a5f325"
+  },
+  "src/onboarding.py": {
+    "mtime": 1790125773484.4739,
+    "hash": "8cb9f3c9745fcba48b7086f4e7b3f93c"
+  },
+  "src/opportunities.py": {
+    "mtime": 1790125773484.6082,
+    "hash": "2686098c8c403d278bd3db5d776aa318"
+  },
+  "src/recommendations.py": {
+    "mtime": 1790125773484.7056,
+    "hash": "8dedd5252a71e0f29b0ad2b2ec777f30"
+  },
+  "src/resume/__init__.py": {
+    "mtime": 1790125773484.7993,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/resume/pdf_export.py": {
+    "mtime": 1790125773484.9082,
+    "hash": "0876b0c9323c0e81ffddc3a278cb8e20"
+  },
+  "src/resume/resume_generator.py": {
+    "mtime": 1790125773485.0627,
+    "hash": "d225e18b2e34b72440b939319ff8e18d"
+  },
+  "src/resume/single_generator.py": {
+    "mtime": 1790125773485.2205,
+    "hash": "71ef75610dd3b606d75763689950cda3"
+  },
+  "src/resume/workspace_service.py": {
+    "mtime": 1790125773485.7852,
+    "hash": "31bc437a77a302da682298fd717d1192"
+  },
+  "src/scraper/__init__.py": {
+    "mtime": 1790125773485.9233,
+    "hash": "216e3ee8b3882caa6c31812910b7d9f3"
+  },
+  "src/scraper/dice_scraper.py": {
+    "mtime": 1790125773486.0315,
+    "hash": "e7c4ffe776c1bb6388ed5d398da15fa0"
+  },
+  "src/scraper/history_manager.py": {
+    "mtime": 1790125773486.1172,
+    "hash": "9374dfb5af7f88f331258cdc0b524277"
+  },
+  "src/scraper/job_scraper.py": {
+    "mtime": 1790125773486.2305,
+    "hash": "6bb5b42aa4a5618a526238c318c051f2"
+  },
+  "src/settings.py": {
+    "mtime": 1790125773486.3623,
+    "hash": "0e6f47e1ca1b49384a0505ca2f49e665"
+  },
+  "src/tasks/celery_app.py": {
+    "mtime": 1790125773486.4934,
+    "hash": "4a8c141dce2376b42da3513401b1b5dc"
+  },
+  "src/tasks/email_tasks.py": {
+    "mtime": 1790125773486.5842,
+    "hash": "7dab99383d16050771f8a6fa6b0421d4"
+  },
+  "src/tasks/job_tasks.py": {
+    "mtime": 1790125773486.6582,
+    "hash": "70e961f43a0350bba6ecaa0db417e2d0"
+  },
+  "src/tasks/scrape_tasks.py": {
+    "mtime": 1790125773486.7615,
+    "hash": "957bfd60b8b46fb2e22b65bcbba4c5a1"
+  },
+  "src/utils.py": {
+    "mtime": 1790125773486.8616,
+    "hash": "412e7bce91a7a57ddd4bea462f7482d0"
+  },
+  "src/utils/__init__.py": {
+    "mtime": 1790125773487.0217,
+    "hash": "412e7bce91a7a57ddd4bea462f7482d0"
+  },
+  "src/utils/ai_utils.py": {
+    "mtime": 1790125773487.117,
+    "hash": "1675cf846f682b084bbc7dc7f3666f33"
+  },
+  "tests/auth.spec.js": {
+    "mtime": 1790125773487.889,
+    "hash": "25fee7fb6761ab6d5a485004e091476f"
+  },
+  "tests/browser_smoke.py": {
+    "mtime": 1790125773487.9753,
+    "hash": "d8a8133213566e81beae0056fc6206e9"
+  },
+  "tests/helpers.js": {
+    "mtime": 1790125773488.0645,
+    "hash": "f502b01d09791769d4e61fb86b08ece8"
+  },
+  "tests/jobs.spec.js": {
+    "mtime": 1790125773488.1733,
+    "hash": "51363365eeb3e4c8cc54f220dd8b8ec7"
+  },
+  "tests/onboarding.spec.js": {
+    "mtime": 1790125773488.345,
+    "hash": "271ea05267c8a20aa32134d37d5ebae5"
+  },
+  "tests/playwright.config.js": {
+    "mtime": 1790125773488.5142,
+    "hash": "f35d9fd95f9ccc7af7efb406e5728007"
+  },
+  "tests/scoring.spec.js": {
+    "mtime": 1790125773488.6248,
+    "hash": "6a4b348a3b231b0965cd867a23b799f9"
+  },
+  "tests/security.spec.js": {
+    "mtime": 1790125773488.9084,
+    "hash": "ff253f7769b1bdc3a010d7dae4e41a05"
+  },
+  "tests/test_new_api_endpoints.py": {
+    "mtime": 1790125773489.0032,
+    "hash": "5acb6ff1a94ee62c55d6fa3e6d2afd0f"
+  },
+  "tests/test_new_features.py": {
+    "mtime": 1790125773489.1096,
+    "hash": "77d1502fab99d562057ec66308cf1a03"
+  },
+  "tests/test_resume_reliability.py": {
+    "mtime": 1790125773489.257,
+    "hash": "20c730344316fe777b73f4856ed9c92b"
+  },
+  "tests/test_scoring.py": {
+    "mtime": 1790125773489.348,
+    "hash": "0d8b8462d574bbf4016f2dc3fc6fceb4"
+  },
+  "tests/ui.spec.js": {
+    "mtime": 1790125773489.6177,
+    "hash": "d00bbc984eb425cd1ca922e74f66915f"
+  },
+  ".graphify/GRAPH_REPORT.md": {
+    "mtime": 1790126444078.3696,
+    "hash": "902ac00f088a7d7d51bdf8dc4e2d94f2"
+  },
+  "AGENTS.md": {
+    "mtime": 1790125773406.13,
+    "hash": "a8c368c27bf684ff1759a7a891e51447"
+  },
+  "CLAUDE.md": {
+    "mtime": 1790125773406.549,
+    "hash": "5286e10b179f4079f9fde9a9f855a2cc"
+  },
+  "CLEANUP_SUMMARY.md": {
+    "mtime": 1790125773406.9128,
+    "hash": "f2cabd13dce0a1941ed41f3cf340d7a7"
+  },
+  "DEVELOPMENT.md": {
+    "mtime": 1790125773412.3354,
+    "hash": "f38d6e90f7b4bff6d522f1b2f2ff4552"
+  },
+  "DOCKER.md": {
+    "mtime": 1790125773412.632,
+    "hash": "f35afeda399d9c94a82e81baedf0aad3"
+  },
+  "EXTENSION_INSTALL.md": {
+    "mtime": 1790125773413.2378,
+    "hash": "b227e682754720f4afb858693b1f1cff"
+  },
+  "FIGMA_DESIGN_BRIEF.md": {
+    "mtime": 1790125773413.415,
+    "hash": "35e8894ef195d3d8ecb2fea9f886311e"
+  },
+  "PRODUCTION_REBUILD_PLAN.md": {
+    "mtime": 1790125773413.6997,
+    "hash": "1c892575505207469870fa1df13f4882"
+  },
+  "PROJECT_STRUCTURE.md": {
+    "mtime": 1790125773413.8193,
+    "hash": "0f1a0698063bf50d299ddfed530028c9"
+  },
+  "README.md": {
+    "mtime": 1790126493461.282,
+    "hash": "40d0cb985d61090a1c7f647cdfe028f4"
+  },
+  "README_PRODUCTION.md": {
+    "mtime": 1790125773414.2356,
+    "hash": "40594cf0ae3590329abb4fc772eaaa78"
+  },
+  "SETTINGS_UI_GUIDE.md": {
+    "mtime": 1790125773414.4702,
+    "hash": "31d27dda65473e35fb43d9c64ce87eb4"
+  },
+  "SETTINGS_UI_REFERENCE.md": {
+    "mtime": 1790125773414.6082,
+    "hash": "11d1da7ea358ce93818f2b9088ef2caa"
+  },
+  "WHATS_NEW.md": {
+    "mtime": 1790125773414.7163,
+    "hash": "14175c4c580ba33fdf62c58150b77ee9"
+  },
+  "architecture/00_system_overview.md": {
+    "mtime": 1790125773416.206,
+    "hash": "842cbd43d3e94f1bd05cd9d1cb5a358a"
+  },
+  "architecture/01_data_flow.md": {
+    "mtime": 1790125773416.3267,
+    "hash": "9502770722e26af2faf3a45c3e81e8dd"
+  },
+  "architecture/02_frontend.md": {
+    "mtime": 1790125773416.599,
+    "hash": "ba05c65c9cc62690ff38c23fccc60871"
+  },
+  "architecture/03_backend.md": {
+    "mtime": 1790125773416.7708,
+    "hash": "0c0dc14c822cbda4b9d64f31d49a1fc9"
+  },
+  "architecture/04_database.md": {
+    "mtime": 1790125773417.0806,
+    "hash": "113600410759fb95777e1177a0a4cbb3"
+  },
+  "architecture/05_features.md": {
+    "mtime": 1790125773417.3372,
+    "hash": "51f277ed6f1c35bab25ee0d3a4685b4a"
+  },
+  "architecture/06_infrastructure.md": {
+    "mtime": 1790125773417.494,
+    "hash": "75bfc04d50e27757b4cb8fabc4832fa0"
+  },
+  "architecture/07_getting_started.md": {
+    "mtime": 1790125773417.6353,
+    "hash": "e6426d55c612251a2d2eadcbbf863ce6"
+  },
+  "architecture/api_contracts.md": {
+    "mtime": 1790125773417.735,
+    "hash": "e6097020d64b7c13c5aea820491ae74b"
+  },
+  "architecture/data_model.md": {
+    "mtime": 1790125773417.8252,
+    "hash": "6239f1bc23e7c4b4f8587e3e4981e8fe"
+  },
+  "architecture/infra_plan.md": {
+    "mtime": 1790125773417.911,
+    "hash": "0d75ee06355c2a100af136a534d7f526"
+  },
+  "architecture/system_design.md": {
+    "mtime": 1790125773418.0645,
+    "hash": "11c352ce2cfd0e04d1b9483f60f5cdb3"
+  },
+  "config/blacklist.txt": {
+    "mtime": 1790125773418.1575,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "config/common_skills.txt": {
+    "mtime": 1790125773418.3696,
+    "hash": "1e1e5c5991c1abf686213eb333fdb936"
+  },
+  "config/company_blacklist.txt": {
+    "mtime": 1790125773418.456,
+    "hash": "90cbdbf0853d2ac2a8e6ef2bb783128d"
+  },
+  "config/prompts/cover_letter.v1.yaml": {
+    "mtime": 1790125773419.1907,
+    "hash": "d5f11a6e5f5f3ea3e5637c433f9c71c5"
+  },
+  "config/prompts/form_fill.v1.yaml": {
+    "mtime": 1790125773419.2688,
+    "hash": "4e8fa535c5fe3ce0a28f84133482025a"
+  },
+  "config/prompts/qa_behavioral.v1.yaml": {
+    "mtime": 1790125773419.3462,
+    "hash": "135f4b68b79dacc9d0f6f3645caa42b1"
+  },
+  "config/prompts/scoring.v3.yaml": {
+    "mtime": 1790125773419.4243,
+    "hash": "d9ec8d44958581a105b6524223a9b7e4"
+  },
+  "config/prompts/tailoring.v2.yaml": {
+    "mtime": 1790125773419.499,
+    "hash": "80228572f0734730383c023603f2ec9b"
+  },
+  "config/your_skills.txt": {
+    "mtime": 1790125773419.5732,
+    "hash": "97b680780515c77e1c53eb93970de2d0"
+  },
+  "dashboard/.graphify/GRAPH_REPORT.md": {
+    "mtime": 1790125773419.8567,
+    "hash": "7119901d5361a8c8121769803d085196"
+  },
+  "dashboard/README.md": {
+    "mtime": 1790125773420.247,
+    "hash": "3f01850e9fce601d04d6dba39204c1d8"
+  },
+  "dashboard/graphify-out/GRAPH_REPORT.md": {
+    "mtime": 1790125773420.469,
+    "hash": "49961db3c21f22e6c99baad13ec5c167"
+  },
+  "dashboard/index.html": {
+    "mtime": 1790125773420.6216,
+    "hash": "6832d7407dd437ea8833bc7800dd530f"
+  },
+  "docker-compose.yml": {
+    "mtime": 1790125773431.214,
+    "hash": "377d53587274c1734395ddc0f571f39a"
+  },
+  "docs/CHECKPOINT_01_FOUNDATION.md": {
+    "mtime": 1790125773431.496,
+    "hash": "aad98ef390db73306e32225bbbe5c01e"
+  },
+  "docs/CHECKPOINT_02_ONBOARDING_UX.md": {
+    "mtime": 1790125773431.5747,
+    "hash": "f4b42caea4524229904970f621efb50b"
+  },
+  "docs/CHECKPOINT_03_RECOMMENDATION_FLEXIBILITY.md": {
+    "mtime": 1790125773431.647,
+    "hash": "4ec255d3094afced7963fa2f5c989247"
+  },
+  "docs/CHECKPOINT_04_INDUSTRY_AFFINITY.md": {
+    "mtime": 1790125773431.7197,
+    "hash": "65b978b20bee6cd786fe7958a4e3831f"
+  },
+  "docs/CHECKPOINT_06_MATCHED_JOBS.md": {
+    "mtime": 1790125773431.8174,
+    "hash": "72418771901f8f30929547f1a830b2db"
+  },
+  "docs/CHECKPOINT_07_AI_OPTIMIZATION.md": {
+    "mtime": 1790125773431.8982,
+    "hash": "dc8c5b0fff057d877550a51604f706bb"
+  },
+  "docs/CHECKPOINT_08_DETERMINISTIC_SCORING.md": {
+    "mtime": 1790125773431.9746,
+    "hash": "fa99492d2117a71fe9d2c72d02487946"
+  },
+  "docs/CHECKPOINT_09_FRESHNESS_AND_STALENESS.md": {
+    "mtime": 1790125773432.0593,
+    "hash": "f8cc27ed0a227d589b37df871cfe6888"
+  },
+  "docs/CHECKPOINT_10_SECURITY_AND_TIMELINE.md": {
+    "mtime": 1790125773432.3494,
+    "hash": "c418230c6ee0a08f9a3b787649f2a8a8"
+  },
+  "docs/CHECKPOINT_11_INTERNAL_DELIVERY_API.md": {
+    "mtime": 1790125773432.434,
+    "hash": "300113cf469e2b741e64aae018fa8691"
+  },
+  "docs/CHECKPOINT_12_DELIVERY_SOURCE_OF_TRUTH.md": {
+    "mtime": 1790125773432.5125,
+    "hash": "8cefe1e336d8fabaa886e5e49b780351"
+  },
+  "docs/CHECKPOINT_13_EXPLICIT_REBUILD.md": {
+    "mtime": 1790125773432.6028,
+    "hash": "459e13a378a2a0b4b7e711a882f3512d"
+  },
+  "docs/CHECKPOINT_14_DELIVERY_ORIGIN_PREFERENCE.md": {
+    "mtime": 1790125773432.7004,
+    "hash": "d3df1260942f06cced37fe6ba4c9eda9"
+  },
+  "docs/CHECKPOINT_15_MATCHED_JOB_STATE_OWNERSHIP.md": {
+    "mtime": 1790125773432.7883,
+    "hash": "cf0dcf328def03636754880de73ff606"
+  },
+  "docs/CHECKPOINT_16_WORKSPACE_ANALYSIS_ON_MATCHED_JOBS.md": {
+    "mtime": 1790125773432.8723,
+    "hash": "89706698e48fb4dbd9312938148604d0"
+  },
+  "docs/CHECKPOINT_17_MATCHED_JOB_RESUME_GENERATION.md": {
+    "mtime": 1790125773432.9597,
+    "hash": "e8d859042fa642b6092c352cb76000a3"
+  },
+  "docs/CHECKPOINT_18_MATCHED_JOB_TAILORING_AND_VERSIONS.md": {
+    "mtime": 1790125773433.0505,
+    "hash": "33ded4871c2fe003aedda91a4755b0d6"
+  },
+  "docs/CHECKPOINT_19_DOCUMENT_HISTORY_AND_ACTIVITY.md": {
+    "mtime": 1790125773433.7214,
+    "hash": "b276894d98e50ab2652f0badaa892b48"
+  },
+  "docs/CHECKPOINT_20_UNIFIED_ACTIVITY_FEED.md": {
+    "mtime": 1790125773433.8257,
+    "hash": "aa671495fe7fa968a61eb6299bc3250a"
+  },
+  "docs/CHECKPOINT_21_LIVE_ACTIVITY_REFRESH.md": {
+    "mtime": 1790125773433.9233,
+    "hash": "44a42e6aeebcb0fb70e775c9de953789"
+  },
+  "docs/CHECKPOINT_22_TEST_AND_INPUT_HARDENING.md": {
+    "mtime": 1790125773434.6072,
+    "hash": "e8870301ab5776b0edf88aa91e43e74d"
+  },
+  "docs/CHECKPOINT_23_DATA_DOMAIN_BOOTSTRAP.md": {
+    "mtime": 1790125773434.699,
+    "hash": "4bc1dbf56dba2a542498f8b27ac3c62a"
+  },
+  "docs/CHECKPOINT_24_REFERENCE_UI_REFRESH.md": {
+    "mtime": 1790125773434.7866,
+    "hash": "df86aea06c1d3c8213adc9fdc2fb1521"
+  },
+  "docs/CHECKPOINT_25_PREMIUM_DECISION_UI.md": {
+    "mtime": 1790125773434.877,
+    "hash": "fa2c45d894a4f78f2158c4dc0512af1b"
+  },
+  "docs/CHECKPOINT_26_PROFESSIONAL_JOB_PLATFORM_STYLE.md": {
+    "mtime": 1790125773434.9724,
+    "hash": "46cc530eaa6d408dc1f0a35caccbb89d"
+  },
+  "docs/CHECKPOINT_27_REFINED_PLATFORM_POLISH.md": {
+    "mtime": 1790125773435.0725,
+    "hash": "c7572bbeb6af52d98ea3fa3b9873c473"
+  },
+  "docs/CHECKPOINT_28_CAREEROS_SCREENSHOT_STYLE.md": {
+    "mtime": 1790125773435.163,
+    "hash": "6361b9d607ce230c3dc81542f2becb9e"
+  },
+  "docs/CHECKPOINT_29_EXACT_REFERENCE_UI_PORT.md": {
+    "mtime": 1790125773435.2393,
+    "hash": "7f39c8a0eb84cf7d3ed9cb65a1db35c8"
+  },
+  "docs/CHECKPOINT_30_ZIPRECRUITER_POLISH.md": {
+    "mtime": 1790125773435.6296,
+    "hash": "d9b1d1b38563b6ed4bd0a432ce1c0cd0"
+  },
+  "docs/CHECKPOINT_31_MARKETPLACE_PALETTE_REFINEMENT.md": {
+    "mtime": 1790125773435.7324,
+    "hash": "a212ddc3162c936ceb51d05fc4596c18"
+  },
+  "docs/CHECKPOINT_32_COMPACT_CARD_CTA.md": {
+    "mtime": 1790125773435.8193,
+    "hash": "ca2345c757bf80552398e4795c4dade2"
+  },
+  "docs/CHECKPOINT_33_DESIGN_2_UX_PILOT_PRIORITY.md": {
+    "mtime": 1790125773435.9236,
+    "hash": "a8825c804e5c1c334d0a0f2039919e7e"
+  },
+  "docs/CHECKPOINT_34_UX_PILOT_AUTH_ONBOARDING.md": {
+    "mtime": 1790125773436.0186,
+    "hash": "fc75ca2c3c9a806be86574b6a81a9b3f"
+  },
+  "docs/CHECKPOINT_35_ONBOARDING_DENSITY_FIX.md": {
+    "mtime": 1790125773436.1038,
+    "hash": "ed79ee19d146dddd00ede938765209fd"
+  },
+  "docs/CHECKPOINT_36_REFERENCE_SPACING_ALIGNMENT.md": {
+    "mtime": 1790125773436.193,
+    "hash": "fc62d23c6435dfcae416583e6902f2c5"
+  },
+  "docs/CODEX_NOTES.md": {
+    "mtime": 1790125773436.2935,
+    "hash": "6c0840d6ffaa36b7012e0b6acb28dfb8"
+  },
+  "docs/DASHBOARD_README.md": {
+    "mtime": 1790125773436.3875,
+    "hash": "10d8b9f47c52f2e89e801bc1703282d9"
+  },
+  "docs/LAUNCHAGENT_QUICKREF.md": {
+    "mtime": 1790125773436.5144,
+    "hash": "c37646e2f8e3e7a9d1b5fe04b0a8ee6e"
+  },
+  "docs/PROJECT_TRACKER.md": {
+    "mtime": 1790125773436.6396,
+    "hash": "b057a4150939c658119138f0963a1642"
+  },
+  "docs/RELIABILITY_REVIEW.md": {
+    "mtime": 1790125773436.7505,
+    "hash": "4777fec64ac7fb62caa121c8f798fd10"
+  },
+  "docs/SCHEDULER_GUIDE.md": {
+    "mtime": 1790125773436.8372,
+    "hash": "f56d2f065101fc7b9a43dc0d58d2f011"
+  },
+  "docs/TRACKER_GUIDE.md": {
+    "mtime": 1790125773436.926,
+    "hash": "0402d43df7d0ee3b1e4248ae2144277e"
+  },
+  "extension/README.md": {
+    "mtime": 1790125773437.065,
+    "hash": "61440c0c4f00353ebd006852cc31d531"
+  },
+  "extension/options/options.html": {
+    "mtime": 1790125773439.4,
+    "hash": "7840af8b751b9b8e5fdb65beef684c81"
+  },
+  "extension/popup/popup.html": {
+    "mtime": 1790125773439.885,
+    "hash": "91a911a6ad7d233991cabec2a25a9eec"
+  },
+  "graphify-out/GRAPH_REPORT.md": {
+    "mtime": 1790125773440.2654,
+    "hash": "19693b0c186367bac1c2200d2a2d4dc8"
+  },
+  "jobsearchplatform_contract/AGENTS.md": {
+    "mtime": 1790125773440.8657,
+    "hash": "a8c368c27bf684ff1759a7a891e51447"
+  },
+  "jobsearchplatform_contract/CLAUDE.md": {
+    "mtime": 1790125773440.9739,
+    "hash": "5286e10b179f4079f9fde9a9f855a2cc"
+  },
+  "jobsearchplatform_contract/CLEANUP_SUMMARY.md": {
+    "mtime": 1790125773441.0913,
+    "hash": "f2cabd13dce0a1941ed41f3cf340d7a7"
+  },
+  "jobsearchplatform_contract/DEVELOPMENT.md": {
+    "mtime": 1790125773441.2058,
+    "hash": "f38d6e90f7b4bff6d522f1b2f2ff4552"
+  },
+  "jobsearchplatform_contract/DOCKER.md": {
+    "mtime": 1790125773441.2952,
+    "hash": "f35afeda399d9c94a82e81baedf0aad3"
+  },
+  "jobsearchplatform_contract/EXTENSION_INSTALL.md": {
+    "mtime": 1790125773441.473,
+    "hash": "b227e682754720f4afb858693b1f1cff"
+  },
+  "jobsearchplatform_contract/FIGMA_DESIGN_BRIEF.md": {
+    "mtime": 1790125773441.6484,
+    "hash": "35e8894ef195d3d8ecb2fea9f886311e"
+  },
+  "jobsearchplatform_contract/PRODUCTION_REBUILD_PLAN.md": {
+    "mtime": 1790125773441.9248,
+    "hash": "1c892575505207469870fa1df13f4882"
+  },
+  "jobsearchplatform_contract/PROJECT_STRUCTURE.md": {
+    "mtime": 1790125773442.067,
+    "hash": "0f1a0698063bf50d299ddfed530028c9"
+  },
+  "jobsearchplatform_contract/README.md": {
+    "mtime": 1790125773442.1792,
+    "hash": "4dabce6d0ae73d363e6b8b9fe4572e27"
+  },
+  "jobsearchplatform_contract/README_PRODUCTION.md": {
+    "mtime": 1790125773442.2876,
+    "hash": "40594cf0ae3590329abb4fc772eaaa78"
+  },
+  "jobsearchplatform_contract/SETTINGS_UI_GUIDE.md": {
+    "mtime": 1790125773442.4048,
+    "hash": "31d27dda65473e35fb43d9c64ce87eb4"
+  },
+  "jobsearchplatform_contract/SETTINGS_UI_REFERENCE.md": {
+    "mtime": 1790125773442.527,
+    "hash": "11d1da7ea358ce93818f2b9088ef2caa"
+  },
+  "jobsearchplatform_contract/WHATS_NEW.md": {
+    "mtime": 1790125773442.6328,
+    "hash": "14175c4c580ba33fdf62c58150b77ee9"
+  },
+  "jobsearchplatform_contract/architecture/00_system_overview.md": {
+    "mtime": 1790125773444.0103,
+    "hash": "842cbd43d3e94f1bd05cd9d1cb5a358a"
+  },
+  "jobsearchplatform_contract/architecture/01_data_flow.md": {
+    "mtime": 1790125773444.1526,
+    "hash": "9502770722e26af2faf3a45c3e81e8dd"
+  },
+  "jobsearchplatform_contract/architecture/02_frontend.md": {
+    "mtime": 1790125773444.3496,
+    "hash": "ba05c65c9cc62690ff38c23fccc60871"
+  },
+  "jobsearchplatform_contract/architecture/03_backend.md": {
+    "mtime": 1790125773444.5203,
+    "hash": "0c0dc14c822cbda4b9d64f31d49a1fc9"
+  },
+  "jobsearchplatform_contract/architecture/04_database.md": {
+    "mtime": 1790125773444.6929,
+    "hash": "113600410759fb95777e1177a0a4cbb3"
+  },
+  "jobsearchplatform_contract/architecture/05_features.md": {
+    "mtime": 1790125773444.9065,
+    "hash": "51f277ed6f1c35bab25ee0d3a4685b4a"
+  },
+  "jobsearchplatform_contract/architecture/06_infrastructure.md": {
+    "mtime": 1790125773445.0874,
+    "hash": "75bfc04d50e27757b4cb8fabc4832fa0"
+  },
+  "jobsearchplatform_contract/architecture/07_getting_started.md": {
+    "mtime": 1790125773445.465,
+    "hash": "e6426d55c612251a2d2eadcbbf863ce6"
+  },
+  "jobsearchplatform_contract/architecture/api_contracts.md": {
+    "mtime": 1790125773445.5718,
+    "hash": "e6097020d64b7c13c5aea820491ae74b"
+  },
+  "jobsearchplatform_contract/architecture/data_model.md": {
+    "mtime": 1790125773445.6606,
+    "hash": "6239f1bc23e7c4b4f8587e3e4981e8fe"
+  },
+  "jobsearchplatform_contract/architecture/infra_plan.md": {
+    "mtime": 1790125773445.7493,
+    "hash": "0d75ee06355c2a100af136a534d7f526"
+  },
+  "jobsearchplatform_contract/architecture/system_design.md": {
+    "mtime": 1790125773445.9678,
+    "hash": "11c352ce2cfd0e04d1b9483f60f5cdb3"
+  },
+  "jobsearchplatform_contract/config/common_skills.txt": {
+    "mtime": 1790125773446.2903,
+    "hash": "1e1e5c5991c1abf686213eb333fdb936"
+  },
+  "jobsearchplatform_contract/config/company_blacklist.txt": {
+    "mtime": 1790125773446.407,
+    "hash": "90cbdbf0853d2ac2a8e6ef2bb783128d"
+  },
+  "jobsearchplatform_contract/config/prompts/cover_letter.v1.yaml": {
+    "mtime": 1790125773447.1016,
+    "hash": "d5f11a6e5f5f3ea3e5637c433f9c71c5"
+  },
+  "jobsearchplatform_contract/config/prompts/form_fill.v1.yaml": {
+    "mtime": 1790125773447.1838,
+    "hash": "4e8fa535c5fe3ce0a28f84133482025a"
+  },
+  "jobsearchplatform_contract/config/prompts/qa_behavioral.v1.yaml": {
+    "mtime": 1790125773447.273,
+    "hash": "135f4b68b79dacc9d0f6f3645caa42b1"
+  },
+  "jobsearchplatform_contract/config/prompts/scoring.v3.yaml": {
+    "mtime": 1790125773447.3538,
+    "hash": "d9ec8d44958581a105b6524223a9b7e4"
+  },
+  "jobsearchplatform_contract/config/prompts/tailoring.v2.yaml": {
+    "mtime": 1790125773447.45,
+    "hash": "80228572f0734730383c023603f2ec9b"
+  },
+  "jobsearchplatform_contract/config/your_skills.txt": {
+    "mtime": 1790125773447.5447,
+    "hash": "97b680780515c77e1c53eb93970de2d0"
+  },
+  "jobsearchplatform_contract/dashboard/README.md": {
+    "mtime": 1790125773447.9624,
+    "hash": "3f01850e9fce601d04d6dba39204c1d8"
+  },
+  "jobsearchplatform_contract/dashboard/index.html": {
+    "mtime": 1790125773448.1382,
+    "hash": "6832d7407dd437ea8833bc7800dd530f"
+  },
+  "jobsearchplatform_contract/docker-compose.yml": {
+    "mtime": 1790125773456.8562,
+    "hash": "377d53587274c1734395ddc0f571f39a"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_01_FOUNDATION.md": {
+    "mtime": 1790125773457.1777,
+    "hash": "aad98ef390db73306e32225bbbe5c01e"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_02_ONBOARDING_UX.md": {
+    "mtime": 1790125773457.2527,
+    "hash": "f4b42caea4524229904970f621efb50b"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_03_RECOMMENDATION_FLEXIBILITY.md": {
+    "mtime": 1790125773457.3306,
+    "hash": "4ec255d3094afced7963fa2f5c989247"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_04_INDUSTRY_AFFINITY.md": {
+    "mtime": 1790125773457.5554,
+    "hash": "65b978b20bee6cd786fe7958a4e3831f"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_06_MATCHED_JOBS.md": {
+    "mtime": 1790125773457.6416,
+    "hash": "72418771901f8f30929547f1a830b2db"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_07_AI_OPTIMIZATION.md": {
+    "mtime": 1790125773457.7222,
+    "hash": "dc8c5b0fff057d877550a51604f706bb"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_08_DETERMINISTIC_SCORING.md": {
+    "mtime": 1790125773457.8018,
+    "hash": "fa99492d2117a71fe9d2c72d02487946"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_09_FRESHNESS_AND_STALENESS.md": {
+    "mtime": 1790125773457.881,
+    "hash": "f8cc27ed0a227d589b37df871cfe6888"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_10_SECURITY_AND_TIMELINE.md": {
+    "mtime": 1790125773457.9746,
+    "hash": "c418230c6ee0a08f9a3b787649f2a8a8"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_11_INTERNAL_DELIVERY_API.md": {
+    "mtime": 1790125773458.0635,
+    "hash": "300113cf469e2b741e64aae018fa8691"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_12_DELIVERY_SOURCE_OF_TRUTH.md": {
+    "mtime": 1790125773458.1484,
+    "hash": "8cefe1e336d8fabaa886e5e49b780351"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_13_EXPLICIT_REBUILD.md": {
+    "mtime": 1790125773458.2253,
+    "hash": "459e13a378a2a0b4b7e711a882f3512d"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_14_DELIVERY_ORIGIN_PREFERENCE.md": {
+    "mtime": 1790125773458.3018,
+    "hash": "d3df1260942f06cced37fe6ba4c9eda9"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_15_MATCHED_JOB_STATE_OWNERSHIP.md": {
+    "mtime": 1790125773458.3765,
+    "hash": "cf0dcf328def03636754880de73ff606"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_16_WORKSPACE_ANALYSIS_ON_MATCHED_JOBS.md": {
+    "mtime": 1790125773458.4604,
+    "hash": "89706698e48fb4dbd9312938148604d0"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_17_MATCHED_JOB_RESUME_GENERATION.md": {
+    "mtime": 1790125773458.5544,
+    "hash": "e8d859042fa642b6092c352cb76000a3"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_18_MATCHED_JOB_TAILORING_AND_VERSIONS.md": {
+    "mtime": 1790125773458.6465,
+    "hash": "33ded4871c2fe003aedda91a4755b0d6"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_19_DOCUMENT_HISTORY_AND_ACTIVITY.md": {
+    "mtime": 1790125773458.743,
+    "hash": "b276894d98e50ab2652f0badaa892b48"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_20_UNIFIED_ACTIVITY_FEED.md": {
+    "mtime": 1790125773458.8335,
+    "hash": "aa671495fe7fa968a61eb6299bc3250a"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_21_LIVE_ACTIVITY_REFRESH.md": {
+    "mtime": 1790125773458.924,
+    "hash": "44a42e6aeebcb0fb70e775c9de953789"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_22_TEST_AND_INPUT_HARDENING.md": {
+    "mtime": 1790125773459.006,
+    "hash": "e8870301ab5776b0edf88aa91e43e74d"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_23_DATA_DOMAIN_BOOTSTRAP.md": {
+    "mtime": 1790125773459.0916,
+    "hash": "4bc1dbf56dba2a542498f8b27ac3c62a"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_24_REFERENCE_UI_REFRESH.md": {
+    "mtime": 1790125773459.1838,
+    "hash": "df86aea06c1d3c8213adc9fdc2fb1521"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_25_PREMIUM_DECISION_UI.md": {
+    "mtime": 1790125773459.269,
+    "hash": "fa2c45d894a4f78f2158c4dc0512af1b"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_26_PROFESSIONAL_JOB_PLATFORM_STYLE.md": {
+    "mtime": 1790125773459.3584,
+    "hash": "46cc530eaa6d408dc1f0a35caccbb89d"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_27_REFINED_PLATFORM_POLISH.md": {
+    "mtime": 1790125773459.4443,
+    "hash": "c7572bbeb6af52d98ea3fa3b9873c473"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_28_CAREEROS_SCREENSHOT_STYLE.md": {
+    "mtime": 1790125773459.5369,
+    "hash": "6361b9d607ce230c3dc81542f2becb9e"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_29_EXACT_REFERENCE_UI_PORT.md": {
+    "mtime": 1790125773459.6296,
+    "hash": "7f39c8a0eb84cf7d3ed9cb65a1db35c8"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_30_ZIPRECRUITER_POLISH.md": {
+    "mtime": 1790125773459.7158,
+    "hash": "d9b1d1b38563b6ed4bd0a432ce1c0cd0"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_31_MARKETPLACE_PALETTE_REFINEMENT.md": {
+    "mtime": 1790125773459.798,
+    "hash": "a212ddc3162c936ceb51d05fc4596c18"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_32_COMPACT_CARD_CTA.md": {
+    "mtime": 1790125773459.8833,
+    "hash": "ca2345c757bf80552398e4795c4dade2"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_33_DESIGN_2_UX_PILOT_PRIORITY.md": {
+    "mtime": 1790125773459.9849,
+    "hash": "a8825c804e5c1c334d0a0f2039919e7e"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_34_UX_PILOT_AUTH_ONBOARDING.md": {
+    "mtime": 1790125773460.064,
+    "hash": "fc75ca2c3c9a806be86574b6a81a9b3f"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_35_ONBOARDING_DENSITY_FIX.md": {
+    "mtime": 1790125773460.1462,
+    "hash": "ed79ee19d146dddd00ede938765209fd"
+  },
+  "jobsearchplatform_contract/docs/CHECKPOINT_36_REFERENCE_SPACING_ALIGNMENT.md": {
+    "mtime": 1790125773460.2327,
+    "hash": "fc62d23c6435dfcae416583e6902f2c5"
+  },
+  "jobsearchplatform_contract/docs/CODEX_NOTES.md": {
+    "mtime": 1790125773460.3357,
+    "hash": "6c0840d6ffaa36b7012e0b6acb28dfb8"
+  },
+  "jobsearchplatform_contract/docs/DASHBOARD_README.md": {
+    "mtime": 1790125773460.4211,
+    "hash": "10d8b9f47c52f2e89e801bc1703282d9"
+  },
+  "jobsearchplatform_contract/docs/LAUNCHAGENT_QUICKREF.md": {
+    "mtime": 1790125773460.4998,
+    "hash": "c37646e2f8e3e7a9d1b5fe04b0a8ee6e"
+  },
+  "jobsearchplatform_contract/docs/PROJECT_TRACKER.md": {
+    "mtime": 1790125773460.611,
+    "hash": "b057a4150939c658119138f0963a1642"
+  },
+  "jobsearchplatform_contract/docs/SCHEDULER_GUIDE.md": {
+    "mtime": 1790125773460.7039,
+    "hash": "f56d2f065101fc7b9a43dc0d58d2f011"
+  },
+  "jobsearchplatform_contract/docs/TRACKER_GUIDE.md": {
+    "mtime": 1790125773460.7893,
+    "hash": "0402d43df7d0ee3b1e4248ae2144277e"
+  },
+  "jobsearchplatform_contract/extension/README.md": {
+    "mtime": 1790125773460.9307,
+    "hash": "61440c0c4f00353ebd006852cc31d531"
+  },
+  "jobsearchplatform_contract/extension/options/options.html": {
+    "mtime": 1790125773463.8853,
+    "hash": "7840af8b751b9b8e5fdb65beef684c81"
+  },
+  "jobsearchplatform_contract/extension/popup/popup.html": {
+    "mtime": 1790125773464.201,
+    "hash": "91a911a6ad7d233991cabec2a25a9eec"
+  },
+  "jobsearchplatform_contract/requirements.txt": {
+    "mtime": 1790125773464.7202,
+    "hash": "658afa803d53be9b96f6a5c414351c9d"
+  },
+  "jobsearchplatform_contract/requirements_dev.txt": {
+    "mtime": 1790125773464.7908,
+    "hash": "dad2e728068d6029074c4b2c6f02b9d9"
+  },
+  "jobsearchplatform_contract/templates/PROMPT_MASTER.md": {
+    "mtime": 1790125773474.969,
+    "hash": "041c462d1ec4c9e03969a999eb21cc54"
+  },
+  "jobsearchplatform_contract/templates/overleaf.txt": {
+    "mtime": 1790125773475.092,
+    "hash": "7ad1de68f06ea9e933ef9f847e6b8280"
+  },
+  "jobsearchplatform_contract/tests/README.md": {
+    "mtime": 1790125773475.288,
+    "hash": "d223b4ea09aa67638cc581433d0705d6"
+  },
+  "requirements.txt": {
+    "mtime": 1790126179202.4285,
+    "hash": "e8dcc41d6659eab30d153922ba2c417d"
+  },
+  "requirements_dev.txt": {
+    "mtime": 1790125773477.137,
+    "hash": "b2fa8a0c9304de4e39036613f4c67e48"
+  },
+  "services/job_scrapper/.github/workflows/ci.yml": {
+    "mtime": 1790125792214.1956,
+    "hash": "95595b23cd7e4bd3a7e9fdae09047511"
+  },
+  "services/job_scrapper/README.md": {
+    "mtime": 1790125792214.9795,
+    "hash": "e725e460331e6285ac6279b772704a12"
+  },
+  "services/job_scrapper/akkodis_applying_script/README.md": {
+    "mtime": 1790125792215.1914,
+    "hash": "f5d128deb5ec5d2c2d19dc4e8d77a40a"
+  },
+  "services/job_scrapper/apexsystems_applying_script/README.md": {
+    "mtime": 1790125792216.2266,
+    "hash": "35fa91d4e6a0f519d14903d059ecc87e"
+  },
+  "services/job_scrapper/artech_applying_script/README.md": {
+    "mtime": 1790125792216.9185,
+    "hash": "42d1ea3072f110ef60c1918f75121cc2"
+  },
+  "services/job_scrapper/beaconhill_applying_script/README.md": {
+    "mtime": 1790125792217.3086,
+    "hash": "3ee538e29db474433b1eb771104ad321"
+  },
+  "services/job_scrapper/config/profile.yaml": {
+    "mtime": 1790125792219.2917,
+    "hash": "2c638537780a0a378cac9a2e11c15b38"
+  },
+  "services/job_scrapper/config/sites.yaml": {
+    "mtime": 1790125792219.4636,
+    "hash": "afaa7755b0fead384de6e9c47326a920"
+  },
+  "services/job_scrapper/docker-compose.yml": {
+    "mtime": 1790125792219.7905,
+    "hash": "b51df7f962711cee62992f6d55c1a70c"
+  },
+  "services/job_scrapper/eliassen_applying_script/README.md": {
+    "mtime": 1790125792220.0122,
+    "hash": "ee5425404a8e9422e24837682ff13115"
+  },
+  "services/job_scrapper/java-dashboard/frontend/index.html": {
+    "mtime": 1790125792224.321,
+    "hash": "0378ed4d510f8d525abcd7400fc7f239"
+  },
+  "services/job_scrapper/judgegroup_applying_script/README.md": {
+    "mtime": 1790125792229.0522,
+    "hash": "33d75822bdcf68bcc79cfa959fda6b27"
+  },
+  "services/job_scrapper/requirements.txt": {
+    "mtime": 1790125792233.6548,
+    "hash": "417876aff64d929086fd870c4f8c0ea3"
+  },
+  "services/job_scrapper/teksystems_applying_script/README.md": {
+    "mtime": 1790125792236.7036,
+    "hash": "a39ece3a2fd74f60358de38a3676de58"
+  },
+  "templates/PROMPT_MASTER.md": {
+    "mtime": 1790125773487.398,
+    "hash": "041c462d1ec4c9e03969a999eb21cc54"
+  },
+  "templates/overleaf.txt": {
+    "mtime": 1790125773487.537,
+    "hash": "7ad1de68f06ea9e933ef9f847e6b8280"
+  },
+  "tests/README.md": {
+    "mtime": 1790125773487.7363,
+    "hash": "d223b4ea09aa67638cc581433d0705d6"
+  },
+  ".careeros_icon.iconset/icon_128x128.png": {
+    "mtime": 1790125773399.1782,
+    "hash": "75add6058300e6f2aff0e0fe2f94526d"
+  },
+  ".careeros_icon.iconset/icon_128x128@2x.png": {
+    "mtime": 1790125773399.3484,
+    "hash": "f3b5ed6993dc64893b027580c931e137"
+  },
+  ".careeros_icon.iconset/icon_16x16.png": {
+    "mtime": 1790125773399.4653,
+    "hash": "aa303f508772e4bd7bf48eaf7c16898b"
+  },
+  ".careeros_icon.iconset/icon_16x16@2x.png": {
+    "mtime": 1790125773399.549,
+    "hash": "7491dd9f1759f92735e4261b2520ace9"
+  },
+  ".careeros_icon.iconset/icon_256x256.png": {
+    "mtime": 1790125773399.6704,
+    "hash": "f3b5ed6993dc64893b027580c931e137"
+  },
+  ".careeros_icon.iconset/icon_256x256@2x.png": {
+    "mtime": 1790125773400.2634,
+    "hash": "a36fff19dd0a5bc2fb669fd2bc51d462"
+  },
+  ".careeros_icon.iconset/icon_32x32.png": {
+    "mtime": 1790125773400.3745,
+    "hash": "7491dd9f1759f92735e4261b2520ace9"
+  },
+  ".careeros_icon.iconset/icon_32x32@2x.png": {
+    "mtime": 1790125773400.4941,
+    "hash": "77fa4c7bf7e803ac4b301db2fbdb29d9"
+  },
+  ".careeros_icon.iconset/icon_512x512.png": {
+    "mtime": 1790125773401.304,
+    "hash": "a36fff19dd0a5bc2fb669fd2bc51d462"
+  },
+  ".careeros_icon.iconset/icon_512x512@2x.png": {
+    "mtime": 1790125773402.9893,
+    "hash": "0d9b3971577508a783a341b27383cc3b"
+  },
+  "dashboard/public/vite.svg": {
+    "mtime": 1790125773421.612,
+    "hash": "8e3a10e157f75ada21ab742c022d5430"
+  },
+  "dashboard/src/assets/react.svg": {
+    "mtime": 1790125773422.2498,
+    "hash": "f0402b67b6ce880f65666bb49e841696"
+  },
+  "extension/icons/icon128.png": {
+    "mtime": 1790125773438.013,
+    "hash": "f6ba145b9bf84adaf60355a37b35b196"
+  },
+  "extension/icons/icon16.png": {
+    "mtime": 1790125773438.0974,
+    "hash": "6ec3674a4e1288691f8e35f520a97038"
+  },
+  "extension/icons/icon48.png": {
+    "mtime": 1790125773438.1812,
+    "hash": "9119d983320db7784da75c9babf844ca"
+  },
+  "jobsearchplatform_contract/dashboard/public/vite.svg": {
+    "mtime": 1790125773448.4512,
+    "hash": "8e3a10e157f75ada21ab742c022d5430"
+  },
+  "jobsearchplatform_contract/dashboard/src/assets/react.svg": {
+    "mtime": 1790125773449.0337,
+    "hash": "f0402b67b6ce880f65666bb49e841696"
+  },
+  "jobsearchplatform_contract/extension/icons/icon128.png": {
+    "mtime": 1790125773462.3655,
+    "hash": "f6ba145b9bf84adaf60355a37b35b196"
+  },
+  "jobsearchplatform_contract/extension/icons/icon16.png": {
+    "mtime": 1790125773462.464,
+    "hash": "6ec3674a4e1288691f8e35f520a97038"
+  },
+  "jobsearchplatform_contract/extension/icons/icon48.png": {
+    "mtime": 1790125773462.5493,
+    "hash": "9119d983320db7784da75c9babf844ca"
+  }
+}

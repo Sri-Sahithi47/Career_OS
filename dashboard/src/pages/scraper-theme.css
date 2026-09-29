@@ -1,0 +1,141 @@
+:root {
+  --ink: #243e30;
+  --muted: #708577;
+  --line: #dce5dd;
+  --paper: #f6f8f5;
+  --brand: #087f70;
+  --panel: #fff;
+}
+body {
+  background: var(--paper);
+  font-size: 12px;
+}
+header {
+  background: #f6f8f5;
+  padding: 30px;
+  border-bottom: 1px solid var(--line);
+}
+h1 {
+  font-size: 27px;
+  font-weight: 550;
+  letter-spacing: -1px;
+}
+h2 {
+  font-size: 15px;
+  font-weight: 600;
+}
+h3 {
+  font-size: 12px;
+}
+.sub {
+  font-size: 12px;
+  line-height: 1.7;
+}
+main {
+  grid-template-columns: 285px minmax(0, 1fr);
+}
+aside {
+  background: #fff;
+  padding: 25px 22px;
+}
+section {
+  padding: 25px;
+}
+.block {
+  padding-bottom: 23px;
+  margin-bottom: 23px;
+}
+button {
+  border-radius: 5px;
+  font-size: 11px;
+  padding: 9px 12px;
+  box-shadow: none;
+}
+button.primary {
+  background: #087f70;
+}
+input,
+select,
+textarea {
+  border-radius: 5px;
+  border-color: #dce5dd;
+  background: #fcfdfb;
+  font-size: 12px;
+}
+table {
+  background: white;
+  font-size: 11px;
+}
+th {
+  font-size: 10px;
+  color: #708577;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: #edf2ec;
+}
+td {
+  padding: 12px 9px;
+}
+tr:hover {
+  background: #f0f6ef;
+}
+.day {
+  border-radius: 6px;
+  background: white;
+  border-color: #dce5dd;
+  box-shadow: none;
+}
+.day.today {
+  background: #e7f3e8;
+  border-color: #aacdb3;
+}
+.pill {
+  font-size: 10px;
+}
+.log {
+  border-radius: 6px;
+  background: #213a2b;
+  color: #bcd5c3;
+}
+.jobs-panel {
+  border-radius: 7px;
+  box-shadow: none;
+}
+.job-card {
+  border-radius: 6px;
+  box-shadow: none;
+}
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid #087f70;
+  outline-offset: 2px;
+}
+@media (max-width: 1000px) {
+  main {
+    grid-template-columns: 1fr;
+  }
+  aside {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  header {
+    flex-wrap: wrap;
+  }
+  .rotation {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  section {
+    overflow-x: auto;
+    padding: 18px;
+  }
+  .buttons {
+    flex-wrap: wrap;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

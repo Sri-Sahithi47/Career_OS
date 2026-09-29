@@ -1,42 +1,35 @@
-#!/bin/bash
-
-# Clawdbot SaaS - Modern Unified Dev Server
-# Starts both the FastAPI Backend and the Vite Frontend
-
-echo "🚀 Starting Clawdbot Development Environment..."
-echo ""
-
-# 1. Environment Checks
-if [ ! -d "venv" ]; then
-    echo "❌ Error: Virtual environment (venv) not found."
-    echo "Please run: python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt"
-    exit 1
+#!/usr/bin/env bash
+# Start the merged Career OS dashboard, API, and portal subprocess worker.
+set -euo pipefail
+cd "$(dirname "$0")"
+if [[ -x .venv/bin/python ]]; then
+  PYTHON_BIN="$PWD/.venv/bin/python"
+elif [[ -x venv/bin/python ]]; then
+  PYTHON_BIN="$PWD/venv/bin/python"
+else
+  echo 'Create .venv and install requirements.txt first. See docs/MERGED_SETUP.md.'
+  exit 1
 fi
-
-if [ ! -f ".env" ]; then
-    echo "⚠️ Warning: .env file not found. Falling back to defaults."
+if [[ ! -d dashboard/node_modules ]]; then
+  echo 'Run npm ci --prefix dashboard first.'
+  exit 1
 fi
-
-# 2. Start Backend API
-echo "📡 Launching Backend API (Port 8000)..."
-source venv/bin/activate
-# Run in background
-python3 -m uvicorn src.main:app --reload --port 8000 &
+bash scripts/build-scraper.sh
+BACKEND_PID=''
+FRONTEND_PID=''
+cleanup() {
+  [[ -z "$BACKEND_PID" ]] || kill "$BACKEND_PID" 2>/dev/null || true
+  [[ -z "$FRONTEND_PID" ]] || kill "$FRONTEND_PID" 2>/dev/null || true
+}
+trap cleanup EXIT
+trap 'exit 130' INT TERM
+# One API worker serializes portal jobs that share output files.
+"$PYTHON_BIN" -m uvicorn api.server:app --host 127.0.0.1 --port 5001 &
 BACKEND_PID=$!
-
-# 3. Start Frontend Dashboard
-echo "🎨 Launching React Dashboard (Port 5174)..."
-cd dashboard
-npm run dev -- --port 5174 &
+(cd dashboard && exec node node_modules/vite/bin/vite.js) &
 FRONTEND_PID=$!
-
-echo ""
-echo "✅ System is powering up!"
-echo "   - Backend:  http://localhost:8000/health"
-echo "   - Frontend: http://localhost:5174"
-echo ""
-echo "Press Ctrl+C to shut down both servers."
-
-# Keep script running; trap Ctrl+C to kill children
-trap "kill $BACKEND_PID $FRONTEND_PID; echo -e '\n🛑 Servers stopped.'; exit" INT
-wait
+echo 'Career OS: http://127.0.0.1:5174 — Settings → Job portals'
+while kill -0 "$BACKEND_PID" 2>/dev/null && kill -0 "$FRONTEND_PID" 2>/dev/null; do
+  sleep 1
+done
+exit 1

@@ -19,12 +19,12 @@ const jobs = [
 describe('TrackerBoard', () => {
   it('renders the Tracker Board heading', () => {
     render(<TrackerBoard jobs={jobs} onStatusChange={() => {}} onDelete={() => {}} />)
-    expect(screen.getByRole('heading', { name: /Tracker Board/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /Application pipeline/i })).toBeInTheDocument()
   })
 
   it('shows the drag-and-drop hint subtitle', () => {
     render(<TrackerBoard jobs={jobs} onStatusChange={() => {}} onDelete={() => {}} />)
-    expect(screen.getByText(/Drag and drop/i)).toBeInTheDocument()
+    expect(screen.getByText(/Drag a role/i)).toBeInTheDocument()
   })
 
   it('renders all 6 kanban column headings', () => {

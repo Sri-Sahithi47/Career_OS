@@ -576,7 +576,7 @@
 
 .trends-tab.active {
   border-color: var(--primary);
-  background: #eef2ff;
+  background: #edf5ef;
 }
 
 .trends-tab-label {

@@ -11,14 +11,14 @@
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
-  background: #4f46e5;
+  background: #087f70;
   color: #fff;
   border-radius: 999px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 4px 20px rgba(79, 70, 229, 0.4);
+  box-shadow: 0 4px 20px rgba(8, 127, 112, 0.4);
   transition: background 0.2s, transform 0.15s, opacity 0.4s;
   user-select: none;
   border: none;
@@ -26,12 +26,12 @@
 }
 
 #careeros-save-pill:hover {
-  background: #4338ca;
+  background: #08675c;
   transform: scale(1.04);
 }
 
 #careeros-save-pill.careeros-pill--loading {
-  background: #6366f1;
+  background: #198c77;
   cursor: not-allowed;
 }
 
@@ -65,7 +65,7 @@
   right: 20px;
   z-index: 2147483647;
   padding: 10px 18px;
-  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  background: linear-gradient(135deg, #087f70, #087f70);
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -73,12 +73,12 @@
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.35);
+  box-shadow: 0 4px 16px rgba(8, 127, 112, 0.35);
   transition: all 0.2s ease;
 }
 
 #careeros-autofill-btn:hover:not(:disabled) {
-  background: #4338ca;
+  background: #08675c;
   transform: scale(1.03);
 }
 
@@ -108,7 +108,7 @@
   padding: 0;
   border: 0;
   border-radius: 14px;
-  background: linear-gradient(135deg, #4f46e5, #2563eb);
+  background: linear-gradient(135deg, #087f70, #2563eb);
   color: #fff;
   box-shadow: 0 12px 30px rgba(37, 99, 235, 0.34), 0 4px 12px rgba(15, 23, 42, 0.18);
   cursor: grab;
@@ -275,7 +275,7 @@
   align-items: center;
   gap: 8px;
   padding: 10px 14px 10px 12px;
-  background: #4f46e5;
+  background: #087f70;
   color: #fff;
   border: 0;
   font-family: Inter, "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
@@ -287,7 +287,7 @@
 }
 
 .careeros-launcher-save:hover:not(:disabled) {
-  background: #4338ca;
+  background: #08675c;
 }
 
 .careeros-launcher-save:disabled {
@@ -372,7 +372,7 @@
   align-items: center;
   gap: 8px;
   padding: 10px 12px;
-  background: #4f46e5;
+  background: #087f70;
   pointer-events: none;
   flex-shrink: 0;
 }
@@ -401,7 +401,7 @@
 }
 
 .careeros-filter-save {
-  background: #4f46e5;
+  background: #087f70;
   color: #fff;
 }
 
@@ -411,7 +411,7 @@
 }
 
 .careeros-filter-save:hover:not(:disabled) {
-  background: #4338ca;
+  background: #08675c;
 }
 
 .careeros-filter-preset:hover:not(:disabled) {
@@ -529,11 +529,11 @@
   width: 30px;
   height: 30px;
   border-radius: 9px;
-  background: #4f46e5;
+  background: #087f70;
   color: #fff;
   font-size: 13px;
   font-weight: 800;
-  box-shadow: 0 5px 14px rgba(79, 70, 229, 0.22);
+  box-shadow: 0 5px 14px rgba(8, 127, 112, 0.22);
 }
 
 .careeros-sidecar-brand strong {
@@ -594,7 +594,7 @@
 
 .careeros-sidecar-close:hover {
   background: #eef1ff;
-  color: #4f46e5;
+  color: #087f70;
   transform: rotate(4deg) scale(1.04);
 }
 
@@ -631,7 +631,7 @@
 
 .careeros-sidecar-tabs button.active {
   background: #fff;
-  color: #4f46e5;
+  color: #087f70;
   box-shadow: 0 3px 10px rgba(15, 23, 42, 0.08);
 }
 
@@ -643,7 +643,7 @@
   bottom: 3px;
   height: 2px;
   border-radius: 999px;
-  background: #4f46e5;
+  background: #087f70;
 }
 
 .careeros-sidecar-card {
@@ -685,7 +685,7 @@
   justify-content: center;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.72);
-  color: #4f46e5;
+  color: #087f70;
   font-size: 10px;
   font-weight: 850;
   box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04);
@@ -718,7 +718,7 @@
 }
 
 .careeros-brief-card li::marker {
-  color: #4f46e5;
+  color: #087f70;
 }
 
 .careeros-brief-close {
@@ -745,9 +745,9 @@
   margin-top: 14px;
   padding: 16px;
   border-radius: 11px;
-  background: linear-gradient(180deg, #4f46e5, #3b4ce2);
+  background: linear-gradient(180deg, #087f70, #3b4ce2);
   color: #ffffff;
-  box-shadow: 0 12px 28px rgba(79, 70, 229, 0.24);
+  box-shadow: 0 12px 28px rgba(8, 127, 112, 0.24);
 }
 
 .careeros-action-head {
@@ -847,7 +847,7 @@
   padding: 2px 7px;
   border-radius: 999px;
   background: #eef1ff;
-  color: #4f46e5;
+  color: #087f70;
   font-size: 10px;
   font-weight: 800;
 }
@@ -863,7 +863,7 @@
 
 .careeros-sidecar-kicker {
   margin-bottom: 4px;
-  color: #4f46e5;
+  color: #087f70;
   font-size: 9.5px;
   font-weight: 850;
   letter-spacing: 0.1em;
@@ -902,8 +902,8 @@
   border-radius: 10px;
   background:
     radial-gradient(circle at 34% 30%, #fff 0 15%, transparent 16%),
-    linear-gradient(135deg, #4f46e5, #4338ca);
-  box-shadow: 0 8px 18px rgba(79, 70, 229, 0.22);
+    linear-gradient(135deg, #087f70, #08675c);
+  box-shadow: 0 8px 18px rgba(8, 127, 112, 0.22);
 }
 
 .careeros-sidecar-primary,
@@ -921,17 +921,17 @@
   margin-top: 11px;
   padding: 10px 12px;
   border-radius: 9px;
-  background: #4f46e5;
+  background: #087f70;
   color: #fff;
   font-size: 13px;
   font-weight: 800;
-  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.22);
+  box-shadow: 0 8px 20px rgba(8, 127, 112, 0.22);
 }
 
 .careeros-sidecar-primary:hover {
-  background: #4338ca;
+  background: #08675c;
   transform: translateY(-1px);
-  box-shadow: 0 10px 24px rgba(79, 70, 229, 0.28);
+  box-shadow: 0 10px 24px rgba(8, 127, 112, 0.28);
 }
 
 .careeros-sidecar-secondary {
@@ -955,7 +955,7 @@
   margin-top: 6px;
   padding: 6px 8px;
   background: transparent;
-  color: #4f46e5;
+  color: #087f70;
   font-size: 11.5px;
   font-weight: 800;
 }
@@ -965,7 +965,7 @@
   padding: 5px 9px;
   border-radius: 8px;
   background: #eef1ff;
-  color: #4f46e5;
+  color: #087f70;
   font-size: 11.5px;
   font-weight: 800;
 }
@@ -1087,7 +1087,7 @@
   border-radius: 999px;
   background:
     radial-gradient(circle, #ffffff 0 56%, transparent 57%),
-    conic-gradient(#4f46e5 calc(var(--score) * 1%), #dfe5ff 0);
+    conic-gradient(#087f70 calc(var(--score) * 1%), #dfe5ff 0);
 }
 
 .careeros-match-ring span {
@@ -1142,7 +1142,7 @@
 }
 
 .careeros-match-reasons li::marker {
-  color: #4f46e5;
+  color: #087f70;
 }
 
 .careeros-match-chiprow {
@@ -1210,7 +1210,7 @@
   z-index: 2147483647;
   background: #fff;
   border: 1px solid #e2e8f0;
-  border-left: 4px solid #4f46e5;
+  border-left: 4px solid #087f70;
   border-radius: 8px;
   padding: 12px 14px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -1258,7 +1258,7 @@
   gap: 5px;
   margin-top: 6px;
   padding: 5px 12px;
-  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  background: linear-gradient(135deg, #087f70, #087f70);
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -1266,7 +1266,7 @@
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+  box-shadow: 0 2px 8px rgba(8, 127, 112, 0.3);
   transition: opacity 0.15s, transform 0.1s;
   z-index: 999999;
 }
@@ -1285,7 +1285,7 @@
   align-items: center;
   gap: 6px;
   padding: 9px 14px;
-  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  background: linear-gradient(135deg, #087f70, #087f70);
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -1384,7 +1384,7 @@
   background: #f8fafc;
   padding: 8px 10px;
   border-radius: 6px;
-  border-left: 3px solid #4f46e5;
+  border-left: 3px solid #087f70;
   line-height: 1.4;
 }
 
@@ -1403,7 +1403,7 @@
   box-sizing: border-box;
 }
 
-.careeros-modal-answer:focus { border-color: #4f46e5; }
+.careeros-modal-answer:focus { border-color: #087f70; }
 .careeros-modal-answer--tall { min-height: 200px; }
 
 .careeros-modal-meta {
@@ -1441,11 +1441,11 @@
 }
 
 .careeros-btn-primary {
-  background: #4f46e5;
+  background: #087f70;
   color: #fff;
 }
 
-.careeros-btn-primary:hover { background: #4338ca; }
+.careeros-btn-primary:hover { background: #08675c; }
 
 .careeros-btn-secondary {
   background: #f1f5f9;
@@ -1483,9 +1483,9 @@
 .careeros-style-chip:hover { background: #f1f5f9; }
 
 .careeros-style-chip.active {
-  background: #4f46e5;
+  background: #087f70;
   color: #fff;
-  border-color: #4f46e5;
+  border-color: #087f70;
 }
 
 /* ── Review Panel Specifics ──────────────────────────────────────────────── */
@@ -1527,7 +1527,7 @@
 
 .careeros-review-tag.ai {
   background: #f5f3ff;
-  color: #7c3aed;
+  color: #087f70;
   border: 1px solid #ddd6fe;
 }
 
@@ -1560,7 +1560,7 @@
   padding: 10px 14px;
   background: #fff;
   border: 1px solid #e2e8f0;
-  border-left: 3px solid #4f46e5;
+  border-left: 3px solid #087f70;
   border-radius: 8px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 12px;
@@ -1571,21 +1571,21 @@
 }
 
 #careeros-fill-indicator.careeros-fill-indicator--ai {
-  border-left-color: #7c3aed;
+  border-left-color: #087f70;
 }
 
 .careeros-fill-spinner {
   width: 14px;
   height: 14px;
   border: 2px solid #e2e8f0;
-  border-top-color: #4f46e5;
+  border-top-color: #087f70;
   border-radius: 50%;
   flex-shrink: 0;
   animation: careeros-spin 0.55s linear infinite;
 }
 
 .careeros-fill-indicator--ai .careeros-fill-spinner {
-  border-top-color: #7c3aed;
+  border-top-color: #087f70;
 }
 
 @keyframes careeros-spin {
@@ -1619,8 +1619,14 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #4f46e5;
+  color: #087f70;
   border-bottom: 1px solid #e2e8f0;
   padding-bottom: 5px;
   margin-bottom: 2px;
 }
+/* Keep the companion calm and consistent with the workspace. */
+#careeros-save-pill,.careeros-launcher-bar{border-radius:10px;box-shadow:0 5px 24px rgba(24,57,38,.14);font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+#careeros-save-pill{background:#193b2e;color:#edf7ee;border:1px solid #365940}
+.careeros-launcher-bar{border-color:#d3e1d6;background:#fff}
+.careeros-launcher-save,.careeros-launcher-auto-apply{border-radius:6px}
+@media(prefers-reduced-motion:reduce){#careeros-save-pill,.careeros-launcher-bar,#careeros-autofill-launcher{animation:none!important;transition:none!important}}

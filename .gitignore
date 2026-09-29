@@ -131,3 +131,6 @@ tmp/
 !.gitkeep
 !.env.example
 !.github/
+
+# Per-account scraper settings and browser/application state
+data/portal_dashboard/
