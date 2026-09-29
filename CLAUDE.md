@@ -18,20 +18,26 @@ React + Vite dashboard in `dashboard/` backed by FastAPI on port 5001. SQLAlchem
 ### Running the project
 
 ```bash
-# Backend (from job-applications/)
-uvicorn api.server:app --reload --port 5001
-
-# Frontend (from job-applications/dashboard/)
-npm run dev
+# From the repository root, including after every git pull:
+npm ci --prefix dashboard
+bash dev.sh
 
 # Verify backend compiles
 python -c "from api.jobs import router"
 
-# Verify frontend builds
-cd dashboard && npm run build
+# Verify both frontends build
+npm run build --prefix dashboard
+bash scripts/build-scraper.sh
 ```
 
-The backend must be running separately — Claude cannot keep uvicorn alive between tool calls. If frontend shows network errors, remind user to check backend on port 5001.
+`dev.sh` starts the API and dashboard together and rebuilds the embedded scraper UI
+and Java backend first. Keep this process running using the coding agent's process
+manager. Java 17+, Maven, Node/npm, and the Python virtual environment are required.
+Do not launch only `npm run dev` and Uvicorn after a pull: the scraper uses a separate
+ignored `services/job_scrapper/java-dashboard/frontend/dist` build which Git does
+not update. Do not reuse an API process from another checkout. Open
+http://127.0.0.1:5174. If starting the API manually, run `bash scripts/build-scraper.sh`
+first. See `docs/MERGED_SETUP.md` for setup.
 
 ---
 

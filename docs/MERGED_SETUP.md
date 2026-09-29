@@ -4,6 +4,18 @@ Career_OS is the primary application. Job_scrapper was imported with its Git his
 
 ## Run locally
 
+After each `git pull`, stop the running app and start with `bash dev.sh` (or
+`bash start_dashboard.sh`). This installs the scraper's locked dependencies and
+rebuilds its embedded React UI and Java backend. Running only the outer dashboard's
+`npm run dev` does not rebuild the scraper. Generated `dist/` and `target/` folders
+are local artifacts and are not updated by Git.
+
+For a coding agent starting this checkout, use `bash dev.sh` from the repository
+root. Do not reuse an already-running API from another checkout.
+
+The API checks the embedded UI's source and asset hashes before serving it. An
+outdated or incomplete build displays rebuild instructions instead of an old UI.
+
 ```sh
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt

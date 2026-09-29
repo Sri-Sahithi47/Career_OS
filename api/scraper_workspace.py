@@ -1,6 +1,7 @@
 """Authenticated bridge to the redesigned upstream Java/React scraper dashboard."""
 import atexit
 import json
+import hashlib
 import logging
 import os
 import signal
@@ -116,6 +117,7 @@ def workspace_ui(user: User = Depends(get_current_user)):
     index = dist / 'index.html'
     if not index.exists():
         raise HTTPException(503, 'Run bash scripts/build-scraper.sh to build the scraper workspace.')
+    verify_ui_build(ROOT / 'frontend')
     html = index.read_text()
     def script(match):
         source = (dist / match[1].lstrip('/')).read_text().replace('</script', '<\\/script')
@@ -123,7 +125,28 @@ def workspace_ui(user: User = Depends(get_current_user)):
     html = re.sub(r'<script[^>]+src="([^"]+)"[^>]*></script>', script, html)
     html = re.sub(r'<link[^>]+href="([^"]+\.css)"[^>]*>',
                   lambda m: '<style>' + (dist / m[1].lstrip('/')).read_text() + '</style>', html)
-    return {'html': html}
+    return JSONResponse({'html': html}, headers={'Cache-Control': 'no-store'})
+
+
+def verify_ui_build(frontend):
+    """Never silently serve a local build left behind by an earlier checkout."""
+    def hashes(base, paths):
+        return {path.relative_to(base).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
+                for path in paths if path.is_file()}
+    try:
+        manifest = json.loads((frontend / 'dist/build-integrity.json').read_text())
+        inputs = [path for folder in ('src', 'public') for path in (frontend / folder).rglob('*')]
+        inputs += [frontend / name for name in ('index.html', 'package.json', 'package-lock.json',
+                                               'vite.config.js', 'build-integrity.js')]
+        output = frontend / 'dist'
+        assets = [path for path in output.rglob('*') if path.name != 'build-integrity.json']
+        if manifest['sources'] == hashes(frontend, inputs) and manifest['assets'] == hashes(output, assets):
+            return
+    except (OSError, ValueError, KeyError, TypeError):
+        pass
+    raise HTTPException(503, 'The scraper UI build is outdated or incomplete. Stop the app, run '
+                        'bash scripts/build-scraper.sh, then restart with bash dev.sh. '
+                        'On Windows, run npm ci and npm run build in services/job_scrapper/java-dashboard/frontend.')
 
 
 def output_stamp(vendor, worker):

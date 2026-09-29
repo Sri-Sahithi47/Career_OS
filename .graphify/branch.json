@@ -3,14 +3,14 @@
   "branchName": "integrate-job-scrapper",
   "worktreePath": "/Users/saisujan/Desktop/careeros",
   "upstream": "origin/integrate-job-scrapper",
-  "mergeBase": "f8e55259e3fe7e79e2c4536975d5431250d2348b",
+  "mergeBase": "fbe32a50eb8f288fe69c1194a1a11980a6f6d749",
   "firstSeenHead": "d5229d31ff859ffc61cc1465c06d34494112865d",
-  "lastSeenHead": "f8e55259e3fe7e79e2c4536975d5431250d2348b",
-  "lastAnalyzedHead": "f8e55259e3fe7e79e2c4536975d5431250d2348b",
+  "lastSeenHead": "fbe32a50eb8f288fe69c1194a1a11980a6f6d749",
+  "lastAnalyzedHead": "fbe32a50eb8f288fe69c1194a1a11980a6f6d749",
   "stale": false,
   "staleReason": null,
   "staleSince": null,
   "lifecycleEvent": null,
   "createdAt": "2026-09-23T01:20:44.209Z",
-  "updatedAt": "2026-09-28T03:17:52.973Z"
+  "updatedAt": "2026-09-29T22:08:23.172Z"
 }

@@ -6,6 +6,51 @@ from api import scraper_workspace as workspace
 from api.deps import get_current_user, require_csrf
 
 
+def test_ui_build_rejects_changed_source_and_missing_assets(tmp_path):
+    import hashlib
+    import json
+    import os
+    import pytest
+    from fastapi import HTTPException
+
+    frontend = tmp_path / 'frontend'
+    (frontend / 'src').mkdir(parents=True)
+    (frontend / 'public').mkdir()
+    (frontend / 'dist/assets').mkdir(parents=True)
+    source = frontend / 'src/styles.css'
+    source.write_text('body { color: red; }')
+    for name in ('index.html', 'package.json', 'package-lock.json', 'vite.config.js', 'build-integrity.js'):
+        (frontend / name).write_text('test')
+    asset = frontend / 'dist/assets/app.css'
+    asset.write_text('body { color: red; }')
+    (frontend / 'dist/index.html').write_text('<html></html>')
+    def fingerprints(base):
+        return {p.relative_to(base).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
+                for p in base.rglob('*') if p.is_file() and 'dist' not in p.relative_to(base).parts}
+    outputs = {'index.html': hashlib.sha256((frontend / 'dist/index.html').read_bytes()).hexdigest(),
+               'assets/app.css': hashlib.sha256(asset.read_bytes()).hexdigest()}
+    (frontend / 'dist/build-integrity.json').write_text(json.dumps({'sources': fingerprints(frontend), 'assets': outputs}))
+    workspace.verify_ui_build(frontend)
+    stamp = source.stat()
+    source.write_text('body { color: blue; }')
+    os.utime(source, ns=(stamp.st_atime_ns, stamp.st_mtime_ns))
+    with pytest.raises(HTTPException) as error:
+        workspace.verify_ui_build(frontend)
+    assert error.value.status_code == 503
+    source.write_text('body { color: red; }')
+    asset.unlink()
+    with pytest.raises(HTTPException):
+        workspace.verify_ui_build(frontend)
+
+
+def test_ui_build_requires_manifest(tmp_path):
+    import pytest
+    from fastapi import HTTPException
+    with pytest.raises(HTTPException) as error:
+        workspace.verify_ui_build(tmp_path)
+    assert error.value.status_code == 503
+
+
 def test_authenticated_routing_and_action_allowlist(monkeypatch):
     app = FastAPI()
     app.include_router(workspace.router)
